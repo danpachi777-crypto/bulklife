@@ -1,0 +1,512 @@
+[
+  {
+    "referenceId": "01088",
+    "officialName": "こめ　［水稲めし］　精白米　うるち米",
+    "rawSourceValues": {
+      "kcal": 156,
+      "protein": 2.5,
+      "carbs": 37.1,
+      "fat": 0.3,
+      "fiber": 1.5,
+      "calcium": 3,
+      "iron": 0.1,
+      "vitaminC": "(0)",
+      "sodium": 1,
+      "water": "60.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "01085",
+    "officialName": "こめ　［水稲めし］　玄米",
+    "rawSourceValues": {
+      "kcal": 152,
+      "protein": 2.8,
+      "carbs": 35.6,
+      "fat": "1.0",
+      "fiber": 1.4,
+      "calcium": 7,
+      "iron": 0.6,
+      "vitaminC": "(0)",
+      "sodium": 1,
+      "water": "60.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "01026",
+    "officialName": "こむぎ　［パン類］　角形食パン　食パン",
+    "rawSourceValues": {
+      "kcal": 248,
+      "protein": 8.9,
+      "carbs": 46.4,
+      "fat": 4.1,
+      "fiber": 4.2,
+      "calcium": 22,
+      "iron": 0.5,
+      "vitaminC": "0",
+      "sodium": 470,
+      "water": 39.2
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "01004",
+    "officialName": "えんばく　オートミール",
+    "rawSourceValues": {
+      "kcal": 350,
+      "protein": 13.7,
+      "carbs": 69.1,
+      "fat": 5.7,
+      "fiber": 9.4,
+      "calcium": 47,
+      "iron": 3.9,
+      "vitaminC": "(0)",
+      "sodium": 3,
+      "water": "10.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "01064",
+    "officialName": "こむぎ　［マカロニ・スパゲッティ類］　マカロニ・スパゲッティ　ゆで",
+    "rawSourceValues": {
+      "kcal": 150,
+      "protein": 5.8,
+      "carbs": 32.2,
+      "fat": 0.9,
+      "fiber": "3.0",
+      "calcium": 8,
+      "iron": 0.7,
+      "vitaminC": "(0)",
+      "sodium": 460,
+      "water": "60.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "02007",
+    "officialName": "＜いも類＞　（さつまいも類）　さつまいも　塊根　皮なし　蒸し",
+    "rawSourceValues": {
+      "kcal": 131,
+      "protein": 1.2,
+      "carbs": 31.9,
+      "fat": 0.2,
+      "fiber": 2.3,
+      "calcium": 36,
+      "iron": 0.6,
+      "vitaminC": 29,
+      "sodium": 11,
+      "water": 65.6
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "02019",
+    "officialName": "＜いも類＞　じゃがいも　塊茎　皮なし　水煮",
+    "rawSourceValues": {
+      "kcal": 71,
+      "protein": 1.7,
+      "carbs": 16.9,
+      "fat": 0.1,
+      "fiber": 3.1,
+      "calcium": 4,
+      "iron": 0.6,
+      "vitaminC": 18,
+      "sodium": 1,
+      "water": 80.6
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "11288",
+    "officialName": "＜鳥肉類＞　にわとり　［若どり・主品目］　むね　皮なし　焼き",
+    "rawSourceValues": {
+      "kcal": 177,
+      "protein": 38.8,
+      "carbs": 0.1,
+      "fat": 3.3,
+      "fiber": "(0)",
+      "calcium": 7,
+      "iron": 0.5,
+      "vitaminC": 4,
+      "sodium": 73,
+      "water": 57.6
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "11225",
+    "officialName": "＜鳥肉類＞　にわとり　［若どり・主品目］　もも　皮なし　焼き",
+    "rawSourceValues": {
+      "kcal": 145,
+      "protein": 25.5,
+      "carbs": "0",
+      "fat": 5.7,
+      "fiber": "(0)",
+      "calcium": 7,
+      "iron": 0.9,
+      "vitaminC": 3,
+      "sodium": 81,
+      "water": 68.1
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "11270",
+    "officialName": "＜畜肉類＞　うし　［輸入牛肉］　もも　皮下脂肪なし　焼き",
+    "rawSourceValues": {
+      "kcal": 205,
+      "protein": "28.0",
+      "carbs": 0.4,
+      "fat": 14.1,
+      "fiber": "(0)",
+      "calcium": 4,
+      "iron": 3.3,
+      "vitaminC": 1,
+      "sodium": 41,
+      "water": 60.4
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "11132",
+    "officialName": "＜畜肉類＞　ぶた　［大型種肉］　もも　皮下脂肪なし　焼き",
+    "rawSourceValues": {
+      "kcal": 186,
+      "protein": 30.2,
+      "carbs": 0.3,
+      "fat": 7.6,
+      "fiber": "(0)",
+      "calcium": 5,
+      "iron": "1.0",
+      "vitaminC": 1,
+      "sodium": 58,
+      "water": 60.4
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "10136",
+    "officialName": "＜魚類＞　（さけ・ます類）　しろさけ　焼き",
+    "rawSourceValues": {
+      "kcal": 160,
+      "protein": 29.1,
+      "carbs": 0.1,
+      "fat": 5.1,
+      "fiber": "(0)",
+      "calcium": 19,
+      "iron": 0.6,
+      "vitaminC": 1,
+      "sodium": 82,
+      "water": 64.2
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "10156",
+    "officialName": "＜魚類＞　（さば類）　まさば　焼き",
+    "rawSourceValues": {
+      "kcal": 264,
+      "protein": 25.2,
+      "carbs": 0.4,
+      "fat": 22.4,
+      "fiber": "(0)",
+      "calcium": 10,
+      "iron": 1.6,
+      "vitaminC": "0",
+      "sodium": 120,
+      "water": 54.1
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "10252",
+    "officialName": "＜魚類＞　（まぐろ類）　きはだ　生",
+    "rawSourceValues": {
+      "kcal": 102,
+      "protein": 24.3,
+      "carbs": "Tr",
+      "fat": "1.0",
+      "fiber": "(0)",
+      "calcium": 5,
+      "iron": "2.0",
+      "vitaminC": "0",
+      "sodium": 43,
+      "water": "74.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "12005",
+    "officialName": "鶏卵　全卵　ゆで",
+    "rawSourceValues": {
+      "kcal": 134,
+      "protein": 12.5,
+      "carbs": 0.3,
+      "fat": 10.4,
+      "fiber": "0",
+      "calcium": 47,
+      "iron": 1.5,
+      "vitaminC": "0",
+      "sodium": 140,
+      "water": 76.7
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "13003",
+    "officialName": "＜牛乳及び乳製品＞　（液状乳類）　普通牛乳",
+    "rawSourceValues": {
+      "kcal": 61,
+      "protein": 3.3,
+      "carbs": 4.8,
+      "fat": 3.8,
+      "fiber": "(0)",
+      "calcium": 110,
+      "iron": 0.02,
+      "vitaminC": 1,
+      "sodium": 41,
+      "water": 87.4
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "13025",
+    "officialName": "＜牛乳及び乳製品＞　（発酵乳・乳酸菌飲料）　ヨーグルト　全脂無糖",
+    "rawSourceValues": {
+      "kcal": 56,
+      "protein": 3.6,
+      "carbs": 4.9,
+      "fat": "3.0",
+      "fiber": "(0)",
+      "calcium": 120,
+      "iron": "Tr",
+      "vitaminC": 1,
+      "sodium": 48,
+      "water": 87.7
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "04032",
+    "officialName": "だいず　［豆腐・油揚げ類］　木綿豆腐",
+    "rawSourceValues": {
+      "kcal": 73,
+      "protein": "7.0",
+      "carbs": 1.5,
+      "fat": 4.9,
+      "fiber": 1.1,
+      "calcium": 93,
+      "iron": 1.5,
+      "vitaminC": "0",
+      "sodium": 9,
+      "water": 85.9
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "04046",
+    "officialName": "だいず　［納豆類］　糸引き納豆",
+    "rawSourceValues": {
+      "kcal": 184,
+      "protein": 16.5,
+      "carbs": 12.1,
+      "fat": "10.0",
+      "fiber": 9.5,
+      "calcium": 90,
+      "iron": 3.3,
+      "vitaminC": "Tr",
+      "sodium": 2,
+      "water": 59.5
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "04002",
+    "officialName": "あずき　全粒　ゆで",
+    "rawSourceValues": {
+      "kcal": 124,
+      "protein": 8.6,
+      "carbs": 25.6,
+      "fat": 0.8,
+      "fiber": 8.7,
+      "calcium": 27,
+      "iron": 1.6,
+      "vitaminC": "Tr",
+      "sodium": 1,
+      "water": 63.9
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "06264",
+    "officialName": "ブロッコリー　花序　ゆで",
+    "rawSourceValues": {
+      "kcal": 30,
+      "protein": 3.9,
+      "carbs": 5.2,
+      "fat": 0.4,
+      "fiber": 4.3,
+      "calcium": 41,
+      "iron": 0.9,
+      "vitaminC": 55,
+      "sodium": 5,
+      "water": 89.9
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "06268",
+    "officialName": "ほうれんそう　葉　通年平均　ゆで",
+    "rawSourceValues": {
+      "kcal": 23,
+      "protein": 2.6,
+      "carbs": "4.0",
+      "fat": 0.5,
+      "fiber": 3.6,
+      "calcium": 69,
+      "iron": 0.9,
+      "vitaminC": 19,
+      "sodium": 10,
+      "water": 91.5
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "06215",
+    "officialName": "（にんじん類）　にんじん　根　皮なし　ゆで",
+    "rawSourceValues": {
+      "kcal": 28,
+      "protein": 0.7,
+      "carbs": 8.5,
+      "fat": 0.1,
+      "fiber": 2.8,
+      "calcium": 29,
+      "iron": 0.2,
+      "vitaminC": 4,
+      "sodium": 27,
+      "water": "90.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "06182",
+    "officialName": "（トマト類）　赤色トマト　果実　生",
+    "rawSourceValues": {
+      "kcal": 20,
+      "protein": 0.7,
+      "carbs": 4.7,
+      "fat": 0.1,
+      "fiber": "1.0",
+      "calcium": 7,
+      "iron": 0.2,
+      "vitaminC": 15,
+      "sodium": 3,
+      "water": "94.0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "06061",
+    "officialName": "（キャベツ類）　キャベツ　結球葉　生",
+    "rawSourceValues": {
+      "kcal": 23,
+      "protein": 1.2,
+      "carbs": 5.2,
+      "fat": 0.1,
+      "fiber": 1.8,
+      "calcium": 42,
+      "iron": 0.3,
+      "vitaminC": 38,
+      "sodium": 5,
+      "water": 92.9
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "07107",
+    "officialName": "バナナ　生",
+    "rawSourceValues": {
+      "kcal": 93,
+      "protein": 1.1,
+      "carbs": 22.5,
+      "fat": 0.2,
+      "fiber": 1.1,
+      "calcium": 6,
+      "iron": 0.3,
+      "vitaminC": 16,
+      "sodium": "Tr",
+      "water": 75.4
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "07176",
+    "officialName": "りんご　皮つき　生",
+    "rawSourceValues": {
+      "kcal": 56,
+      "protein": 0.2,
+      "carbs": 16.2,
+      "fat": 0.3,
+      "fiber": 1.9,
+      "calcium": 4,
+      "iron": 0.1,
+      "vitaminC": 6,
+      "sodium": "Tr",
+      "water": 83.1
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "07027",
+    "officialName": "（かんきつ類）　うんしゅうみかん　じょうのう　普通　生",
+    "rawSourceValues": {
+      "kcal": 49,
+      "protein": 0.7,
+      "carbs": "12.0",
+      "fat": 0.1,
+      "fiber": "1.0",
+      "calcium": 21,
+      "iron": 0.2,
+      "vitaminC": 32,
+      "sodium": 1,
+      "water": 86.9
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "14001",
+    "officialName": "（植物油脂類）　オリーブ油",
+    "rawSourceValues": {
+      "kcal": 894,
+      "protein": "0",
+      "carbs": "0",
+      "fat": 100,
+      "fiber": "0",
+      "calcium": "Tr",
+      "iron": "0",
+      "vitaminC": "(0)",
+      "sodium": "Tr",
+      "water": "0"
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  },
+  {
+    "referenceId": "05040",
+    "officialName": "アーモンド　いり　無塩",
+    "rawSourceValues": {
+      "kcal": 608,
+      "protein": 20.3,
+      "carbs": 20.7,
+      "fat": 54.1,
+      "fiber": "11.0",
+      "calcium": 260,
+      "iron": 3.7,
+      "vitaminC": "0",
+      "sodium": "Tr",
+      "water": 1.8
+    },
+    "source": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+  }
+]

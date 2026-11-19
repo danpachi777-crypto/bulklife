@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.blend1
+*.log
+.DS_Store
+tsconfig.tsbuildinfo
+tmp/
+.env
+.env.*
+!.env.example
+assets/blender/before_bulk_life.blend
+assets/blender/bulk-life-before-*.blend

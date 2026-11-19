@@ -1,0 +1,27 @@
+{
+  "name": "bulk-life",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
+    "build": "tsc -b && vite build",
+    "test": "tsx --test tests/*.test.ts",
+    "check": "tsc -b"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.8.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "latest",
+    "fake-indexeddb": "^6.2.8",
+    "tsx": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "environment": {
+    "runtime": "v24.21.0",
+    "platform": "win32",
+    "arch": "x64",
+    "cpu": "12th Gen Intel(R) Core(TM) i5-1235U",
+    "storage": "fake-indexeddb / Node; not a real browser or phone timing"
+  },
+  "years": 30,
+  "days": 10950,
+  "dailyLogs": 10950,
+  "snapshots": 1564,
+  "rivals": 975,
+  "rawBytes": 25974410,
+  "simulateMs": 1133.2430000000002,
+  "writeMs": 1376.6179000000002,
+  "readMs": 1316.2065000000002,
+  "exportMs": 1737.2841000000008,
+  "importValidationMs": 636.9530000000004
+}

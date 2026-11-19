@@ -1,0 +1,373 @@
+{
+  "verifiedAt": "2026-11-19",
+  "mode": "normal-generation-no-body-or-ability-overrides",
+  "results": [
+    {
+      "profile": "P5",
+      "seed": 417,
+      "day": 2836,
+      "logs": 2836,
+      "titles": [
+        {
+          "id": "title-result-entry-olympia-2034",
+          "resultId": "result-entry-olympia-2034",
+          "series": "olympia",
+          "editionId": "olympia-2034",
+          "category": "mensBodybuilding",
+          "ageClass": "senior",
+          "classId": "Open",
+          "kind": "olympiaOpen",
+          "day": 2836,
+          "rulesVersion": "2026-jbbf-ifbb-2027oqs-game-1"
+        }
+      ],
+      "trace": [
+        {
+          "action": "enter",
+          "series": "regional",
+          "year": 2027,
+          "day": 75
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "90kg以下",
+          "score": 40.12934356088532,
+          "mass": 38.01746563500393,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "enter",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "day": 208
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 58.716527535256944,
+          "mass": 41.304528904454116,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "enter",
+          "series": "regional",
+          "year": 2028,
+          "day": 441
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 72.05852304710693,
+          "mass": 49.90151591758492,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "enter",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "day": 574
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 74.7046730901874,
+          "mass": 54.54023160063626,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "enter",
+          "series": "regional",
+          "year": 2029,
+          "day": 806
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 6,
+          "class": "80kg以下",
+          "score": 79.51135820429369,
+          "mass": 62.78948548540954,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "enter",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "day": 939
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 81.75736985940733,
+          "mass": 66.76229634464829,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "enter",
+          "series": "regional",
+          "year": 2030,
+          "day": 1171
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 3,
+          "class": "90kg以下",
+          "score": 85.38101120348793,
+          "mass": 73.33629918645279,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "enter",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "day": 1304
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 5,
+          "class": "90kg以下",
+          "score": 87.01692650149118,
+          "mass": 76.33206550502666,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "enter",
+          "series": "regional",
+          "year": 2031,
+          "day": 1536
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 89.79828105823363,
+          "mass": 81.2891048093783,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "enter",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "day": 1669
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.66879039327584,
+          "mass": 83.5550570183385,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "enter",
+          "series": "newYorkPro",
+          "year": 2032,
+          "day": 1938
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2032,
+          "rank": 10,
+          "class": "Open",
+          "score": 92.77849599463026,
+          "mass": 87.56241002043028,
+          "pose": 92.78600738394964
+        },
+        {
+          "action": "enter",
+          "series": "newYorkPro",
+          "year": 2033,
+          "day": 2302
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2033,
+          "rank": 5,
+          "class": "Open",
+          "score": 95.04688188938508,
+          "mass": 91.98256159709605,
+          "pose": 95.51833058659963
+        },
+        {
+          "action": "enter",
+          "series": "newYorkPro",
+          "year": 2034,
+          "day": 2673
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 96.79223188711252,
+          "mass": 95.13381625455143,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "enter",
+          "series": "olympia",
+          "year": 2034,
+          "day": 2807
+        },
+        {
+          "action": "result",
+          "series": "olympia",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 97.00100961744552,
+          "mass": 96.05587508171816,
+          "pose": 97.72239506515807
+        }
+      ],
+      "body": {
+        "weight": 90.09380403390769,
+        "fat": 5.735855990554846
+      },
+      "retirement": {
+        "day": 2836,
+        "reason": "immediate",
+        "years": 7.764704271819408,
+        "trainingDays": 1169,
+        "muscleChange": 19.939865235521687,
+        "bestResults": [
+          {
+            "series": "regional",
+            "rank": 1,
+            "season": 2031
+          },
+          {
+            "series": "amateurOlympia",
+            "rank": 1,
+            "season": 2031
+          },
+          {
+            "series": "newYorkPro",
+            "rank": 1,
+            "season": 2034
+          },
+          {
+            "series": "olympia",
+            "rank": 1,
+            "season": 2034
+          }
+        ],
+        "titleIds": [
+          "title-result-entry-olympia-2034"
+        ],
+        "text": [
+          "湊は、身体を整え直す初心者として競技人生を始めました。",
+          "7.8年間、1169日の練習を記録。筋質量は+19.94kg変化しました。",
+          "14大会に出場し、身体と技術をステージで確かめました。",
+          "世界タイトル1件を獲得。その記録は引退後も残ります。"
+        ],
+        "finalBody": {
+          "height": 181,
+          "shoulder": 1.052325581395349,
+          "muscle": {
+            "upperChest": 1.7277199173648838,
+            "chest": 3.6001454928432137,
+            "frontDelts": 1.3011978526693218,
+            "sideDelts": 1.249539643186797,
+            "rearDelts": 1.2790911579171036,
+            "lats": 4.458033775911927,
+            "upperBack": 3.1832834938283083,
+            "erectors": 1.805083458851323,
+            "biceps": 2.0294675184244695,
+            "triceps": 3.1249319052192464,
+            "forearms": 1.974177722720008,
+            "quads": 9.045826828324078,
+            "hamstrings": 4.212362212733394,
+            "glutes": 6.417421176377426,
+            "calves": 3.249388827805866,
+            "abs": 2.4677942513443223
+          },
+          "capacity": {
+            "upperChest": 1.8052456032162372,
+            "chest": 3.7772026053132564,
+            "frontDelts": 1.3668747767052865,
+            "sideDelts": 1.3072138381969565,
+            "rearDelts": 1.3412830855895626,
+            "lats": 4.659649419750261,
+            "upperBack": 3.350696430674007,
+            "erectors": 1.8943995197989116,
+            "biceps": 2.1263340490390976,
+            "triceps": 3.282885185102281,
+            "forearms": 2.062725573889676,
+            "quads": 9.5245331421017,
+            "hamstrings": 4.430346555001781,
+            "glutes": 6.705399620700413,
+            "calves": 3.3994297041999473,
+            "abs": 2.5784896848915797
+          },
+          "fat": 5.167650855797637,
+          "otherLean": 33.784400000000005,
+          "waterDelta": 0.016287942588369332,
+          "pump": {
+            "upperChest": 0.0002610725508623437,
+            "chest": 0.0002610725508623437,
+            "frontDelts": 0.0002610725508623437,
+            "sideDelts": 0.0002610725508623437,
+            "rearDelts": 0.0002610725508623437,
+            "lats": 0.0002610725508623437,
+            "upperBack": 0.0002610725508623437,
+            "erectors": 0.0002610725508623437,
+            "biceps": 0.0002610725508623437,
+            "triceps": 0.0002610725508623437,
+            "forearms": 0.0002610725508623437,
+            "quads": 0.0002610725508623437,
+            "hamstrings": 0.0002610725508623437,
+            "glutes": 0.0002610725508623437,
+            "calves": 0.0002610725508623437,
+            "abs": 0.0002610725508623437
+          },
+          "fatigue": {
+            "upperChest": 0.02067788992357104,
+            "chest": 0.02067788992357104,
+            "frontDelts": 0.02067788992357104,
+            "sideDelts": 0.02067788992357104,
+            "rearDelts": 0.02067788992357104,
+            "lats": 0.02067788992357104,
+            "upperBack": 0.02067788992357104,
+            "erectors": 0.02067788992357104,
+            "biceps": 0.02067788992357104,
+            "triceps": 0.02067788992357104,
+            "forearms": 0.02067788992357104,
+            "quads": 0.02067788992357104,
+            "hamstrings": 0.02067788992357104,
+            "glutes": 0.02067788992357104,
+            "calves": 0.02067788992357104,
+            "abs": 0.02067788992357104
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const p=new URL('./normal-career.ts',import.meta.url);let s=readFileSync(p,'utf8');
+s=s.replace('function play(profile:number,seed:number){',"function play(profile:number,seed:number,circuit:'jbbf'|'npc'='jbbf'){");
+s=s.replace("const interested:Series[]=['tokyo','japanClasses','japan','ifbbWorld'];","const interested:Series[]=circuit==='jbbf'?['tokyo','japanClasses','japan','ifbbWorld']:['regional','amateurOlympia','newYorkPro','olympia'];");
+s=s.replace("for(const kind of ['jbbfRegistration','antiDopingCourse','passport','internationalCard'] as const)","for(const kind of (circuit==='jbbf'?['jbbfRegistration','antiDopingCourse','passport','internationalCard']:hasCredential(c,'proCard')?['npcMembership','proActive']:['npcMembership']) as ('jbbfRegistration'|'antiDopingCourse'|'passport'|'internationalCard'|'npcMembership'|'proActive')[])");
+s=s.replace("c=requestApproval(c,e);if(eligibility(c,e).allowed)","if(e.circuit==='jbbf'||['newYorkPro','olympia'].includes(series))c=requestApproval(c,e);if(eligibility(c,e).allowed)");
+s=s.replace("t=>t.kind==='worldClass'", "t=>circuit==='jbbf'?t.kind==='worldClass':t.kind==='olympiaOpen'");
+s=s.replace("const results=[];for(const [profile,seed]", "const circuit=process.argv.includes('--npc')?'npc':'jbbf';\nconst results=[];for(const [profile,seed]");
+s=s.replace('const r=play(profile,seed);','const r=play(profile,seed,circuit);');
+s=s.replace("writeFileSync('docs/qa/normal-career-proof.json'", "writeFileSync(circuit==='npc'?'docs/qa/normal-pro-career-proof.json':'docs/qa/normal-career-proof.json'");
+writeFileSync(p,s);

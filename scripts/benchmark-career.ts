@@ -1,0 +1,13 @@
+import 'fake-indexeddb/auto';
+import {performance} from 'node:perf_hooks';
+import {cpus,platform,arch} from 'node:os';
+import {writeFileSync} from 'node:fs';
+import {generateCareer,advance,freshLibrary} from '../src/core/simulation';
+import {PROFILES} from '../src/core/content';
+import {save,loadCareer,readLogs,exportSave,parseImport} from '../src/core/storage';
+const t0=performance.now(),result=advance(generateCareer(PROFILES[0],314159,'bl-long-save'),365*30),simulateMs=performance.now()-t0;
+const c=result.career,lib={...freshLibrary(4,5),ids:[c.athlete.id],activeId:c.athlete.id};const t1=performance.now();await save(lib,c,result.logs);const writeMs=performance.now()-t1;
+const t2=performance.now();await loadCareer(c.athlete.id);await readLogs(c.athlete.id);const readMs=performance.now()-t2;
+const t3=performance.now(),json=await exportSave(lib),exportMs=performance.now()-t3;const t4=performance.now();parseImport(json);const importValidationMs=performance.now()-t4;
+const report={environment:{runtime:process.version,platform:platform(),arch:arch(),cpu:cpus()[0].model,storage:'fake-indexeddb / Node; not a real browser or phone timing'},years:30,days:c.athlete.day,dailyLogs:result.logs.length,snapshots:c.snapshots.length,rivals:c.progress!.rivals.length,rawBytes:Buffer.byteLength(json),simulateMs,writeMs,readMs,exportMs,importValidationMs};
+writeFileSync('docs/qa/storage-performance.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));

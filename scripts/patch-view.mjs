@@ -1,0 +1,10 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const path=new URL('../src/view/BodyView.tsx',import.meta.url);
+let text=readFileSync(path,'utf8');
+text=text.replace("import {AnimationMixer,Color,Mesh,MeshStandardMaterial,Group,SRGBColorSpace}","import {AnimationMixer,Mesh,SRGBColorSpace}");
+text=text.replace("[0,1.5,-1.1]","[0,1.5,-6.5]").replace("args={[7,3,.1]}","args={[16,3,.1]}").replace("[x,1.3,-1.02]","[x,1.3,-6.42]");
+text=text.replace('const [angle,setAngle]=useState(0),[breathing', 'const [angle,setAngle]=useState(0),[revision,setRevision]=useState(0),[breathing');
+text=text.replace('onClick={()=>setAngle(n as number)}','onClick={()=>{setAngle(n as number);setRevision(v=>v+1);}}');
+text=text.replace('<Controls angle={angle}/>','<Controls angle={angle} revision={revision}/>');
+text=text.replace('<directionalLight position={[2,2,-1]} intensity={2.4}', '<directionalLight position={[0,3,-4]} intensity={2.6}');
+writeFileSync(path,text);

@@ -1,0 +1,27 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const p=new URL('../src/ui/App.tsx',import.meta.url);let s=readFileSync(p,'utf8');
+s="import {CareerScreen} from './CareerScreen';\nimport {TrainingScreen} from './TrainingScreen';\nimport {FoodLifeScreen} from './FoodLifeScreen';\nimport {acknowledgeDecision} from '../core/competitions';\nimport {enableCareer} from '../core/progress';\nimport {exerciseRecipe} from '../core/exercises';\n"+s;
+s=s.replace("type Tab='body'|'plan'|'records'|'athletes'|'about';","type Tab='body'|'plan'|'training'|'food'|'competition'|'records'|'athletes'|'about';");
+s=s.replace(" const editPlan=", " const changeCareer=(value:Career|(()=>Career))=>{void run(async()=>{const next=typeof value==='function'?value():value;await commit(next);});};\n const editPlan=");
+s=s.replace("[['body','身体ホーム','01'],['plan','週間計画','02'],['records','記録室','03'],['athletes','選手一覧','04'],['about','制作状況・設定','05']]", "[['body','身体ホーム','01'],['plan','週間計画','02'],['training','トレーニング','03'],['food','食事・生活','04'],['competition','大会・キャリア','05'],['records','記録室','06'],['athletes','選手一覧','07'],['about','知識・設定','08']]");
+s=s.replace('開発版 0.1 / 育成ループ制作中','キャリア版 0.2 / ローカル保存');
+s=s.replace('同じ照明・カメラで表示','同じ照明・カメラ・ポーズで表示');
+s=s.replace('<BodyView body={current} selected={part} hair={a.appearance.hair}/>', '<BodyView body={current} baseline={shown.initial.body} selected={part} hair={a.appearance.hair} onSelectPart={setPart} title={a.name+" / "+date(past?0:a.day)}/>');
+s=s.replace("{draft?'出会い':'土台づくり'}", "{draft?'出会い':a.status==='retired'?'引退記録':shown.progress&&a.day<shown.progress.recoveryUntil?'大会後の回復':'身体づくり'}");
+s=s.replaceAll('disabled={busy||!!shown.pendingEvent}',"disabled={busy||!!shown.pendingEvent||a.status==='retired'}");
+s=s.replace("<button onClick={()=>setTab('plan')}>計画を確認</button><button disabled={busy} onClick={()=>void run(()=>commit({...shown,pendingEvent:null}))}>","<button onClick={()=>setTab(shown.progress?.decision?'competition':'plan')}>{shown.progress?.decision?'大会手続きを開く':'計画を確認'}</button><button disabled={busy||!!shown.progress?.decision&&['travel','show'].includes(shown.progress.decision.kind)} onClick={()=>changeCareer(()=>acknowledgeDecision(shown))}>");
+const insert=" {tab==='plan'&&!draft&&";
+s=s.replace(insert,` {!draft&&tab==='competition'&&<CareerScreen career={shown} onChange={changeCareer} onAdvance={step} onNew={reroll} busy={busy}/>}\n {!draft&&tab==='training'&&<TrainingScreen career={shown} onChange={changeCareer} busy={busy||a.status==='retired'}/>}\n {!draft&&tab==='food'&&<FoodLifeScreen career={shown} onChange={changeCareer} busy={busy||a.status==='retired'}/>}\n`+insert);
+s=s.replace("{(tab==='body'||draft)&&<>","{(tab==='body'||draft)&&<>{!draft&&!shown.progress&&<div className='tutorial'><p>現在の身体と記録を保ち、大会・生活・引退までのキャリアを追加できます。</p><button disabled={busy} onClick={()=>changeCareer(enableCareer(shown))}>この選手に競技キャリアを追加</button></div>}{a.status==='retired'&&<div className='tutorial'><p>この選手は引退しました。身体と実績を記録として残しています。</p><button onClick={()=>setTab('competition')}>競技人生の振り返りを見る</button></div>}");
+s=s.replace('3D上の直接選択・左右差は次段階で制作します。','3Dのクリックと一覧の両方から選択できます。細かな左右差の表現は調整中です。');
+s=s.replace('種目・重量・回数ごとの入力は次段階で追加します。','種目・重量・回数はトレーニング画面で編集できます。');
+s=s.replace('現段階は栄養の集約計画です。食品別の成分・食事時刻は未実装。値はゲーム係数に基づきます。','この欄は簡単計画の集約値です。食事・生活画面で食品計画を使う場合は、その食品と量を優先します。');
+s=s.replace("focus:e.target.value as Focus", "focus:e.target.value as Focus,...(v.exercises?{exercises:exerciseRecipe(e.target.value as Focus,2)}:{})");
+s=s.replace("sets:value}:v", "sets:value,...(v.exercises?{exercises:v.exercises.map(x=>({...x,sets:value}))}:{})}:v");
+s=s.replace("rir:value}:v", "rir:value,...(v.exercises?{exercises:v.exercises.map(x=>({...x,rir:value}))}:{})}:v");
+// Replace stale work-in-progress introduction without modifying the save controls.
+const aboutStart=s.indexOf(" {tab==='about'&&!draft&&<><section"),aboutEnd=s.indexOf('<section className="paper"><h2>保存の管理</h2>',aboutStart);
+if(aboutStart<0||aboutEnd<aboutStart)throw new Error('about markers missing');
+s=s.slice(0,aboutStart)+` {tab==='about'&&!draft&&<><section className="paper"><span className="eyebrow">BULK LIFE / KNOWLEDGE</span><h2>身体と生活から、競技人生へ。</h2><p>6種類の独立抽選から、育成、実在8大会を参照した架空シーズン、資格、世界タイトル、続行、未優勝での引退と記録へ進めます。</p><h3>練習の考え方</h3><p>セット数だけを増やしても刺激は逓減し、疲労が蓄積します。RIRは「あと何回できるか」の余力です。フォーム・回復・時間から実績を計算します。筋力の熟達、筋質量、短期のパンプは別です。</p><h3>栄養と睡眠</h3><p>総エネルギーとタンパク質、日々の回復を合わせて計画します。食品値は文科省成分表の可食部100gと調理状態を確認しています。睡眠不足や減量を、実際の人間への精密な成長予測として扱いません。</p><h3>大会と資格</h3><p>NPC Regionalへの参加を優勝必須とせず、プロカード・Active登録・大会契約・Olympia資格を分けます。JBBFの成績はProfessional Leagueの資格に変換しません。派遣候補と正式出場承認も別です。</p><h3>研究とゲーム仮定</h3><p>成長・疲労・審査・生活の係数と価格はゲーム用の仮定です。現実の身体や生涯限界を測るアプリではありません。大会の開催日・CPU・費用・未公開選考は創作を含み、公式発表や公式アプリではありません。</p><p>体形は様式化したモデルです。全種目の専用アニメーション、細かな手指・左右差の仕上げ、実機性能は今後も改善します。</p><p><a href="https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx" target="_blank" rel="noreferrer">文科省食品成分表</a> / <a href="https://www.ifbbpro.com/npc-worldwide/rules/" target="_blank" rel="noreferrer">NPC公式規則</a> / <a href="https://www.jbbf.jp/" target="_blank" rel="noreferrer">JBBF公式資料</a></p></section>`+s.slice(aboutEnd);
+s=s.replace('大会規則は未実装','競技規則 {shown.progress?.rulesVersion??"未追加"}');
+writeFileSync(p,s);

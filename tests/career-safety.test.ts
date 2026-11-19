@@ -1,0 +1,15 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {generateCareer,advance} from '../src/core/simulation.ts';
+import {PROFILES} from '../src/core/content.ts';
+import {hasOlympiaQualification,register,edition,requestApproval,enter,travel,checkIn,acknowledgeDecision,retire} from '../src/core/competitions.ts';
+import {changeEmployment} from '../src/core/progress.ts';
+import {validateCareer} from '../src/core/validation.ts';
+import {weight} from '../src/core/model.ts';
+import {dateDay,yearEnd} from '../src/core/calendar.ts';
+test('30-year careers retain a competitive new generation and finite body/cash state',()=>{let c=generateCareer(PROFILES[0],99,'bl-decades');c=advance(c,365*30).career;assert.equal(c.athlete.day,10950);assert.ok(Number.isFinite(c.athlete.life.money));assert.ok(Number.isFinite(weight(c.athlete.body)));const live=c.progress!.rivals.filter(r=>!r.retired);assert.ok(live.length>64);assert.ok(live.some(r=>r.tier===3));assert.ok(live.some(r=>r.birthYear>2030));validateCareer(c);});
+test('work changes always use original terms and cannot compound income',()=>{let c=generateCareer(PROFILES[2],1,'bl-work');const income=c.athlete.life.income;for(let i=0;i<50;i++)c=changeEmployment(c,1.1);assert.equal(c.athlete.life.income,Math.round(income*1.1));c=changeEmployment(c,1);assert.equal(c.athlete.life.income,income);});
+test('daily and weekly progress agree across a calendar year and CPU cohort update',()=>{let c=generateCareer(PROFILES[1],41,'bl-calendar');c=advance(c,yearEnd(2027)-2).career;let daily=c;const logs=[];for(let i=0;i<7;i++){const r=advance(daily,1);daily=r.career;logs.push(...r.logs);}assert.deepEqual(advance(c,7),{career:daily,logs});});
+test('current Open qualification cannot be borrowed from another category or year',()=>{const c=generateCareer(PROFILES[0],6,'bl-category');const stub={circuit:'npc',series:'newYorkPro',classRank:1,season:2027,day:dateDay(2027,5,9),classId:'Open',category:'mensPhysique',ageClass:'senior'};c.progress!.results=[stub as any];assert.ok(!hasOlympiaQualification(c,2027));stub.category='mensBodybuilding';stub.ageClass='masters';assert.ok(!hasOlympiaQualification(c,2027));stub.ageClass='senior';stub.classId='212';assert.ok(!hasOlympiaQualification(c,2027));stub.classId='Open';assert.ok(hasOlympiaQualification(c,2027));assert.ok(!hasOlympiaQualification(c,2028));});
+test('check-in class uses the current body, not the initial profile weight',()=>{let c=generateCareer(PROFILES[4],73,'bl-checkin');c=register(c,'npcMembership');const e=edition('regional',2027);c=enter(c,e);c=advance(c,e.travelDay).career;c=travel(c,c.progress!.entries[0].id);c=advance(c,1).career;const w=weight(c.athlete.body);c=checkIn(c,c.progress!.entries[0].id);assert.equal(c.progress!.entries[0].checkInWeight,w);});
+test('current memberships cannot silently merge federation routes',()=>{const c=register(generateCareer(PROFILES[0],9,'bl-routes'),'jbbfRegistration');assert.throws(()=>register(c,'npcMembership'));});

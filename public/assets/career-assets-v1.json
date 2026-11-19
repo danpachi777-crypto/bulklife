@@ -1,0 +1,135 @@
+{
+  "version": "career-assets-v1",
+  "athlete": "/assets/athlete-v1.glb",
+  "clips": [
+    "Breathing",
+    "Idle",
+    "FrontDoubleBiceps",
+    "FrontLatSpread",
+    "SideChest",
+    "BackDoubleBiceps",
+    "BackLatSpread",
+    "SideTriceps",
+    "AbdominalsThigh",
+    "MostMuscular",
+    "TrainingPress",
+    "TrainingRow",
+    "TrainingSquat",
+    "StageEntry",
+    "ResultCelebrate",
+    "ResultReflect"
+  ],
+  "mandatoryPoses": [
+    "FrontDoubleBiceps",
+    "FrontLatSpread",
+    "SideChest",
+    "BackDoubleBiceps",
+    "BackLatSpread",
+    "SideTriceps",
+    "AbdominalsThigh"
+  ],
+  "additionalPose": "MostMuscular",
+  "equipment": {
+    "gym": "/assets/gym-v1.glb",
+    "dumbbell": "/assets/dumbbell-v1.glb",
+    "dumbbellAttachment": "Clone onto handL/handR bone, local [0,0.04,0]; display during TrainingPress/TrainingRow only"
+  },
+  "stages": [
+    {
+      "id": "tokyo",
+      "url": "/assets/stage-tokyo-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "japan-class",
+      "url": "/assets/stage-japan-class-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "japan-men",
+      "url": "/assets/stage-japan-men-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "ifbb-world",
+      "url": "/assets/stage-ifbb-world-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "mid-japan",
+      "url": "/assets/stage-mid-japan-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "amateur-olympia",
+      "url": "/assets/stage-amateur-olympia-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "new-york-pro",
+      "url": "/assets/stage-new-york-pro-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    },
+    {
+      "id": "olympia",
+      "url": "/assets/stage-olympia-v1.glb",
+      "ground": 0,
+      "athletePosition": [
+        0,
+        0,
+        0
+      ],
+      "front": "+Z (glTF)",
+      "notice": "Independent original environment, not an official venue reproduction"
+    }
+  ]
+}

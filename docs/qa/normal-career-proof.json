@@ -1,0 +1,421 @@
+{
+  "verifiedAt": "2026-11-19",
+  "mode": "normal-generation-no-body-or-ability-overrides",
+  "results": [
+    {
+      "profile": "P5",
+      "seed": 417,
+      "day": 2135,
+      "logs": 2135,
+      "titles": [
+        {
+          "id": "title-result-entry-ifbbWorld-2032-90kg以下",
+          "resultId": "result-entry-ifbbWorld-2032",
+          "series": "ifbbWorld",
+          "editionId": "ifbbWorld-2032",
+          "category": "mensBodybuilding",
+          "ageClass": "senior",
+          "classId": "90kg以下",
+          "kind": "worldClass",
+          "day": 2135,
+          "rulesVersion": "2026-jbbf-ifbb-2027oqs-game-1"
+        }
+      ],
+      "trace": [
+        {
+          "action": "enter",
+          "series": "tokyo",
+          "year": 2027,
+          "day": 160
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 51.90228943115034,
+          "mass": 40.35729819537302,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "enter",
+          "series": "tokyo",
+          "year": 2028,
+          "day": 526
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 14,
+          "class": "Open",
+          "score": 74.03963053063835,
+          "mass": 54.18996568292707,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "enter",
+          "series": "tokyo",
+          "year": 2029,
+          "day": 891
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 3,
+          "class": "Open",
+          "score": 81.83108696054511,
+          "mass": 67.09694243804903,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "enter",
+          "series": "japanClasses",
+          "year": 2029,
+          "day": 926
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2029,
+          "rank": 4,
+          "class": "85kg以下",
+          "score": 82.08585461093607,
+          "mass": 67.635944864308,
+          "pose": 73.52255020448233
+        },
+        {
+          "action": "enter",
+          "series": "japan",
+          "year": 2029,
+          "day": 961
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2029,
+          "rank": 11,
+          "class": "Open",
+          "score": 82.45007938488843,
+          "mass": 68.1673140624923,
+          "pose": 74.70398179280025
+        },
+        {
+          "action": "enter",
+          "series": "tokyo",
+          "year": 2030,
+          "day": 1256
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 1,
+          "class": "Open",
+          "score": 86.98892583823417,
+          "mass": 76.20898719050146,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "enter",
+          "series": "japanClasses",
+          "year": 2030,
+          "day": 1291
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 1,
+          "class": "85kg以下",
+          "score": 87.1741839397619,
+          "mass": 76.68116985017521,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "enter",
+          "series": "japan",
+          "year": 2030,
+          "day": 1326
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 6,
+          "class": "Open",
+          "score": 87.32481000139968,
+          "mass": 77.14439845902761,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "enter",
+          "series": "ifbbWorld",
+          "year": 2030,
+          "day": 1375
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2030,
+          "rank": 2,
+          "class": "85kg以下",
+          "score": 87.85929593986135,
+          "mass": 77.86924697635872,
+          "pose": 85.25778616068884
+        },
+        {
+          "action": "enter",
+          "series": "tokyo",
+          "year": 2031,
+          "day": 1621
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2031,
+          "rank": 1,
+          "class": "Open",
+          "score": 90.373921017228,
+          "mass": 82.83578931323936,
+          "pose": 89.3038276943698
+        },
+        {
+          "action": "enter",
+          "series": "japanClasses",
+          "year": 2031,
+          "day": 1656
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.53698610806117,
+          "mass": 83.13925021494647,
+          "pose": 89.7810940449268
+        },
+        {
+          "action": "enter",
+          "series": "japan",
+          "year": 2031,
+          "day": 1691
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2031,
+          "rank": 3,
+          "class": "Open",
+          "score": 90.72593416274853,
+          "mass": 83.43733579632422,
+          "pose": 90.2370646307125
+        },
+        {
+          "action": "enter",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "day": 1740
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 91.10468609997851,
+          "mass": 83.93442081271154,
+          "pose": 90.84144767455825
+        },
+        {
+          "action": "enter",
+          "series": "tokyo",
+          "year": 2032,
+          "day": 1987
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2032,
+          "rank": 1,
+          "class": "Open",
+          "score": 92.88967972467351,
+          "mass": 87.70586798724447,
+          "pose": 93.36369839826023
+        },
+        {
+          "action": "enter",
+          "series": "japanClasses",
+          "year": 2032,
+          "day": 2022
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2032,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 93.01813164814774,
+          "mass": 87.96824916011128,
+          "pose": 93.65981212531665
+        },
+        {
+          "action": "enter",
+          "series": "japan",
+          "year": 2032,
+          "day": 2057
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2032,
+          "rank": 1,
+          "class": "Open",
+          "score": 93.133542628449,
+          "mass": 88.22516963476893,
+          "pose": 93.94271317088068
+        },
+        {
+          "action": "enter",
+          "series": "ifbbWorld",
+          "year": 2032,
+          "day": 2106
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2032,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 93.44656791989748,
+          "mass": 88.63090138325991,
+          "pose": 94.31769480424747
+        }
+      ],
+      "body": {
+        "weight": 87.27955784827488,
+        "fat": 5.62765376415233
+      },
+      "retirement": {
+        "day": 2135,
+        "reason": "immediate",
+        "years": 5.845431459920464,
+        "trainingDays": 857,
+        "muscleChange": 17.507369602169774,
+        "bestResults": [
+          {
+            "series": "tokyo",
+            "rank": 1,
+            "season": 2030
+          },
+          {
+            "series": "japanClasses",
+            "rank": 1,
+            "season": 2030
+          },
+          {
+            "series": "japan",
+            "rank": 1,
+            "season": 2032
+          },
+          {
+            "series": "ifbbWorld",
+            "rank": 1,
+            "season": 2032
+          }
+        ],
+        "titleIds": [
+          "title-result-entry-ifbbWorld-2032-90kg以下"
+        ],
+        "text": [
+          "湊は、身体を整え直す初心者として競技人生を始めました。",
+          "5.8年間、857日の練習を記録。筋質量は+17.51kg変化しました。",
+          "17大会に出場し、身体と技術をステージで確かめました。",
+          "世界タイトル1件を獲得。その記録は引退後も残ります。"
+        ],
+        "finalBody": {
+          "height": 181,
+          "shoulder": 1.052325581395349,
+          "muscle": {
+            "upperChest": 1.6524684687626803,
+            "chest": 3.4267431663427486,
+            "frontDelts": 1.2367450793687462,
+            "sideDelts": 1.1933872252980653,
+            "rearDelts": 1.2182417220288682,
+            "lats": 4.262162249154693,
+            "upperBack": 3.0185278320742674,
+            "erectors": 1.7175675864065025,
+            "biceps": 1.9348482884515412,
+            "triceps": 2.9699062645025003,
+            "forearms": 1.8882314557342443,
+            "quads": 8.574538327279345,
+            "hamstrings": 3.998062139562127,
+            "glutes": 6.137888698185422,
+            "calves": 3.1033007939242085,
+            "abs": 2.360350305093816
+          },
+          "capacity": {
+            "upperChest": 1.8052456032162372,
+            "chest": 3.7772026053132564,
+            "frontDelts": 1.3668747767052865,
+            "sideDelts": 1.3072138381969565,
+            "rearDelts": 1.3412830855895626,
+            "lats": 4.659649419750261,
+            "upperBack": 3.350696430674007,
+            "erectors": 1.8943995197989116,
+            "biceps": 2.1263340490390976,
+            "triceps": 3.282885185102281,
+            "forearms": 2.062725573889676,
+            "quads": 9.5245331421017,
+            "hamstrings": 4.430346555001781,
+            "glutes": 6.705399620700413,
+            "calves": 3.3994297041999473,
+            "abs": 2.5784896848915797
+          },
+          "fat": 4.911791322583952,
+          "otherLean": 33.784400000000005,
+          "waterDelta": -0.10960307647885006,
+          "pump": {
+            "upperChest": 0.00003928325939423879,
+            "chest": 0.00003928325939423879,
+            "frontDelts": 0.00003928325939423879,
+            "sideDelts": 0.00003928325939423879,
+            "rearDelts": 0.00003928325939423879,
+            "lats": 0.00003928325939423879,
+            "upperBack": 0.00003928325939423879,
+            "erectors": 0.00003928325939423879,
+            "biceps": 0.00003928325939423879,
+            "triceps": 0.00003928325939423879,
+            "forearms": 0.00003928325939423879,
+            "quads": 0.00003928325939423879,
+            "hamstrings": 0.00003928325939423879,
+            "glutes": 0.00003928325939423879,
+            "calves": 0.00003928325939423879,
+            "abs": 0.00003928325939423879
+          },
+          "fatigue": {
+            "upperChest": 0.010069673117122499,
+            "chest": 0.010069673117122499,
+            "frontDelts": 0.010069673117122499,
+            "sideDelts": 0.010069673117122499,
+            "rearDelts": 0.010069673117122499,
+            "lats": 0.010069673117122499,
+            "upperBack": 0.010069673117122499,
+            "erectors": 0.010069673117122499,
+            "biceps": 0.010069673117122499,
+            "triceps": 0.010069673117122499,
+            "forearms": 0.010069673117122499,
+            "quads": 0.010069673117122499,
+            "hamstrings": 0.010069673117122499,
+            "glutes": 0.010069673117122499,
+            "calves": 0.010069673117122499,
+            "abs": 0.010069673117122499
+          }
+        }
+      }
+    }
+  ]
+}

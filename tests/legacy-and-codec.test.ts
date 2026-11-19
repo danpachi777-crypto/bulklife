@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {generateCareer,advance} from '../src/core/simulation.ts';
+import {PROFILES} from '../src/core/content.ts';
+import {enableCareer} from '../src/core/progress.ts';
+import {validateCareer,validateSummary} from '../src/core/validation.ts';
+import {packLog,unpackLog} from '../src/core/logCodec.ts';
+test('legacy save remains valid and explicit career upgrade preserves body, plans, records and RNG',()=>{const c=advance(generateCareer(PROFILES[3],543,'bl-legacy'),7).career;delete c.progress;c.versions={schema:1,simulation:'0.1.0',content:'0.1.0',model:'athlete-v1',mapping:'regions-v1',rules:'unimplemented'};validateCareer(c);const snapshot=structuredClone(c),upgraded=enableCareer(c);assert.deepEqual(upgraded.athlete,snapshot.athlete);assert.deepEqual(upgraded.plan,snapshot.plan);assert.deepEqual(upgraded.snapshots,snapshot.snapshots);assert.equal(upgraded.rng,snapshot.rng);assert.equal(upgraded.versions.simulation,'0.2.0');assert.equal(upgraded.progress!.initialSource,'legacyUpgrade');validateCareer(upgraded);assert.deepEqual(c,snapshot);});
+test('compact daily log encoding retains every numeric value and optional field exactly',()=>{const c=generateCareer(PROFILES[2],84,'bl-codec'),r=advance(c,7);for(const log of r.logs)assert.deepEqual(unpackLog(JSON.parse(JSON.stringify(packLog(log)))),log);assert.throws(()=>unpackLog([1,2]));});
+test('malformed optional nutrition records are rejected before rendering',()=>{const log=advance(generateCareer(PROFILES[0],84,'bl-nutrient'),1).logs[0];for(const nutrients of [null,{}, {fiber:'bad'}])assert.throws(()=>validateSummary({...log,meal:{...log.meal,nutrients}}));});
