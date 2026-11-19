@@ -8,7 +8,7 @@ const object=(v:unknown):v is Record<string,any>=>!!v&&typeof v==='object'&&!Arr
 const string=(v:unknown,max=1000)=>typeof v==='string'&&v.length<=max;
 const array=(v:unknown,max:number):v is any[]=>Array.isArray(v)&&v.length<=max;
 function fail():never{throw new Error('競技キャリアの保存データが不正です。以前のデータは保持しています。');}
-function body(b:any){if(!object(b)||!number(b.height,140,220)||!number(b.fat,0,500)||!number(b.otherLean,1,200)||!number(b.waterDelta,-10,10))fail();for(const field of ['muscle','capacity','fatigue','pump'])if(!object(b[field])||PARTS.some(p=>!number(b[field][p],field==='muscle'||field==='capacity'?.001:0,field==='muscle'||field==='capacity'?100:1)))fail();if(!number(weight(b as BodyState),10,500))fail();}
+function body(b:any){if(!object(b)||!number(b.height,140,220)||!number(b.shoulder,.8,1.3)||!number(b.fat,0,500)||!number(b.otherLean,1,200)||!number(b.waterDelta,-10,10))fail();for(const field of ['muscle','capacity','fatigue','pump'])if(!object(b[field])||PARTS.some(p=>!number(b[field][p],field==='muscle'||field==='capacity'?.001:0,field==='muscle'||field==='capacity'?100:1)))fail();if(!number(weight(b as BodyState),10,500))fail();}
 function score(x:any){if(!object(x)||['mass','balance','symmetry','condition','posing','total'].some(k=>!number(x[k],0,100)))fail();}
 export function validateExercisePlans(exercises:unknown){if(!array(exercises,24))fail();for(const e of exercises)if(!object(e)||!EXERCISES.some(x=>x.id===e.exerciseId)||!number(e.load,.5,500)||!Number.isInteger(e.reps)||!number(e.reps,1,30)||!Number.isInteger(e.sets)||!number(e.sets,1,8)||!number(e.rir,0,6)||!number(e.rest,15,600)||!number(e.rom,.5,1)||!['rir','load'].includes(e.priority))fail();}
 export function validateProgress(raw:unknown,c:Career):asserts raw is CareerProgress{
@@ -17,6 +17,7 @@ export function validateProgress(raw:unknown,c:Career):asserts raw is CareerProg
  for(const k of ['posing','posingMinutes','cardioMinutes','waterLitres','recoveryUntil','injuryUntil','lastRivalYear','trainingDays'])if(!number(p[k],0,k==='posing'?1:k==='waterLitres'?5:k==='posingMinutes'||k==='cardioMinutes'?60:300000))fail();
  if(p.goal!==null&&!series.includes(p.goal)||p.finalSeason!==null&&!number(p.finalSeason,2027,2600)||!['new','legacyUpgrade'].includes(p.initialSource)||typeof p.coach!=='boolean'||!['gym','home'].includes(p.equipment)||!['foods','aggregate'].includes(p.mealMode)||!['build','maintain','cut','recover'].includes(p.purpose)||!object(p.employmentBase)||['income','work','commute'].some(k=>!number(p.employmentBase[k],0,1e8)))fail();
  if(!array(p.meals,40))fail();for(const m of p.meals)if(!object(m)||!FOODS.some(f=>f.id===m.foodId)||!number(m.grams,1,1500)||!number(m.time,0,23.5))fail();
+ if(p.homeEquipmentOwned!==undefined&&typeof p.homeEquipmentOwned!=='boolean')fail();
  if(!object(p.asymmetry)||PARTS.some(k=>!number(p.asymmetry[k],0,1)))fail();
  for(const [field,max] of [['credentials',5000],['entries',10000],['results',10000],['titles',10000],['rivals',10000],['seen',20000],['choices',10000]] as const)if(!array(p[field],max))fail();
  const entryIds=new Set(),resultIds=new Set();
@@ -25,6 +26,8 @@ export function validateProgress(raw:unknown,c:Career):asserts raw is CareerProg
  for(const r of p.results){
   if(!object(r)||!string(r.id,200)||resultIds.has(r.id)||!entryIds.has(r.entryId)||!series.includes(r.series)||!['jbbf','npc'].includes(r.circuit)||r.category!=='mensBodybuilding'||r.ageClass!=='senior'||r.rulesVersion!==p.rulesVersion||!number(r.day,0,c.athlete.day)||!Number.isInteger(r.classRank)||!number(r.classRank,1,r.classCount)||!number(r.classCount,1,10000)||!number(r.categoryCount,r.classCount,10000)||!array(r.podium,3)||!array(r.rivalResults,1000)||!array(r.rounds,8)||!array(r.notes,100))fail();
   resultIds.add(r.id);body(r.body);score(r.score);for(const person of r.podium){if(!object(person)||!string(person.id,200)||!string(person.name,64)||!number(person.rank,1,3))fail();body(person.body);score(person.score);}
+  if(!string(r.editionId,200)||!Number.isInteger(r.season)||!number(r.season,2027,2600)||!string(r.classId,64)||!Number.isInteger(r.classCount)||!Number.isInteger(r.categoryCount)||!Number.isInteger(r.overallCount)||!number(r.overallCount,1,r.categoryCount)||r.overallRank!==null&&(!Number.isInteger(r.overallRank)||!number(r.overallRank,1,r.overallCount))||!number(r.posing,0,1)||r.notes.some((n:any)=>!string(n)))fail();
+  if(r.appearance!==undefined&&(!object(r.appearance)||![0,1].includes(r.appearance.hair)||!number(r.appearance.skin,0,1)))fail();
   for(const row of r.rivalResults)if(!object(row)||!string(row.id,200)||!string(row.name,64)||!number(row.rank,1,r.classCount)||!number(row.score,0,100))fail();
   for(const round of r.rounds)if(!object(round)||!string(round.name,100)||!number(round.weight,0,1)||!number(round.rank,1,round.count)||!number(round.count,1,10000))fail();
  }

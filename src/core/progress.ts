@@ -24,6 +24,12 @@ export function updateRivals(p:CareerProgress,year:number):CareerProgress{
  return{...p,rivalRng:rng,lastRivalYear:year,rivals};
 }
 export function changeEmployment(c:Career,ratio:number):Career{
- const p=c.progress;if(!p)throw new Error('競技キャリアを有効にしてください');ratio=clamp(ratio,.5,1.2);
+ const p=c.progress;if(!p||c.athlete.status!=='active')throw new Error('育成中の競技キャリアが必要です');ratio=clamp(ratio,.5,1.2);
  const next={...c,athlete:{...c.athlete,life:{...c.athlete.life,work:p.employmentBase.work*ratio,income:Math.round(p.employmentBase.income*ratio),commute:p.employmentBase.commute}},progress:{...p,choices:[...p.choices,{id:`work-${c.athlete.day}-${p.choices.length}`,day:c.athlete.day,kind:'work',label:`勤務を基準の${Math.round(ratio*100)}%へ調整`} ]}};return next;
+}
+export function changeEquipment(c:Career,equipment:'gym'|'home'):Career{
+ const p=c.progress;if(!p||c.athlete.status!=='active')throw new Error('育成中の競技キャリアが必要です');
+ const owned=p.homeEquipmentOwned===true||p.equipment==='home',cost=equipment==='home'&&!owned?20000:0;
+ if(cost>0&&c.athlete.life.money<cost)throw new Error('自宅器具の準備に20,000円が必要です');
+ return {...c,athlete:{...c.athlete,life:{...c.athlete.life,money:c.athlete.life.money-cost,gymMonthly:equipment==='home'?1500:5000}},progress:{...p,equipment,homeEquipmentOwned:owned||equipment==='home'}};
 }

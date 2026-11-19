@@ -33,7 +33,7 @@ function pay(c:Career,amount:number):Career{if(c.athlete.life.money<amount)throw
 export function register(c:Career,kind:Membership|'passport'|'internationalCard'):Career{
  if(!c.progress||c.athlete.status!=='active')throw new Error('育成中の競技キャリアが必要です');const year=seasonOf(c.athlete.day);
  if(hasCredential(c,kind))return c;
- if(kind==='npcMembership'&&hasCredential(c,'jbbfRegistration')||kind==='jbbfRegistration'&&(hasCredential(c,'npcMembership')||hasCredential(c,'proActive')))throw new Error('この版では同年の団体登録を併用しません。団体間の移行手続きは未確認のため、次シーズンに別ルートの新規登録として扱います。資格の自動変換はありません。');
+ if(['npcMembership','proActive'].includes(kind)&&hasCredential(c,'jbbfRegistration')||kind==='jbbfRegistration'&&(hasCredential(c,'npcMembership')||hasCredential(c,'proActive')))throw new Error('この版では同年の団体登録を併用しません。団体間の移行手続きは未確認のため、次シーズンに別ルートの新規登録として扱います。資格の自動変換はありません。');
  if(kind==='proActive'&&!hasCredential(c,'proCard'))throw new Error('正式なプロカード取得記録が必要です');
  const cost={jbbfRegistration:8000,antiDopingCourse:3000,npcMembership:10000,proActive:25000,passport:16000,internationalCard:7000}[kind];
  const next=pay(c,cost),q=addCredential(c,kind,['npcMembership','proActive'].includes(kind)?'npc':'jbbf',year,kind==='passport'?yearEnd(year+9):yearEnd(year));

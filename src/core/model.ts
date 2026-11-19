@@ -17,7 +17,7 @@ export interface ExplanationTrace {part:Part; stimulus:number; recovery:number; 
 export interface DailySummary {day:number; training:TrainingSessionActual; meal:MealActual; sleep:SleepActual; workHours:number; commuteHours:number; freeHours:number; income:number; fixed:number; gym:number; weight:number; muscleDelta:number; fatDelta:number; traces:ExplanationTrace[]; events:string[]}
 export interface BodySnapshot {day:number; body:BodyState}
 export interface DataVersions {schema:number;simulation:string;content:string;model:string;mapping:string;rules:string}
-export const VERSIONS = {schema:1,simulation:'0.2.0',content:'0.2.0',model:'athlete-v1',mapping:'regions-v1',rules:'2026-jbbf-ifbb-2027oqs-game-1'} as const;
+export const VERSIONS = {schema:1,simulation:'0.2.1',content:'0.2.0',model:'athlete-v1',mapping:'regions-v1',rules:'2026-jbbf-ifbb-2027oqs-game-1'} as const;
 export interface Career {versions:DataVersions; athlete:AthleteState; plan:WeeklyPlan; savedPlan?:WeeklyPlan; initial:BodySnapshot; snapshots:BodySnapshot[]; rng:number; lastSummary:DailySummary|null; pendingEvent:string|null; tutorialHidden:boolean;progress?:import('./careerTypes').CareerProgress}
 export interface Library {versions:DataVersions; drawRng:number; appearanceRng:number; activeId:string|null; draft:Career|null; ids:string[]}
 export interface CompetitionEdition {seriesId:string; editionId:string; organizationId:string; circuitId:string; categoryId:string; classId:string; ageClassId:string; rulesetVersion:string; referenceYear:number; simulationSeason:number; sourceUrl:string; verifiedAt:string; status:'verified'|'unverified'|'fictional'}

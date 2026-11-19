@@ -32,15 +32,16 @@ export function trainingWindow(c:Career,dayIndex:number,sleep=c.plan.sleep){
  return {insideWork,beforeWake:d.start-.25<7,available:Math.max(0,nextBoundary-d.start-.25)};
 }
 export function planIssues(c:Career,dayIndex:number):string[]{const p=c.plan,d=p.days[dayIndex],l=c.athlete.life,work=dayIndex<5?l.work/5:0,commute=dayIndex<5?l.commute/5:0,train=d.focus==='rest'?0:d.exercises?sessionMinutes(d.exercises)/60:.3+d.sets*.18;
- const window=trainingWindow(c,dayIndex);
+ const window=trainingWindow(c,dayIndex),preparation=nutritionPlan(c).prep,auxiliary=((c.progress?.posingMinutes??0)+(c.progress?.cardioMinutes??0))/60;
  const issues=[];if(d.focus!=='rest'&&(window.insideWork||(dayIndex<5&&d.start<9&&train>window.available)))issues.push('勤務・帰宅時刻と練習が重なります');
  if(d.focus!=='rest'&&window.beforeWake)issues.push('練習への移動が起床前に始まります');
  if(d.focus!=='rest'&&d.start+train+.25>31-p.sleep)issues.push('練習・帰宅が就寝予定と重なります');
- if(work+commute+train+(train?.5:0)+p.sleep+p.prep+2.5>24)issues.push('24時間に予定が収まりません');return issues;
+ if(work+commute+train+(train?.5:0)+p.sleep+preparation+2.5+auxiliary>24)issues.push('24時間に予定が収まりません');return issues;
 }
 export function simulateDay(input:Career):{career:Career;summary:DailySummary}|null {
  if(input.pendingEvent||input.athlete.status!=='active')return null;
- const c={...input,athlete:structuredClone(input.athlete),snapshots:input.snapshots},a=c.athlete,b=a.body,p=c.plan,d=p.days[a.day%7],legacy=input.versions.simulation==='0.1.0'&&!input.progress;
+ const legacy=input.versions.simulation==='0.1.0'&&!input.progress;
+ const c={...input,versions:legacy?input.versions:VERSIONS,athlete:structuredClone(input.athlete),snapshots:input.snapshots},a=c.athlete,b=a.body,p=c.plan,d=p.days[a.day%7];
  const onTrip=!!c.progress?.entries.some(e=>['travelled','checkedIn'].includes(e.status)&&a.day>=e.travelDay&&a.day<=e.showDay);
  const work=!onTrip&&a.day%7<5?a.life.work/5:0,commute=!onTrip&&a.day%7<5?a.life.commute/5:0;
  const date=gameDate(a.day),daysInMonth=new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth()+1,0)).getUTCDate();
@@ -49,8 +50,8 @@ export function simulateDay(input:Career):{career:Career;summary:DailySummary}|n
  const available=Math.max(0,a.life.money+income-fixed-gym-coaching),mealRatio=nutrition.cost?Math.min(1,available/nutrition.cost,10000/Math.max(1,nutrition.calories)):0,foodCost=nutrition.cost*mealRatio;
  const calories=nutrition.calories*mealRatio,protein=nutrition.protein*mealRatio;
  const n=nutrition.nutrients;
- const nutrientCoverage=n?([n.fiber/25,n.calcium/600,n.iron/10,n.vitaminC/60].reduce((sum,v)=>sum+clamp(v,0,1),0)/4):1;
- const hydration=c.progress?clamp((c.progress.waterLitres+(n?n.water/1000:weight(b)*.01))/(weight(b)*.035),.8,1):1;
+ const nutrientCoverage=n?([n.fiber/25,n.calcium/600,n.iron/10,n.vitaminC/60].reduce((sum,v)=>sum+clamp(v*mealRatio,0,1),0)/4):1;
+ const hydration=c.progress?clamp((c.progress.waterLitres+(n?n.water*mealRatio/1000:weight(b)*.01*mealRatio))/(weight(b)*.035),.8,1):1;
  const recovery=clamp((a.previousSleep-3)/4.5,.12,1)*(1-a.systemicFatigue*.45)*(.95+.05*nutrientCoverage)*hydration;
  let r;[c.rng,r]=nextRng(c.rng);
  let requested=d.focus==='rest'?0:d.sets;
@@ -89,7 +90,8 @@ export function simulateDay(input:Career):{career:Career;summary:DailySummary}|n
  a.previousSleep=actualSleep; a.life.money+=income-fixed-gym-coaching-foodCost;if(!legacy)a.life.stress=clamp(a.life.stress*.95+hunger*.025+(actualSleep<p.sleep?.03:0),0,1);
  const events:string[]=[];if(a.life.money<p.foodCost*7)events.push('1週間分の食費を下回りました。計画と収支を確認してください。');if(a.systemicFatigue>.78)events.push('全身疲労が高まっています。次の日を確定する前に計画を確認してください。');
  if(actualSleep<p.sleep)events.push('生活予定が24時間を超え、睡眠が短くなりました。計画を見直してください。');
- const reason=onTrip?'大会遠征のため練習を休みました。':c.progress&&a.day<c.progress.injuryUntil?'違和感の回復期間のため練習を休みました。':overlap?(window.beforeWake?'睡眠・起床と重複し練習できませんでした。':'勤務と重複し練習できませんでした。'):completed<requested?'時間または当日の回復に合わせてセット数を調整しました。':requested?'計画に沿って実施しました。':'休養日。前日の刺激から回復します。';
+ const skippedReasons=exerciseActuals?.filter(e=>e.sets.length<e.plannedSets).map(e=>e.reason);
+ const reason=onTrip?'大会遠征のため練習を休みました。':c.progress&&a.day<c.progress.injuryUntil?'違和感の回復期間のため練習を休みました。':overlap?(window.beforeWake?'睡眠・起床と重複し練習できませんでした。':'勤務と重複し練習できませんでした。'):completed<requested?(skippedReasons?.length?[...new Set(skippedReasons)].join('。')+'。種目ごとの実績を確認してください。':'時間または当日の回復に合わせてセット数を調整しました。'):requested?'計画に沿って実施しました。':'休養日。前日の刺激から回復します。';
  const summary:DailySummary={day:a.day,training:{focus:d.focus,plannedSets:requested,completedSets:completed,rir:d.rir,duration,stimulus,reason,...(exerciseActuals?{exercises:exerciseActuals}:{})},meal:{calories,protein,cost:foodCost,prep,...(n?{nutrients:{carbs:n.carbs*mealRatio,fat:n.fat*mealRatio,fiber:n.fiber*mealRatio,calcium:n.calcium*mealRatio,iron:n.iron*mealRatio,vitaminC:n.vitaminC*mealRatio,sodium:n.sodium*mealRatio,water:n.water*mealRatio,hunger,coverage:nutrientCoverage,hydration}}:{})},sleep:{hours:actualSleep,priorHours:input.athlete.previousSleep,plannedHours:p.sleep},workHours:work,commuteHours:commute,freeHours:Math.max(0,24-work-commute-duration-(duration?.5:0)-actualSleep-prep-2.5-extraMinutes/60),income,fixed:fixed+coaching,gym,weight:weight(b),muscleDelta:muscleMass(b)-oldMass,fatDelta:b.fat-oldFat,traces,events};
  a.day++;c.lastSummary=summary;c.pendingEvent=events[0]??null;if(a.day===14)c.tutorialHidden=true;
  if(a.day%7===0)c.snapshots=[...c.snapshots,{day:a.day,body:structuredClone(b)}];

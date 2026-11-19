@@ -31,5 +31,5 @@ export const EXERCISES:Exercise[]=[
 const recipes:Record<Focus,string[]>={full:['bench','pulldown','squat','rdl','lateral','calf','crunch'],push:['incline','bench','lateral','ohp','overheadTri'],pull:['pulldown','supportedRow','rearFly','curl','wrist'],legs:['squat','rdl','legCurl','hipThrust','calf'],rest:[]};
 export function exerciseRecipe(focus:Focus,sets=2):ExercisePlan[]{return recipes[focus].map(id=>{const e=EXERCISES.find(e=>e.id===id)!;return {exerciseId:id,load:e.baseLoad,reps:10,sets,rir:3,rest:90,rom:1,priority:'rir'};});}
 export const exerciseById=(id:string)=>EXERCISES.find(e=>e.id===id);
-export function sessionMinutes(exercises:ExercisePlan[]){return 8+exercises.reduce((total,e)=>total+e.sets*(e.reps*3/60+e.rest/60)+2,0);}
+export function sessionMinutes(exercises:ExercisePlan[]){return exercises.length?8+exercises.reduce((total,e)=>total+e.sets*(e.reps*3/60+e.rest/60)+2,0):0;}
 export function exerciseCapacity(e:Exercise,bodyMuscle:PartMap,ability:PartMap,base:PartMap){let weighted=0,total=0;for(const p of Object.keys(e.direct) as Part[]){const w=e.direct[p]+e.indirect[p]*.5;weighted+=w*(Math.pow(bodyMuscle[p]/base[p],.5)*(1+ability[p]*1.4));total+=w;}return e.baseLoad*(total?weighted/total:1);}

@@ -1,0 +1,2334 @@
+{
+  "verifiedAt": "2026-11-19T01:58:14.477Z",
+  "method": "normal generated bodies; player plan and official-path game procedures only; local Node simulation, not a browser replay",
+  "cases": [
+    {
+      "profile": "P1",
+      "seed": 179,
+      "circuit": "jbbf",
+      "days": 1769,
+      "worldReached": true,
+      "titles": [
+        "worldClass"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 62.086243735516575,
+          "mass": 32.55172668494103,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 18,
+          "class": "Open",
+          "score": 70.95547770653344,
+          "mass": 46.444592922589116,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 9,
+          "class": "Open",
+          "score": 78.24831614986657,
+          "mass": 58.38053342614437,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 3,
+          "class": "Open",
+          "score": 83.39562421397335,
+          "mass": 67.88664525354898,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 2,
+          "class": "75kg以下",
+          "score": 83.69052757234121,
+          "mass": 68.31867195287418,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 9,
+          "class": "Open",
+          "score": 84.00466594787346,
+          "mass": 68.742261338889,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2031,
+          "rank": 1,
+          "class": "Open",
+          "score": 87.05778947100193,
+          "mass": 74.41859067184531,
+          "pose": 89.3038276943698
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2031,
+          "rank": 1,
+          "class": "75kg以下",
+          "score": 87.21384887781952,
+          "mass": 74.69119127138717,
+          "pose": 89.7810940449268
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2031,
+          "rank": 6,
+          "class": "Open",
+          "score": 87.40401472219231,
+          "mass": 74.95883766713396,
+          "pose": 90.2370646307125
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "rank": 1,
+          "class": "75kg以下",
+          "score": 87.7602259697723,
+          "mass": 75.41910086854212,
+          "pose": 90.84144767455825
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P2",
+      "seed": 282,
+      "circuit": "jbbf",
+      "days": 1769,
+      "worldReached": true,
+      "titles": [
+        "worldClass"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 64.89549986289973,
+          "mass": 43.355340667549775,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 15,
+          "class": "Open",
+          "score": 74.44636742253243,
+          "mass": 58.725284748828585,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 5,
+          "class": "Open",
+          "score": 82.1395998484188,
+          "mass": 71.510683769252,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2029,
+          "rank": 3,
+          "class": "80kg以下",
+          "score": 82.54819684220655,
+          "mass": 72.04925367066801,
+          "pose": 73.52255020448233
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2029,
+          "rank": 11,
+          "class": "Open",
+          "score": 82.90718248465254,
+          "mass": 72.57894380313934,
+          "pose": 74.70398179280025
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 1,
+          "class": "Open",
+          "score": 87.12917967917346,
+          "mass": 80.51212580413865,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 1,
+          "class": "85kg以下",
+          "score": 87.46795111953747,
+          "mass": 80.96697252741615,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 6,
+          "class": "Open",
+          "score": 87.74252899168012,
+          "mass": 81.42699006897489,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2030,
+          "rank": 2,
+          "class": "85kg以下",
+          "score": 88.30973253699807,
+          "mass": 82.15152053649503,
+          "pose": 85.25778616068884
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2031,
+          "rank": 1,
+          "class": "Open",
+          "score": 91.22113955438911,
+          "mass": 87.04077354174608,
+          "pose": 89.3038276943698
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2031,
+          "rank": 1,
+          "class": "85kg以下",
+          "score": 91.37752258543121,
+          "mass": 87.33963911394069,
+          "pose": 89.7810940449268
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2031,
+          "rank": 3,
+          "class": "Open",
+          "score": 91.505726055476,
+          "mass": 87.6329469356625,
+          "pose": 90.2370646307125
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 91.68755829283904,
+          "mass": 88.12449393569956,
+          "pose": 90.84144767455825
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P3",
+      "seed": 385,
+      "circuit": "jbbf",
+      "days": 2135,
+      "worldReached": true,
+      "titles": [
+        "worldClass"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 63.123288419509635,
+          "mass": 35.14720177108419,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 16,
+          "class": "Open",
+          "score": 72.03336451779442,
+          "mass": 49.09227101317152,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 5,
+          "class": "Open",
+          "score": 79.58473562384034,
+          "mass": 60.957766275965255,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2029,
+          "rank": 5,
+          "class": "75kg以下",
+          "score": 79.86793863170347,
+          "mass": 61.453223257114665,
+          "pose": 73.52255020448233
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2029,
+          "rank": 16,
+          "class": "Open",
+          "score": 80.12556117842496,
+          "mass": 61.94151095400245,
+          "pose": 74.70398179280025
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 3,
+          "class": "Open",
+          "score": 84.03862086644452,
+          "mass": 69.4158261617042,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 1,
+          "class": "75kg以下",
+          "score": 84.33182996888692,
+          "mass": 69.85081821651808,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 7,
+          "class": "Open",
+          "score": 84.65585587504785,
+          "mass": 70.28391702203871,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2030,
+          "rank": 2,
+          "class": "75kg以下",
+          "score": 85.19939900250162,
+          "mass": 70.9800180283722,
+          "pose": 85.25778616068884
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2031,
+          "rank": 1,
+          "class": "Open",
+          "score": 88.13399900496324,
+          "mass": 75.76246407034554,
+          "pose": 89.3038276943698
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2031,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 88.30277313188581,
+          "mass": 76.05585904361767,
+          "pose": 89.7810940449268
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2031,
+          "rank": 5,
+          "class": "Open",
+          "score": 88.46557955341528,
+          "mass": 76.34435516309954,
+          "pose": 90.2370646307125
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "rank": 2,
+          "class": "80kg以下",
+          "score": 88.64919016258577,
+          "mass": 76.82610813296593,
+          "pose": 90.84144767455825
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2032,
+          "rank": 1,
+          "class": "Open",
+          "score": 90.60728611635717,
+          "mass": 80.46757261352292,
+          "pose": 93.36369839826023
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2032,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 90.74579487689658,
+          "mass": 80.72171167986919,
+          "pose": 93.65981212531665
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2032,
+          "rank": 4,
+          "class": "Open",
+          "score": 90.871327533574,
+          "mass": 80.97044837635465,
+          "pose": 93.94271317088068
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2032,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 91.02837559452581,
+          "mass": 81.36411200031795,
+          "pose": 94.31769480424747
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P4",
+      "seed": 488,
+      "circuit": "jbbf",
+      "days": 1404,
+      "worldReached": true,
+      "titles": [
+        "worldClass"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 63.667428667683836,
+          "mass": 37.00130782325953,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 16,
+          "class": "Open",
+          "score": 72.84692361792882,
+          "mass": 51.06942041604944,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 7,
+          "class": "Open",
+          "score": 80.1454107946772,
+          "mass": 63.023646078488014,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 2,
+          "class": "Open",
+          "score": 85.34130117608484,
+          "mass": 72.45780090316026,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 1,
+          "class": "75kg以下",
+          "score": 85.59941726370387,
+          "mass": 72.88265942742986,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 7,
+          "class": "Open",
+          "score": 85.84888457543099,
+          "mass": 73.29913204075321,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2030,
+          "rank": 1,
+          "class": "75kg以下",
+          "score": 86.41075447047622,
+          "mass": 73.96343264269305,
+          "pose": 85.25778616068884
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P5",
+      "seed": 417,
+      "circuit": "jbbf",
+      "days": 2135,
+      "worldReached": true,
+      "titles": [
+        "worldClass"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 51.90228943115034,
+          "mass": 40.35729819537302,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 14,
+          "class": "Open",
+          "score": 74.03963053063835,
+          "mass": 54.18996568292707,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 3,
+          "class": "Open",
+          "score": 81.83108696054511,
+          "mass": 67.09694243804903,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2029,
+          "rank": 4,
+          "class": "85kg以下",
+          "score": 82.08585461093607,
+          "mass": 67.635944864308,
+          "pose": 73.52255020448233
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2029,
+          "rank": 11,
+          "class": "Open",
+          "score": 82.45007938488843,
+          "mass": 68.1673140624923,
+          "pose": 74.70398179280025
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 1,
+          "class": "Open",
+          "score": 86.98892583823417,
+          "mass": 76.20898719050146,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 1,
+          "class": "85kg以下",
+          "score": 87.1741839397619,
+          "mass": 76.68116985017521,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 6,
+          "class": "Open",
+          "score": 87.32481000139968,
+          "mass": 77.14439845902761,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2030,
+          "rank": 2,
+          "class": "85kg以下",
+          "score": 87.85929593986135,
+          "mass": 77.86924697635872,
+          "pose": 85.25778616068884
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2031,
+          "rank": 1,
+          "class": "Open",
+          "score": 90.373921017228,
+          "mass": 82.83578931323936,
+          "pose": 89.3038276943698
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.53698610806117,
+          "mass": 83.13925021494647,
+          "pose": 89.7810940449268
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2031,
+          "rank": 3,
+          "class": "Open",
+          "score": 90.72593416274853,
+          "mass": 83.43733579632422,
+          "pose": 90.2370646307125
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 91.10468609997851,
+          "mass": 83.93442081271154,
+          "pose": 90.84144767455825
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2032,
+          "rank": 1,
+          "class": "Open",
+          "score": 92.88967972467351,
+          "mass": 87.70586798724447,
+          "pose": 93.36369839826023
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2032,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 93.01813164814774,
+          "mass": 87.96824916011128,
+          "pose": 93.65981212531665
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2032,
+          "rank": 1,
+          "class": "Open",
+          "score": 93.133542628449,
+          "mass": 88.22516963476893,
+          "pose": 93.94271317088068
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2032,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 93.44656791989748,
+          "mass": 88.63090138325991,
+          "pose": 94.31769480424747
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P6",
+      "seed": 694,
+      "circuit": "jbbf",
+      "days": 2865,
+      "worldReached": true,
+      "titles": [
+        "worldClass"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2027,
+          "rank": 21,
+          "class": "Open",
+          "score": 62.312815275685224,
+          "mass": 33.28555617683019,
+          "pose": 28.09844351660569
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2028,
+          "rank": 18,
+          "class": "Open",
+          "score": 71.29834458390961,
+          "mass": 47.18827579996373,
+          "pose": 55.38961033685257
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2029,
+          "rank": 8,
+          "class": "Open",
+          "score": 78.35607101438255,
+          "mass": 58.67922995514151,
+          "pose": 72.28594073850624
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2030,
+          "rank": 2,
+          "class": "Open",
+          "score": 83.34578442880866,
+          "mass": 67.6430880099092,
+          "pose": 82.78273096134622
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2030,
+          "rank": 2,
+          "class": "85kg以下",
+          "score": 83.60410308686065,
+          "mass": 68.04420653626487,
+          "pose": 83.55097056387312
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2030,
+          "rank": 8,
+          "class": "Open",
+          "score": 83.87142850299989,
+          "mass": 68.43672181905923,
+          "pose": 84.28493108964481
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2031,
+          "rank": 1,
+          "class": "Open",
+          "score": 87.25586360974064,
+          "mass": 73.72018465019762,
+          "pose": 89.3038276943698
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2031,
+          "rank": 1,
+          "class": "85kg以下",
+          "score": 87.42156141064689,
+          "mass": 73.97328903507517,
+          "pose": 89.7810940449268
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2031,
+          "rank": 6,
+          "class": "Open",
+          "score": 87.54593516262472,
+          "mass": 74.22184714409111,
+          "pose": 90.2370646307125
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2031,
+          "rank": 2,
+          "class": "85kg以下",
+          "score": 87.72178970805095,
+          "mass": 74.63868231440125,
+          "pose": 90.84144767455825
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2032,
+          "rank": 1,
+          "class": "Open",
+          "score": 89.5363408174038,
+          "mass": 77.76546829703486,
+          "pose": 93.36369839826023
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2032,
+          "rank": 1,
+          "class": "85kg以下",
+          "score": 89.65506758157741,
+          "mass": 77.98108444024948,
+          "pose": 93.65981212531665
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2032,
+          "rank": 3,
+          "class": "Open",
+          "score": 89.74364379500528,
+          "mass": 78.19196938700681,
+          "pose": 93.94271317088068
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2032,
+          "rank": 2,
+          "class": "85kg以下",
+          "score": 89.88849235893909,
+          "mass": 78.52684803011614,
+          "pose": 94.31769480424747
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2033,
+          "rank": 1,
+          "class": "Open",
+          "score": 90.64194667273213,
+          "mass": 80.82858747689157,
+          "pose": 95.87721924743245
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2033,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.65085855494377,
+          "mass": 80.95423817187233,
+          "pose": 96.06117893578646
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2033,
+          "rank": 3,
+          "class": "Open",
+          "score": 90.71888829150271,
+          "mass": 81.07760226217621,
+          "pose": 96.23693028880311
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2033,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 90.82271783313114,
+          "mass": 81.3158466486567,
+          "pose": 96.46988640704306
+        },
+        {
+          "action": "result",
+          "series": "tokyo",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 92.05570384033346,
+          "mass": 83.04964576012541,
+          "pose": 97.43873588727703
+        },
+        {
+          "action": "result",
+          "series": "japanClasses",
+          "year": 2034,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 92.07739332789247,
+          "mass": 83.15681603160934,
+          "pose": 97.55302024442491
+        },
+        {
+          "action": "result",
+          "series": "japan",
+          "year": 2034,
+          "rank": 3,
+          "class": "Open",
+          "score": 92.09334647321029,
+          "mass": 83.26171802428853,
+          "pose": 97.66220519998286
+        },
+        {
+          "action": "result",
+          "series": "ifbbWorld",
+          "year": 2034,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 92.20120962783948,
+          "mass": 83.43254312829782,
+          "pose": 97.80692842959333
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P1",
+      "seed": 179,
+      "circuit": "npc",
+      "days": 7300,
+      "worldReached": false,
+      "titles": [],
+      "results": [
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 56.31084388699399,
+          "mass": 29.55854077676266,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 62.70450107535486,
+          "mass": 34.0923146210975,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 68.82314299299648,
+          "mass": 42.613346412546704,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 71.63701442524157,
+          "mass": 46.96343428405861,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 3,
+          "class": "70kg以下",
+          "score": 76.09592215054272,
+          "mass": 54.353983347704435,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 3,
+          "class": "70kg以下",
+          "score": 78.30179093979105,
+          "mass": 58.053597769908635,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 1,
+          "class": "70kg以下",
+          "score": 81.7873533613966,
+          "mass": 64.24317411841592,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 1,
+          "class": "70kg以下",
+          "score": 83.36677542681142,
+          "mass": 67.11861738555412,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 2,
+          "class": "80kg以下",
+          "score": 85.80679588010777,
+          "mass": 71.90628653042556,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 2,
+          "class": "80kg以下",
+          "score": 86.94932836302334,
+          "mass": 74.08698749747813,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2032,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 88.71064374308484,
+          "mass": 77.66203158563162,
+          "pose": 92.58570116660292
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2032,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 89.49021340239351,
+          "mass": 79.24085880108389,
+          "pose": 93.76639998832547
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2033,
+          "rank": 11,
+          "class": "Open",
+          "score": 91.23692534623419,
+          "mass": 81.9807019446616,
+          "pose": 95.51833058659963
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 10,
+          "class": "Open",
+          "score": 92.38363281963717,
+          "mass": 84.95201078611316,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2035,
+          "rank": 7,
+          "class": "Open",
+          "score": 93.65965295037216,
+          "mass": 86.98153991533397,
+          "pose": 98.27031082634625
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2036,
+          "rank": 7,
+          "class": "Open",
+          "score": 93.98317341017633,
+          "mass": 88.33633786620061,
+          "pose": 98.92683675004112
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2037,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.40580704887786,
+          "mass": 89.2273017768215,
+          "pose": 99.33330082675363
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2038,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.62032372729605,
+          "mass": 89.81049789236508,
+          "pose": 99.58581531036917
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2039,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.80547789855896,
+          "mass": 90.1938740246357,
+          "pose": 99.74268911075858
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2040,
+          "rank": 7,
+          "class": "Open",
+          "score": 95.09816782885997,
+          "mass": 90.45191978678375,
+          "pose": 99.84035479070204
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2041,
+          "rank": 7,
+          "class": "Open",
+          "score": 95.22052011385068,
+          "mass": 90.6164024507671,
+          "pose": 99.90082093376215
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2042,
+          "rank": 7,
+          "class": "Open",
+          "score": 95.1412819435309,
+          "mass": 90.72409820538967,
+          "pose": 99.938385328172
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2043,
+          "rank": 6,
+          "class": "Open",
+          "score": 95.49441725360128,
+          "mass": 90.79466519409814,
+          "pose": 99.96172208583431
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2044,
+          "rank": 7,
+          "class": "Open",
+          "score": 95.41151768532052,
+          "mass": 90.83412110226423,
+          "pose": 99.97625096381864
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2045,
+          "rank": 7,
+          "class": "Open",
+          "score": 95.4380772602637,
+          "mass": 90.86458550031313,
+          "pose": 99.98524598863399
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2046,
+          "rank": 7,
+          "class": "Open",
+          "score": 95.65708038993141,
+          "mass": 90.8772123083924,
+          "pose": 99.99083411849949
+        }
+      ],
+      "failure": "world not reached within this run (up to 20 years)"
+    },
+    {
+      "profile": "P2",
+      "seed": 282,
+      "circuit": "npc",
+      "days": 2836,
+      "worldReached": true,
+      "titles": [
+        "olympiaOpen"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 58.34182931912446,
+          "mass": 39.87805158627617,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 65.49211192694506,
+          "mass": 44.84259076117212,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 72.07357394127808,
+          "mass": 54.45781244219472,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 75.13398999874258,
+          "mass": 59.143562321193954,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 5,
+          "class": "80kg以下",
+          "score": 80.1952210784648,
+          "mass": 67.34063387450885,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 6,
+          "class": "80kg以下",
+          "score": 82.18735372986704,
+          "mass": 71.22991103701949,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 3,
+          "class": "90kg以下",
+          "score": 86.14535863435982,
+          "mass": 77.75983258153862,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 4,
+          "class": "90kg以下",
+          "score": 87.48043706085062,
+          "mass": 80.68999140641189,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 89.93253110175381,
+          "mass": 85.52197519632017,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 91.07610984257212,
+          "mass": 87.77992045420613,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2032,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 93.3837798926733,
+          "mass": 91.398082353674,
+          "pose": 92.58570116660292
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2032,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 93.82605448441826,
+          "mass": 93.01167702773394,
+          "pose": 93.76639998832547
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2033,
+          "rank": 4,
+          "class": "Open",
+          "score": 95.80583156337252,
+          "mass": 95.80773446987926,
+          "pose": 95.51833058659963
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 96.76444084534471,
+          "mass": 98.87777959075879,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "result",
+          "series": "olympia",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 97.1122065357949,
+          "mass": 99.77424352509597,
+          "pose": 97.72239506515807
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P3",
+      "seed": 385,
+      "circuit": "npc",
+      "days": 7300,
+      "worldReached": false,
+      "titles": [],
+      "results": [
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 52.75419775319654,
+          "mass": 32.8529765492679,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 63.678586295972686,
+          "mass": 36.52065465539936,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 6,
+          "class": "70kg以下",
+          "score": 69.7768873371646,
+          "mass": 45.068296381776754,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 72.63875470606742,
+          "mass": 49.33883602548434,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 3,
+          "class": "70kg以下",
+          "score": 77.10939634221941,
+          "mass": 56.86663626580876,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 79.2808173725855,
+          "mass": 60.494463408285114,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 3,
+          "class": "80kg以下",
+          "score": 82.93306163044035,
+          "mass": 66.63428174773829,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 4,
+          "class": "80kg以下",
+          "score": 84.32072969898498,
+          "mass": 69.43710646599162,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 86.71168309850273,
+          "mass": 74.15506730199377,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 87.83741356017832,
+          "mass": 76.33201526008422,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2032,
+          "rank": 12,
+          "class": "Open",
+          "score": 89.91544103206246,
+          "mass": 80.17268588523201,
+          "pose": 92.78600738394964
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2033,
+          "rank": 9,
+          "class": "Open",
+          "score": 91.98041639298549,
+          "mass": 84.41365808561031,
+          "pose": 95.51833058659963
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 8,
+          "class": "Open",
+          "score": 93.61102192663074,
+          "mass": 87.41591384838756,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2035,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.38010572580433,
+          "mass": 89.43486205880534,
+          "pose": 98.27031082634625
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2036,
+          "rank": 4,
+          "class": "Open",
+          "score": 95.5099394096139,
+          "mass": 90.81100006720014,
+          "pose": 98.92683675004112
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2037,
+          "rank": 4,
+          "class": "Open",
+          "score": 95.83371288852166,
+          "mass": 91.7235139504317,
+          "pose": 99.33330082675363
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2038,
+          "rank": 4,
+          "class": "Open",
+          "score": 95.92514223239722,
+          "mass": 92.33448441949434,
+          "pose": 99.58581531036917
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2039,
+          "rank": 4,
+          "class": "Open",
+          "score": 96.03466516333296,
+          "mass": 92.74160845549217,
+          "pose": 99.74268911075858
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2040,
+          "rank": 5,
+          "class": "Open",
+          "score": 96.11717494748598,
+          "mass": 93.01818107449668,
+          "pose": 99.84035479070204
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2041,
+          "rank": 5,
+          "class": "Open",
+          "score": 96.2343064638702,
+          "mass": 93.19815377070553,
+          "pose": 99.90082093376215
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2042,
+          "rank": 6,
+          "class": "Open",
+          "score": 96.20203564425056,
+          "mass": 93.31690656933344,
+          "pose": 99.938385328172
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2043,
+          "rank": 6,
+          "class": "Open",
+          "score": 96.21204707745736,
+          "mass": 93.3948092187643,
+          "pose": 99.96172208583431
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2044,
+          "rank": 7,
+          "class": "Open",
+          "score": 96.24538122275746,
+          "mass": 93.44077830565499,
+          "pose": 99.97625096381864
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2045,
+          "rank": 8,
+          "class": "Open",
+          "score": 96.21410927466322,
+          "mass": 93.47537670526943,
+          "pose": 99.98524598863399
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2046,
+          "rank": 7,
+          "class": "Open",
+          "score": 96.27168968567112,
+          "mass": 93.48951854131704,
+          "pose": 99.99083411849949
+        }
+      ],
+      "failure": "world not reached within this run (up to 20 years)"
+    },
+    {
+      "profile": "P4",
+      "seed": 488,
+      "circuit": "npc",
+      "days": 7300,
+      "worldReached": false,
+      "titles": [],
+      "results": [
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 60.84010947369211,
+          "mass": 33.598430208321886,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 64.48336124311544,
+          "mass": 38.59748961552777,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 6,
+          "class": "70kg以下",
+          "score": 70.71486087045878,
+          "mass": 47.238488724333116,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 73.60667584586197,
+          "mass": 51.59789732124214,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 1,
+          "class": "70kg以下",
+          "score": 78.09756846375083,
+          "mass": 59.10522275733838,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 2,
+          "class": "70kg以下",
+          "score": 80.20113823816439,
+          "mass": 62.769141846121656,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 1,
+          "class": "70kg以下",
+          "score": 83.84558149497063,
+          "mass": 68.96707992577736,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 1,
+          "class": "70kg以下",
+          "score": 85.29744685486601,
+          "mass": 71.79264172274206,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 87.69694228716737,
+          "mass": 76.50838248324116,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 1,
+          "class": "80kg以下",
+          "score": 88.84865926602788,
+          "mass": 78.64485916258835,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2032,
+          "rank": 12,
+          "class": "Open",
+          "score": 90.86626584478522,
+          "mass": 82.42089577841996,
+          "pose": 92.78600738394964
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2033,
+          "rank": 9,
+          "class": "Open",
+          "score": 93.10867674140685,
+          "mass": 86.53001763678438,
+          "pose": 95.51833058659963
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 6,
+          "class": "Open",
+          "score": 94.2707495048027,
+          "mass": 89.37511801720218,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2035,
+          "rank": 5,
+          "class": "Open",
+          "score": 95.55720515256871,
+          "mass": 91.31220830677229,
+          "pose": 98.27031082634625
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2036,
+          "rank": 4,
+          "class": "Open",
+          "score": 95.94575921185012,
+          "mass": 92.60343970986504,
+          "pose": 98.92683675004112
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2037,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.22687225921653,
+          "mass": 93.45190144778171,
+          "pose": 99.33330082675363
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2038,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.45358499023872,
+          "mass": 94.00804176348446,
+          "pose": 99.58581531036917
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2039,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.64861658772978,
+          "mass": 94.37192902248164,
+          "pose": 99.74268911075858
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2040,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.73973626703327,
+          "mass": 94.61308653744419,
+          "pose": 99.84035479070204
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2041,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.82132657751872,
+          "mass": 94.76690515544803,
+          "pose": 99.90082093376215
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2042,
+          "rank": 4,
+          "class": "Open",
+          "score": 96.83966889629815,
+          "mass": 94.86643249223586,
+          "pose": 99.938385328172
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2043,
+          "rank": 5,
+          "class": "Open",
+          "score": 96.89815463413895,
+          "mass": 94.92915851339723,
+          "pose": 99.96172208583431
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2044,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.88799498657401,
+          "mass": 94.9660902575452,
+          "pose": 99.97625096381864
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2045,
+          "rank": 3,
+          "class": "Open",
+          "score": 96.85485486036573,
+          "mass": 94.99500910249729,
+          "pose": 99.98524598863399
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2046,
+          "rank": 4,
+          "class": "Open",
+          "score": 96.9176912522957,
+          "mass": 95.00478097623673,
+          "pose": 99.99083411849949
+        }
+      ],
+      "failure": "world not reached within this run (up to 20 years)"
+    },
+    {
+      "profile": "P5",
+      "seed": 417,
+      "circuit": "npc",
+      "days": 2836,
+      "worldReached": true,
+      "titles": [
+        "olympiaOpen"
+      ],
+      "results": [
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "90kg以下",
+          "score": 40.12934356088532,
+          "mass": 38.01746563500393,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 58.716527535256944,
+          "mass": 41.304528904454116,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 72.05852304710693,
+          "mass": 49.90151591758492,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 74.7046730901874,
+          "mass": 54.54023160063626,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 6,
+          "class": "80kg以下",
+          "score": 79.51135820429369,
+          "mass": 62.78948548540954,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 81.75736985940733,
+          "mass": 66.76229634464829,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 3,
+          "class": "90kg以下",
+          "score": 85.38101120348793,
+          "mass": 73.33629918645279,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 5,
+          "class": "90kg以下",
+          "score": 87.01692650149118,
+          "mass": 76.33206550502666,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 89.79828105823363,
+          "mass": 81.2891048093783,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.66879039327584,
+          "mass": 83.5550570183385,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2032,
+          "rank": 10,
+          "class": "Open",
+          "score": 92.77849599463026,
+          "mass": 87.56241002043028,
+          "pose": 92.78600738394964
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2033,
+          "rank": 5,
+          "class": "Open",
+          "score": 95.04688188938508,
+          "mass": 91.98256159709605,
+          "pose": 95.51833058659963
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 96.79223188711252,
+          "mass": 95.13381625455143,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "result",
+          "series": "olympia",
+          "year": 2034,
+          "rank": 1,
+          "class": "Open",
+          "score": 97.00100961744552,
+          "mass": 96.05587508171816,
+          "pose": 97.72239506515807
+        }
+      ],
+      "failure": null
+    },
+    {
+      "profile": "P6",
+      "seed": 694,
+      "circuit": "npc",
+      "days": 7300,
+      "worldReached": false,
+      "titles": [],
+      "results": [
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 58.13616904500924,
+          "mass": 29.924943823322554,
+          "pose": 19.66916840932812
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2027,
+          "rank": 7,
+          "class": "70kg以下",
+          "score": 62.86284384190663,
+          "mass": 34.622484988668724,
+          "pose": 32.461547073628985
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 69.07058554685608,
+          "mass": 43.292322530562046,
+          "pose": 50.15977574766157
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2028,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 71.8712090980568,
+          "mass": 47.508411498426106,
+          "pose": 58.096641440754006
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2029,
+          "rank": 7,
+          "class": "80kg以下",
+          "score": 76.27320699220765,
+          "mass": 54.833867668652715,
+          "pose": 69.03692303596904
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2029,
+          "rank": 6,
+          "class": "80kg以下",
+          "score": 78.39895374458617,
+          "mass": 58.35999462090117,
+          "pose": 73.96767499374877
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2030,
+          "rank": 3,
+          "class": "80kg以下",
+          "score": 81.7989373647993,
+          "mass": 64.23507646497268,
+          "pose": 80.76428929720316
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2030,
+          "rank": 7,
+          "class": "90kg以下",
+          "score": 83.32391420088379,
+          "mass": 66.93527977099771,
+          "pose": 83.82750288922695
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2031,
+          "rank": 5,
+          "class": "90kg以下",
+          "score": 85.53966488303837,
+          "mass": 71.34938969625621,
+          "pose": 88.04987738552184
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2031,
+          "rank": 5,
+          "class": "90kg以下",
+          "score": 86.61897855716231,
+          "mass": 73.34243263981837,
+          "pose": 89.95288885125878
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2032,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 88.26319003530936,
+          "mass": 76.5855061004464,
+          "pose": 92.58570116660292
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2032,
+          "rank": 2,
+          "class": "90kg以下",
+          "score": 89.00677160681616,
+          "mass": 78.01571045917821,
+          "pose": 93.76639998832547
+        },
+        {
+          "action": "result",
+          "series": "regional",
+          "year": 2033,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.3078252970045,
+          "mass": 80.31168928153811,
+          "pose": 95.39389100156326
+        },
+        {
+          "action": "result",
+          "series": "amateurOlympia",
+          "year": 2033,
+          "rank": 1,
+          "class": "90kg以下",
+          "score": 90.73643976656834,
+          "mass": 81.33324900348116,
+          "pose": 96.12739629847458
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2034,
+          "rank": 11,
+          "class": "Open",
+          "score": 92.10599722189691,
+          "mass": 83.12958227583461,
+          "pose": 97.21577747580153
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2035,
+          "rank": 9,
+          "class": "Open",
+          "score": 92.59322876842208,
+          "mass": 85.02874321200584,
+          "pose": 98.27031082634625
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2036,
+          "rank": 9,
+          "class": "Open",
+          "score": 93.16920708492339,
+          "mass": 86.33424453492103,
+          "pose": 98.92683675004112
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2037,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.17607885564884,
+          "mass": 87.22128109854958,
+          "pose": 99.33330082675363
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2038,
+          "rank": 8,
+          "class": "Open",
+          "score": 94.27496398769436,
+          "mass": 87.8140718664962,
+          "pose": 99.58581531036917
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2039,
+          "rank": 8,
+          "class": "Open",
+          "score": 94.39224497846472,
+          "mass": 88.2135646096886,
+          "pose": 99.74268911075858
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2040,
+          "rank": 8,
+          "class": "Open",
+          "score": 94.45243994833305,
+          "mass": 88.48748698964931,
+          "pose": 99.84035479070204
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2041,
+          "rank": 8,
+          "class": "Open",
+          "score": 94.55168195398169,
+          "mass": 88.6695837715272,
+          "pose": 99.90082093376215
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2042,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.51752127083222,
+          "mass": 88.79141022827513,
+          "pose": 99.938385328172
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2043,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.56203836892259,
+          "mass": 88.87237083202277,
+          "pose": 99.96172208583431
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2044,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.59174201343643,
+          "mass": 88.92226293165943,
+          "pose": 99.97625096381864
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2045,
+          "rank": 8,
+          "class": "Open",
+          "score": 94.47005679396766,
+          "mass": 88.95885132961902,
+          "pose": 99.98524598863399
+        },
+        {
+          "action": "result",
+          "series": "newYorkPro",
+          "year": 2046,
+          "rank": 7,
+          "class": "Open",
+          "score": 94.57859384575194,
+          "mass": 88.97636811196004,
+          "pose": 99.99083411849949
+        }
+      ],
+      "failure": "world not reached within this run (up to 20 years)"
+    }
+  ]
+}

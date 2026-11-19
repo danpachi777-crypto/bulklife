@@ -8,7 +8,7 @@ function fail():never{throw new Error('保存形式または値が不正です�
 const text=(x:unknown,max=1000)=>typeof x==='string'&&x.length<=max;
 const id=(x:unknown)=>typeof x==='string'&&/^bl-[a-zA-Z0-9-]{1,100}$/.test(x);
 const uint=(x:unknown)=>num(x,1,4294967295)&&Number.isInteger(x);
-function versions(x:any){const legacy=obj(x)&&x.schema===1&&x.simulation==='0.1.0'&&x.content==='0.1.0'&&x.model==='athlete-v1'&&x.mapping==='regions-v1'&&x.rules==='unimplemented';if(!legacy&&(!obj(x)||Object.keys(VERSIONS).some(k=>x[k]!==VERSIONS[k as keyof typeof VERSIONS])))throw new Error('この保存データの版には対応していません。元の版で開いてください。');}
+function versions(x:any){const legacy=obj(x)&&x.schema===1&&x.simulation==='0.1.0'&&x.content==='0.1.0'&&x.model==='athlete-v1'&&x.mapping==='regions-v1'&&x.rules==='unimplemented';const careerV020=obj(x)&&x.simulation==='0.2.0'&&Object.keys(VERSIONS).filter(k=>k!=='simulation').every(k=>x[k]===VERSIONS[k as keyof typeof VERSIONS]);if(!legacy&&!careerV020&&(!obj(x)||Object.keys(VERSIONS).some(k=>x[k]!==VERSIONS[k as keyof typeof VERSIONS])))throw new Error('この保存データの版には対応していません。元の版で開いてください。');}
 function partMap(x:any,min:number,max:number){if(!obj(x)||PARTS.some(k=>!num(x[k],min,max)))fail();}
 function validateBody(b:any){
  if(!obj(b)||!num(b.height,140,220)||!num(b.shoulder,.8,1.3)||!num(b.fat,.01,500)||!num(b.otherLean,1,200)||!num(b.waterDelta,-10,10))fail();
@@ -23,7 +23,7 @@ export function validateSummary(l:any):asserts l is DailySummary{
  const t=l.training,m=l.meal,s=l.sleep;
  if(!obj(t)||!['full','push','pull','legs','rest'].includes(t.focus)||!Number.isInteger(t.plannedSets)||!num(t.plannedSets,0,200)||!Number.isInteger(t.completedSets)||!num(t.completedSets,0,t.plannedSets)||!num(t.rir,0,6)||!num(t.duration,0,24)||!text(t.reason))fail();partMap(t.stimulus,0,250);
  if(t.exercises!==undefined){if(!Array.isArray(t.exercises)||t.exercises.length>24)fail();for(const e of t.exercises){if(!obj(e)||!EXERCISES.some(x=>x.id===e.exerciseId)||!Number.isInteger(e.plannedSets)||!num(e.plannedSets,1,8)||!text(e.reason)||!Array.isArray(e.sets)||e.sets.length>e.plannedSets)fail();for(const s of e.sets)if(!obj(s)||!num(s.load,0,500)||!Number.isInteger(s.reps)||!num(s.reps,1,30)||!num(s.rir,0,6)||!num(s.quality,0,1))fail();}}
- if(!obj(m)||!num(m.calories,0,10000)||!num(m.protein,0,2000)||!num(m.cost,0,100000)||!num(m.prep,.25,2))fail();
+ if(!obj(m)||!num(m.calories,0,10000)||!num(m.protein,0,3000)||!num(m.cost,0,100000)||!num(m.prep,.25,2))fail();
  if(m.nutrients!==undefined){const n=m.nutrients;if(!obj(n)||['carbs','fat','fiber','calcium','iron','vitaminC','sodium','water'].some(k=>!num(n[k],0,1e7))||['hunger','coverage','hydration'].some(k=>!num(n[k],0,1)))fail();}
  if(!obj(s)||!num(s.hours,3,10)||!num(s.priorHours,3,12)||(s.plannedHours!==undefined&&!num(s.plannedHours,3,10)))fail();
  for(const key of ['workHours','commuteHours','freeHours'])if(!num(l[key],-.000001,24))fail();

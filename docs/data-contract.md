@@ -6,7 +6,7 @@ BodyStateは固定身長・骨格、16部位の筋質量kg、脂肪kg、その�
 
 Careerは選手、週間計画、保存テンプレート、初期/週次身体、日次実績、simulation RNG、版を保持。CareerProgressは資格・申込・結果・タイトル、独立CPU/イベントRNG、ライバル、食事、種目、ポージング、仕事変更、選択履歴、回復、引退を保持。描画はシミュレーション乱数を消費しない。
 
-schema 1 / simulation・content 0.2.0 / model athlete-v1 / mapping regions-v1 / rules 2026-jbbf-ifbb-2027oqs-game-1。完全な旧0.1の組合せも受入。旧選手は明示的アップグレードで身体・RNG・過去記録を保持する。
+schema 1 / simulation 0.2.1 / content 0.2.0 / model athlete-v1 / mapping regions-v1 / rules 2026-jbbf-ifbb-2027oqs-game-1。完全な旧0.1と0.2.0の組合せも受入。0.1の選手は明示的アップグレードで身体・RNG・過去記録を保持する。0.2.0は読込だけで状態を変えず、次の日次進行から修正版0.2.1を記録する。過去ログを再計算・書き換えしない。
 
 IndexedDBのキャリア、ログ、ライブラリーを同じトランザクションで保存。同期容量エラーもabortし、成功後に画面を確定。不正入力・未知の版・日付欠損・不完全な実績は拒否し既存保存を残す。
 

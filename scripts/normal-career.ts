@@ -33,7 +33,7 @@ export function playNormalCareer(profile:number,seed:number,circuit:'jbbf'|'npc'
   c={...c,plan:{...c.plan,calories:Math.round(Math.max(1000,Math.min(5000,calories))/50)*50,protein:Math.round(Math.min(250,weight(c.athlete.body)*1.9))}};
   const r=advance(c,1);if(!r.logs.length&&!r.career.pendingEvent)throw new Error('silent stop');c=r.career;logs+=r.logs.length;logRecords.push(...r.logs);
  }
- return {profile:PROFILES[profile].id,seed,day:c.athlete.day,logs,trace,body:{weight:weight(c.athlete.body),fat:fatPercent(c.athlete.body)},failure:'world not reached in 20 years'};
+ return {profile:PROFILES[profile].id,seed,day:c.athlete.day,logs,logRecords,career:c,trace,body:{weight:weight(c.athlete.body),fat:fatPercent(c.athlete.body)},failure:'world not reached within this run (up to 20 years)'};
 }
 if(process.argv[1]?.endsWith("normal-career.ts")){
 const circuit=process.argv.includes('--npc')?'npc':'jbbf';
