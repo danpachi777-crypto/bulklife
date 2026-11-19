@@ -1,0 +1,2250 @@
+{
+  "version": "athlete-v2",
+  "status": "pass",
+  "checkedFrames": 1548,
+  "cases": 288,
+  "bones": 50,
+  "morphs": 18,
+  "clips": [
+    "Breathing",
+    "Idle",
+    "FrontDoubleBiceps",
+    "FrontLatSpread",
+    "SideChest",
+    "BackDoubleBiceps",
+    "BackLatSpread",
+    "SideTriceps",
+    "AbdominalsThigh",
+    "MostMuscular",
+    "TrainingPress",
+    "TrainingRow",
+    "TrainingSquat",
+    "StageEntry",
+    "ResultCelebrate",
+    "ResultReflect"
+  ],
+  "glbBytes": 6633436,
+  "renderTriangles": 36328,
+  "textures": [
+    {
+      "name": "skin-micronormal",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "name": "skin-roughness",
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "v1PreservedHashes": {
+    "athlete-v1.glb": "0a592de8371bfeee057ca8c4e80e8ad4cac2fa237088e8e3770e30fcf2572c31",
+    "bulk-life-athlete-v1.blend": "4065af3de0814ee38b8e57c6f131999e8b1757b5ef6859313685184ed0a34bc6"
+  },
+  "records": [
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "AbdominalsThigh",
+      "minY": -0.003434098117782198,
+      "maxY": 1.820497247919806
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003434154885178795,
+      "maxY": 1.787223280297058
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "BackLatSpread",
+      "minY": -0.003434154885178795,
+      "maxY": 1.6946786363064668
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "Breathing",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6953255289754061
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.003434098117782198,
+      "maxY": 1.7872229905642143
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "FrontLatSpread",
+      "minY": -0.003434098117782198,
+      "maxY": 1.694678636306467
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "Idle",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6953255289754061
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "MostMuscular",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6810613626297435
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "ResultCelebrate",
+      "minY": -0.003434098117782198,
+      "maxY": 1.9303348861648988
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "ResultReflect",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6915256382812969
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "SideChest",
+      "minY": -0.0034341549362910512,
+      "maxY": 1.694678483754533
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "SideTriceps",
+      "minY": -0.0034341549362910512,
+      "maxY": 1.6946787339503244
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "StageEntry",
+      "minY": -0.0035779541020713006,
+      "maxY": 1.694678601453052
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "TrainingPress",
+      "minY": -0.003434098117782198,
+      "maxY": 1.9630194827127785
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "TrainingRow",
+      "minY": -0.005063754089062941,
+      "maxY": 1.625295291211072
+    },
+    {
+      "height": 169,
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "minY": -0.0036931985343310403,
+      "maxY": 1.6934880624242403
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "AbdominalsThigh",
+      "minY": -0.003434098117782198,
+      "maxY": 1.820497247919806
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003434154885178795,
+      "maxY": 1.787223280297058
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "BackLatSpread",
+      "minY": -0.003434154885178795,
+      "maxY": 1.6946786363064668
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "Breathing",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6953255289754061
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.003434098117782198,
+      "maxY": 1.7872229905642143
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "FrontLatSpread",
+      "minY": -0.003434098117782198,
+      "maxY": 1.694678636306467
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "Idle",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6953255289754061
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "MostMuscular",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6810613626297435
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "ResultCelebrate",
+      "minY": -0.003434098117782198,
+      "maxY": 1.9303348861648988
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "ResultReflect",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6915256382812969
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "SideChest",
+      "minY": -0.0034341549362910512,
+      "maxY": 1.694678483754533
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "SideTriceps",
+      "minY": -0.0034341549362910512,
+      "maxY": 1.6946787339503244
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "StageEntry",
+      "minY": -0.0035779541020713006,
+      "maxY": 1.694678601453052
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "TrainingPress",
+      "minY": -0.003434098117782198,
+      "maxY": 1.9630194827127785
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "TrainingRow",
+      "minY": -0.005063754089062941,
+      "maxY": 1.625295291211072
+    },
+    {
+      "height": 169,
+      "variant": "developed",
+      "clip": "TrainingSquat",
+      "minY": -0.0036931985343310403,
+      "maxY": 1.6934880624242403
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "AbdominalsThigh",
+      "minY": -0.003434098117782198,
+      "maxY": 1.820497247919806
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003434154885178795,
+      "maxY": 1.787223280297058
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "BackLatSpread",
+      "minY": -0.003434154885178795,
+      "maxY": 1.6946786363064668
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "Breathing",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6953255289754061
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.003434098117782198,
+      "maxY": 1.7872229905642143
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "FrontLatSpread",
+      "minY": -0.003434098117782198,
+      "maxY": 1.694678636306467
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "Idle",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6953255289754061
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "MostMuscular",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6810613626297435
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "ResultCelebrate",
+      "minY": -0.003434098117782198,
+      "maxY": 1.9303348861648988
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "ResultReflect",
+      "minY": -0.003434098117782198,
+      "maxY": 1.6915256382812969
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "SideChest",
+      "minY": -0.0034341549362910512,
+      "maxY": 1.694678483754533
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "SideTriceps",
+      "minY": -0.0034341549362910512,
+      "maxY": 1.6946787339503244
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "StageEntry",
+      "minY": -0.0035779541020713006,
+      "maxY": 1.694678601453052
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "TrainingPress",
+      "minY": -0.003434098117782198,
+      "maxY": 1.9630194827127785
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "TrainingRow",
+      "minY": -0.005063754089062941,
+      "maxY": 1.625295291211072
+    },
+    {
+      "height": 169,
+      "variant": "fat",
+      "clip": "TrainingSquat",
+      "minY": -0.0036931985343310403,
+      "maxY": 1.6934880624242403
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.8528137671136486
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0034951162145016824,
+      "maxY": 1.818949137343751
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "BackLatSpread",
+      "minY": -0.0034951162145016824,
+      "maxY": 1.7247616890219666
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "Breathing",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7254200649927212
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.8189488424677218
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "FrontLatSpread",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7247616890219668
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "Idle",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7254200649927212
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "MostMuscular",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7109026885935863
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "ResultCelebrate",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.9646011859193053
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "ResultReflect",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7215527206176515
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "SideChest",
+      "minY": -0.0034951162665210313,
+      "maxY": 1.7247615337620101
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "SideTriceps",
+      "minY": -0.0034951162665210313,
+      "maxY": 1.7247617883991473
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "StageEntry",
+      "minY": -0.0036414680802146363,
+      "maxY": 1.724761653549852
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "TrainingPress",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.9978659824059053
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "TrainingRow",
+      "minY": -0.005153643214904286,
+      "maxY": 1.6541466869130432
+    },
+    {
+      "height": 172,
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "minY": -0.0037587582716268673,
+      "maxY": 1.7235499806921266
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.8528137671136486
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0034951162145016824,
+      "maxY": 1.818949137343751
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "BackLatSpread",
+      "minY": -0.0034951162145016824,
+      "maxY": 1.7247616890219666
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "Breathing",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7254200649927212
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.8189488424677218
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "FrontLatSpread",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7247616890219668
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "Idle",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7254200649927212
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "MostMuscular",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7109026885935863
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "ResultCelebrate",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.9646011859193053
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "ResultReflect",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7215527206176515
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "SideChest",
+      "minY": -0.0034951162665210313,
+      "maxY": 1.7247615337620101
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "SideTriceps",
+      "minY": -0.0034951162665210313,
+      "maxY": 1.7247617883991473
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "StageEntry",
+      "minY": -0.0036414680802146363,
+      "maxY": 1.724761653549852
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "TrainingPress",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.9978659824059053
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "TrainingRow",
+      "minY": -0.005153643214904286,
+      "maxY": 1.6541466869130432
+    },
+    {
+      "height": 172,
+      "variant": "developed",
+      "clip": "TrainingSquat",
+      "minY": -0.0037587582716268673,
+      "maxY": 1.7235499806921266
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.8528137671136486
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0034951162145016824,
+      "maxY": 1.818949137343751
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "BackLatSpread",
+      "minY": -0.0034951162145016824,
+      "maxY": 1.7247616890219666
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "Breathing",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7254200649927212
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.8189488424677218
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "FrontLatSpread",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7247616890219668
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "Idle",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7254200649927212
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "MostMuscular",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7109026885935863
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "ResultCelebrate",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.9646011859193053
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "ResultReflect",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.7215527206176515
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "SideChest",
+      "minY": -0.0034951162665210313,
+      "maxY": 1.7247615337620101
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "SideTriceps",
+      "minY": -0.0034951162665210313,
+      "maxY": 1.7247617883991473
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "StageEntry",
+      "minY": -0.0036414680802146363,
+      "maxY": 1.724761653549852
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "TrainingPress",
+      "minY": -0.0034950584393993933,
+      "maxY": 1.9978659824059053
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "TrainingRow",
+      "minY": -0.005153643214904286,
+      "maxY": 1.6541466869130432
+    },
+    {
+      "height": 172,
+      "variant": "fat",
+      "clip": "TrainingSquat",
+      "minY": -0.0037587582716268673,
+      "maxY": 1.7235499806921266
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "AbdominalsThigh",
+      "minY": -0.003556018761016885,
+      "maxY": 1.885130286307491
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003556077543824027,
+      "maxY": 1.8506749943904444
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "BackLatSpread",
+      "minY": -0.003556077543824027,
+      "maxY": 1.7548447417374657
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "Breathing",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7555146010100358
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.003556018761016885,
+      "maxY": 1.8506746943712278
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "FrontLatSpread",
+      "minY": -0.003556018761016885,
+      "maxY": 1.754844741737466
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "Idle",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7555146010100358
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "MostMuscular",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7407440145574269
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "ResultCelebrate",
+      "minY": -0.003556018761016885,
+      "maxY": 1.9988674856737114
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "ResultReflect",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7515798029540057
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "SideChest",
+      "minY": -0.003556077596750814,
+      "maxY": 1.7548445837694864
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "SideTriceps",
+      "minY": -0.003556077596750814,
+      "maxY": 1.7548448428479686
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "StageEntry",
+      "minY": -0.003704982058357709,
+      "maxY": 1.7548447056466514
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "TrainingPress",
+      "minY": -0.003556018761016885,
+      "maxY": 2.032712482099031
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "TrainingRow",
+      "minY": -0.005243532340745593,
+      "maxY": 1.6829980826150148
+    },
+    {
+      "height": 175,
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "minY": -0.00382431800892281,
+      "maxY": 1.753611898960012
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "AbdominalsThigh",
+      "minY": -0.003556018761016885,
+      "maxY": 1.885130286307491
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003556077543824027,
+      "maxY": 1.8506749943904444
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "BackLatSpread",
+      "minY": -0.003556077543824027,
+      "maxY": 1.7548447417374657
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "Breathing",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7555146010100358
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.003556018761016885,
+      "maxY": 1.8506746943712278
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "FrontLatSpread",
+      "minY": -0.003556018761016885,
+      "maxY": 1.754844741737466
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "Idle",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7555146010100358
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "MostMuscular",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7407440145574269
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "ResultCelebrate",
+      "minY": -0.003556018761016885,
+      "maxY": 1.9988674856737114
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "ResultReflect",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7515798029540057
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "SideChest",
+      "minY": -0.003556077596750814,
+      "maxY": 1.7548445837694864
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "SideTriceps",
+      "minY": -0.003556077596750814,
+      "maxY": 1.7548448428479686
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "StageEntry",
+      "minY": -0.003704982058357709,
+      "maxY": 1.7548447056466514
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "TrainingPress",
+      "minY": -0.003556018761016885,
+      "maxY": 2.032712482099031
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "TrainingRow",
+      "minY": -0.005243532340745593,
+      "maxY": 1.6829980826150148
+    },
+    {
+      "height": 175,
+      "variant": "developed",
+      "clip": "TrainingSquat",
+      "minY": -0.00382431800892281,
+      "maxY": 1.753611898960012
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "AbdominalsThigh",
+      "minY": -0.003556018761016885,
+      "maxY": 1.885130286307491
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003556077543824027,
+      "maxY": 1.8506749943904444
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "BackLatSpread",
+      "minY": -0.003556077543824027,
+      "maxY": 1.7548447417374657
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "Breathing",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7555146010100358
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.003556018761016885,
+      "maxY": 1.8506746943712278
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "FrontLatSpread",
+      "minY": -0.003556018761016885,
+      "maxY": 1.754844741737466
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "Idle",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7555146010100358
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "MostMuscular",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7407440145574269
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "ResultCelebrate",
+      "minY": -0.003556018761016885,
+      "maxY": 1.9988674856737114
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "ResultReflect",
+      "minY": -0.003556018761016885,
+      "maxY": 1.7515798029540057
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "SideChest",
+      "minY": -0.003556077596750814,
+      "maxY": 1.7548445837694864
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "SideTriceps",
+      "minY": -0.003556077596750814,
+      "maxY": 1.7548448428479686
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "StageEntry",
+      "minY": -0.003704982058357709,
+      "maxY": 1.7548447056466514
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "TrainingPress",
+      "minY": -0.003556018761016885,
+      "maxY": 2.032712482099031
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "TrainingRow",
+      "minY": -0.005243532340745593,
+      "maxY": 1.6829980826150148
+    },
+    {
+      "height": 175,
+      "variant": "fat",
+      "clip": "TrainingSquat",
+      "minY": -0.00382431800892281,
+      "maxY": 1.753611898960012
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.9174468055013343
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003617038873146737,
+      "maxY": 1.8824008514371378
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "BackLatSpread",
+      "minY": -0.003617038873146737,
+      "maxY": 1.7849277944529656
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "Breathing",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7856091370273508
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.8824005462747344
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "FrontLatSpread",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7849277944529658
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "Idle",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7856091370273508
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "MostMuscular",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7705853405212688
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "ResultCelebrate",
+      "minY": -0.0036169790826345006,
+      "maxY": 2.033133785428118
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "ResultReflect",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7816068852903604
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "SideChest",
+      "minY": -0.00361703892698076,
+      "maxY": 1.784927633776964
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "SideTriceps",
+      "minY": -0.00361703892698076,
+      "maxY": 1.7849278972967917
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "StageEntry",
+      "minY": -0.0037684960365009274,
+      "maxY": 1.784927757743452
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "TrainingPress",
+      "minY": -0.0036169790826345006,
+      "maxY": 2.067558981792157
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "TrainingRow",
+      "minY": -0.005333421466587027,
+      "maxY": 1.7118494783169866
+    },
+    {
+      "height": 178,
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "minY": -0.003889877746218528,
+      "maxY": 1.7836738172278988
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.9174468055013343
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003617038873146737,
+      "maxY": 1.8824008514371378
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "BackLatSpread",
+      "minY": -0.003617038873146737,
+      "maxY": 1.7849277944529656
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "Breathing",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7856091370273508
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.8824005462747344
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "FrontLatSpread",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7849277944529658
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "Idle",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7856091370273508
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "MostMuscular",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7705853405212688
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "ResultCelebrate",
+      "minY": -0.0036169790826345006,
+      "maxY": 2.033133785428118
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "ResultReflect",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7816068852903604
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "SideChest",
+      "minY": -0.00361703892698076,
+      "maxY": 1.784927633776964
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "SideTriceps",
+      "minY": -0.00361703892698076,
+      "maxY": 1.7849278972967917
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "StageEntry",
+      "minY": -0.0037684960365009274,
+      "maxY": 1.784927757743452
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "TrainingPress",
+      "minY": -0.0036169790826345006,
+      "maxY": 2.067558981792157
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "TrainingRow",
+      "minY": -0.005333421466587027,
+      "maxY": 1.7118494783169866
+    },
+    {
+      "height": 178,
+      "variant": "developed",
+      "clip": "TrainingSquat",
+      "minY": -0.003889877746218528,
+      "maxY": 1.7836738172278988
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.9174468055013343
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.003617038873146737,
+      "maxY": 1.8824008514371378
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "BackLatSpread",
+      "minY": -0.003617038873146737,
+      "maxY": 1.7849277944529656
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "Breathing",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7856091370273508
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.8824005462747344
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "FrontLatSpread",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7849277944529658
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "Idle",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7856091370273508
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "MostMuscular",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7705853405212688
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "ResultCelebrate",
+      "minY": -0.0036169790826345006,
+      "maxY": 2.033133785428118
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "ResultReflect",
+      "minY": -0.0036169790826345006,
+      "maxY": 1.7816068852903604
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "SideChest",
+      "minY": -0.00361703892698076,
+      "maxY": 1.784927633776964
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "SideTriceps",
+      "minY": -0.00361703892698076,
+      "maxY": 1.7849278972967917
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "StageEntry",
+      "minY": -0.0037684960365009274,
+      "maxY": 1.784927757743452
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "TrainingPress",
+      "minY": -0.0036169790826345006,
+      "maxY": 2.067558981792157
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "TrainingRow",
+      "minY": -0.005333421466587027,
+      "maxY": 1.7118494783169866
+    },
+    {
+      "height": 178,
+      "variant": "fat",
+      "clip": "TrainingSquat",
+      "minY": -0.003889877746218528,
+      "maxY": 1.7836738172278988
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.9497633246951767
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0036780002024695132,
+      "maxY": 1.9141267084838314
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "BackLatSpread",
+      "minY": -0.0036780002024695132,
+      "maxY": 1.8150108471684645
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "Breathing",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.815703673044666
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.9141263981782413
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "FrontLatSpread",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8150108471684647
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "Idle",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.815703673044666
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "MostMuscular",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8004266664851105
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "ResultCelebrate",
+      "minY": -0.0036779394042517396,
+      "maxY": 2.0674000851825247
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "ResultReflect",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8116339676267146
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "SideChest",
+      "minY": -0.0036780002572108705,
+      "maxY": 1.8150106837844406
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "SideTriceps",
+      "minY": -0.0036780002572108705,
+      "maxY": 1.8150109517456139
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "StageEntry",
+      "minY": -0.003832010014644367,
+      "maxY": 1.8150108098402506
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "TrainingPress",
+      "minY": -0.0036779394042517396,
+      "maxY": 2.1024054814852837
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "TrainingRow",
+      "minY": -0.005423310592428418,
+      "maxY": 1.7407008740189578
+    },
+    {
+      "height": 181,
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "minY": -0.003955437483514509,
+      "maxY": 1.8137357354957842
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.9497633246951767
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0036780002024695132,
+      "maxY": 1.9141267084838314
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "BackLatSpread",
+      "minY": -0.0036780002024695132,
+      "maxY": 1.8150108471684645
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "Breathing",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.815703673044666
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.9141263981782413
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "FrontLatSpread",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8150108471684647
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "Idle",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.815703673044666
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "MostMuscular",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8004266664851105
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "ResultCelebrate",
+      "minY": -0.0036779394042517396,
+      "maxY": 2.0674000851825247
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "ResultReflect",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8116339676267146
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "SideChest",
+      "minY": -0.0036780002572108705,
+      "maxY": 1.8150106837844406
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "SideTriceps",
+      "minY": -0.0036780002572108705,
+      "maxY": 1.8150109517456139
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "StageEntry",
+      "minY": -0.003832010014644367,
+      "maxY": 1.8150108098402506
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "TrainingPress",
+      "minY": -0.0036779394042517396,
+      "maxY": 2.1024054814852837
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "TrainingRow",
+      "minY": -0.005423310592428418,
+      "maxY": 1.7407008740189578
+    },
+    {
+      "height": 181,
+      "variant": "developed",
+      "clip": "TrainingSquat",
+      "minY": -0.003955437483514509,
+      "maxY": 1.8137357354957842
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.9497633246951767
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0036780002024695132,
+      "maxY": 1.9141267084838314
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "BackLatSpread",
+      "minY": -0.0036780002024695132,
+      "maxY": 1.8150108471684645
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "Breathing",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.815703673044666
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.9141263981782413
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "FrontLatSpread",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8150108471684647
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "Idle",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.815703673044666
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "MostMuscular",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8004266664851105
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "ResultCelebrate",
+      "minY": -0.0036779394042517396,
+      "maxY": 2.0674000851825247
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "ResultReflect",
+      "minY": -0.0036779394042517396,
+      "maxY": 1.8116339676267146
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "SideChest",
+      "minY": -0.0036780002572108705,
+      "maxY": 1.8150106837844406
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "SideTriceps",
+      "minY": -0.0036780002572108705,
+      "maxY": 1.8150109517456139
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "StageEntry",
+      "minY": -0.003832010014644367,
+      "maxY": 1.8150108098402506
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "TrainingPress",
+      "minY": -0.0036779394042517396,
+      "maxY": 2.1024054814852837
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "TrainingRow",
+      "minY": -0.005423310592428418,
+      "maxY": 1.7407008740189578
+    },
+    {
+      "height": 181,
+      "variant": "fat",
+      "clip": "TrainingSquat",
+      "minY": -0.003955437483514509,
+      "maxY": 1.8137357354957842
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.9928520169536341
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0037592819748999686,
+      "maxY": 1.956427851212756
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "BackLatSpread",
+      "minY": -0.0037592819748999686,
+      "maxY": 1.8551215841224642
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "Breathing",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8558297210677526
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.956427534049584
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "FrontLatSpread",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8551215841224642
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "Idle",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8558297210677526
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "MostMuscular",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8402151011035657
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "ResultCelebrate",
+      "minY": -0.0037592198330752757,
+      "maxY": 2.1130884848550666
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "ResultReflect",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8516700774085202
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "SideChest",
+      "minY": -0.003759282030851318,
+      "maxY": 1.8551214171277428
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "SideTriceps",
+      "minY": -0.003759282030851318,
+      "maxY": 1.8551216910107098
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "StageEntry",
+      "minY": -0.003916695318835643,
+      "maxY": 1.8551215459693176
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "TrainingPress",
+      "minY": -0.0037592198330752757,
+      "maxY": 2.1488674810761186
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "TrainingRow",
+      "minY": -0.005543162760216729,
+      "maxY": 1.7791694016215875
+    },
+    {
+      "height": 185,
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "minY": -0.004042850466575652,
+      "maxY": 1.8538182931862992
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.9928520169536341
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0037592819748999686,
+      "maxY": 1.956427851212756
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "BackLatSpread",
+      "minY": -0.0037592819748999686,
+      "maxY": 1.8551215841224642
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "Breathing",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8558297210677526
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.956427534049584
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "FrontLatSpread",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8551215841224642
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "Idle",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8558297210677526
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "MostMuscular",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8402151011035657
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "ResultCelebrate",
+      "minY": -0.0037592198330752757,
+      "maxY": 2.1130884848550666
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "ResultReflect",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8516700774085202
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "SideChest",
+      "minY": -0.003759282030851318,
+      "maxY": 1.8551214171277428
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "SideTriceps",
+      "minY": -0.003759282030851318,
+      "maxY": 1.8551216910107098
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "StageEntry",
+      "minY": -0.003916695318835643,
+      "maxY": 1.8551215459693176
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "TrainingPress",
+      "minY": -0.0037592198330752757,
+      "maxY": 2.1488674810761186
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "TrainingRow",
+      "minY": -0.005543162760216729,
+      "maxY": 1.7791694016215875
+    },
+    {
+      "height": 185,
+      "variant": "developed",
+      "clip": "TrainingSquat",
+      "minY": -0.004042850466575652,
+      "maxY": 1.8538182931862992
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "AbdominalsThigh",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.9928520169536341
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "BackDoubleBiceps",
+      "minY": -0.0037592819748999686,
+      "maxY": 1.956427851212756
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "BackLatSpread",
+      "minY": -0.0037592819748999686,
+      "maxY": 1.8551215841224642
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "Breathing",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8558297210677526
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "FrontDoubleBiceps",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.956427534049584
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "FrontLatSpread",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8551215841224642
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "Idle",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8558297210677526
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "MostMuscular",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8402151011035657
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "ResultCelebrate",
+      "minY": -0.0037592198330752757,
+      "maxY": 2.1130884848550666
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "ResultReflect",
+      "minY": -0.0037592198330752757,
+      "maxY": 1.8516700774085202
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "SideChest",
+      "minY": -0.003759282030851318,
+      "maxY": 1.8551214171277428
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "SideTriceps",
+      "minY": -0.003759282030851318,
+      "maxY": 1.8551216910107098
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "StageEntry",
+      "minY": -0.003916695318835643,
+      "maxY": 1.8551215459693176
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "TrainingPress",
+      "minY": -0.0037592198330752757,
+      "maxY": 2.1488674810761186
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "TrainingRow",
+      "minY": -0.005543162760216729,
+      "maxY": 1.7791694016215875
+    },
+    {
+      "height": 185,
+      "variant": "fat",
+      "clip": "TrainingSquat",
+      "minY": -0.004042850466575652,
+      "maxY": 1.8538182931862992
+    }
+  ],
+  "extremeRecords": [
+    {
+      "name": "upperChest",
+      "value": -0.6,
+      "maxDelta": 0.0181316635932719
+    },
+    {
+      "name": "upperChest",
+      "value": 1.5,
+      "maxDelta": 0.0181316635932719
+    },
+    {
+      "name": "chest",
+      "value": -0.6,
+      "maxDelta": 0.028500741300447375
+    },
+    {
+      "name": "chest",
+      "value": 1.5,
+      "maxDelta": 0.028500741300447375
+    },
+    {
+      "name": "frontDelts",
+      "value": -0.6,
+      "maxDelta": 0.018094448093887265
+    },
+    {
+      "name": "frontDelts",
+      "value": 1.5,
+      "maxDelta": 0.018094448093887265
+    },
+    {
+      "name": "sideDelts",
+      "value": -0.6,
+      "maxDelta": 0.021584845030058128
+    },
+    {
+      "name": "sideDelts",
+      "value": 1.5,
+      "maxDelta": 0.021584845030058128
+    },
+    {
+      "name": "rearDelts",
+      "value": -0.6,
+      "maxDelta": 0.023369925338079425
+    },
+    {
+      "name": "rearDelts",
+      "value": 1.5,
+      "maxDelta": 0.023369925338079425
+    },
+    {
+      "name": "lats",
+      "value": -0.6,
+      "maxDelta": 0.029348652459880623
+    },
+    {
+      "name": "lats",
+      "value": 1.5,
+      "maxDelta": 0.029348652459880623
+    },
+    {
+      "name": "upperBack",
+      "value": -0.6,
+      "maxDelta": 0.02744193473527246
+    },
+    {
+      "name": "upperBack",
+      "value": 1.5,
+      "maxDelta": 0.02744193473527246
+    },
+    {
+      "name": "erectors",
+      "value": -0.6,
+      "maxDelta": 0.021901213892069712
+    },
+    {
+      "name": "erectors",
+      "value": 1.5,
+      "maxDelta": 0.021901213892069712
+    },
+    {
+      "name": "biceps",
+      "value": -0.6,
+      "maxDelta": 0.016828755939614828
+    },
+    {
+      "name": "biceps",
+      "value": 1.5,
+      "maxDelta": 0.016828755939614828
+    },
+    {
+      "name": "triceps",
+      "value": -0.6,
+      "maxDelta": 0.020109774028040327
+    },
+    {
+      "name": "triceps",
+      "value": 1.5,
+      "maxDelta": 0.020109774028040327
+    },
+    {
+      "name": "forearms",
+      "value": -0.6,
+      "maxDelta": 0.01708185926404729
+    },
+    {
+      "name": "forearms",
+      "value": 1.5,
+      "maxDelta": 0.01708185926404729
+    },
+    {
+      "name": "quads",
+      "value": -0.6,
+      "maxDelta": 0.03246660651734076
+    },
+    {
+      "name": "quads",
+      "value": 1.5,
+      "maxDelta": 0.03246660651734076
+    },
+    {
+      "name": "hamstrings",
+      "value": -0.6,
+      "maxDelta": 0.0274648546474334
+    },
+    {
+      "name": "hamstrings",
+      "value": 1.5,
+      "maxDelta": 0.0274648546474334
+    },
+    {
+      "name": "glutes",
+      "value": -0.6,
+      "maxDelta": 0.014831696607344697
+    },
+    {
+      "name": "glutes",
+      "value": 1.5,
+      "maxDelta": 0.014831696607344697
+    },
+    {
+      "name": "calves",
+      "value": -0.6,
+      "maxDelta": 0.018661097896468463
+    },
+    {
+      "name": "calves",
+      "value": 1.5,
+      "maxDelta": 0.018661097896468463
+    },
+    {
+      "name": "abs",
+      "value": -0.6,
+      "maxDelta": 0.016967310318298283
+    },
+    {
+      "name": "abs",
+      "value": 1.5,
+      "maxDelta": 0.016967310318298283
+    },
+    {
+      "name": "bodyFat",
+      "value": -0.6,
+      "maxDelta": 0.070276751911725
+    },
+    {
+      "name": "bodyFat",
+      "value": 1.5,
+      "maxDelta": 0.070276751911725
+    },
+    {
+      "name": "pump",
+      "value": -0.6,
+      "maxDelta": 0.002486776124750494
+    },
+    {
+      "name": "pump",
+      "value": 1.5,
+      "maxDelta": 0.002486776124750494
+    }
+  ],
+  "limits": [
+    "CPU texture validation checks PNG data/dimensions; actual browser image decode and performance are checked separately",
+    "Face/hand anatomy comes from the CC0 pinned source plus game-specific rig and surface authoring",
+    "No claim of medical anatomy measurement or exact real-life muscle prediction"
+  ],
+  "glbSha256": "3b4ff1ed7253368c09d4d6b1e593f6c46a2d84ae31686a584098cf67979543b6"
+}

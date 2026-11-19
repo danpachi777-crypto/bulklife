@@ -1,0 +1,430 @@
+{
+  "sixProfileRenders": [
+    [
+      "P1",
+      172,
+      18,
+      0
+    ],
+    [
+      "P2",
+      178,
+      17,
+      0.12
+    ],
+    [
+      "P3",
+      175,
+      20,
+      0.03
+    ],
+    [
+      "P4",
+      169,
+      15,
+      -0.08
+    ],
+    [
+      "P5",
+      181,
+      27,
+      0.15
+    ],
+    [
+      "P6",
+      185,
+      16,
+      -0.04
+    ]
+  ],
+  "profileNote": "Height/fat/profile silhouette QA; gameplay capacity calculations stay in the application. Blender axes are x width, y depth, z height.",
+  "garmentSamplesChecked": 675,
+  "deformationRecords": [
+    {
+      "variant": "initial",
+      "clip": "Idle",
+      "frame": 1,
+      "minNormalGapMetres": 0.007272384740645066,
+      "maxNormalGapMetres": 0.008008651857039695,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "Idle",
+      "frame": 25,
+      "minNormalGapMetres": 0.007272384740645066,
+      "maxNormalGapMetres": 0.008008651857039695,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "Idle",
+      "frame": 49,
+      "minNormalGapMetres": 0.007272384740645066,
+      "maxNormalGapMetres": 0.008008651857039695,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "frame": 1,
+      "minNormalGapMetres": 0.007272384740645066,
+      "maxNormalGapMetres": 0.008008651857039695,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "frame": 25,
+      "minNormalGapMetres": 0.007272384740645066,
+      "maxNormalGapMetres": 0.008008651857039695,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "FrontDoubleBiceps",
+      "frame": 49,
+      "minNormalGapMetres": 0.007272384740645066,
+      "maxNormalGapMetres": 0.008008651857039695,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "SideChest",
+      "frame": 1,
+      "minNormalGapMetres": 0.007272427494172007,
+      "maxNormalGapMetres": 0.008008690613792169,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "SideChest",
+      "frame": 25,
+      "minNormalGapMetres": 0.007272427494172007,
+      "maxNormalGapMetres": 0.008008690613792169,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "SideChest",
+      "frame": 49,
+      "minNormalGapMetres": 0.007272427494172007,
+      "maxNormalGapMetres": 0.008008690613792169,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "frame": 1,
+      "minNormalGapMetres": 0.007964061835082248,
+      "maxNormalGapMetres": 0.008007468641153537,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "frame": 25,
+      "minNormalGapMetres": -0.002634918550029397,
+      "maxNormalGapMetres": 0.008082055428531021,
+      "negativeVertexCount": 4
+    },
+    {
+      "variant": "initial",
+      "clip": "TrainingSquat",
+      "frame": 49,
+      "minNormalGapMetres": 0.007964061835082248,
+      "maxNormalGapMetres": 0.008007468641153537,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "Idle",
+      "frame": 1,
+      "minNormalGapMetres": 0.006358771643135697,
+      "maxNormalGapMetres": 0.00800814085255297,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "Idle",
+      "frame": 25,
+      "minNormalGapMetres": 0.006358771643135697,
+      "maxNormalGapMetres": 0.00800814085255297,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "Idle",
+      "frame": 49,
+      "minNormalGapMetres": 0.006358771643135697,
+      "maxNormalGapMetres": 0.00800814085255297,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "FrontDoubleBiceps",
+      "frame": 1,
+      "minNormalGapMetres": 0.006358771643135697,
+      "maxNormalGapMetres": 0.00800814085255297,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "FrontDoubleBiceps",
+      "frame": 25,
+      "minNormalGapMetres": 0.006358771643135697,
+      "maxNormalGapMetres": 0.00800814085255297,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "FrontDoubleBiceps",
+      "frame": 49,
+      "minNormalGapMetres": 0.006358771643135697,
+      "maxNormalGapMetres": 0.00800814085255297,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "SideChest",
+      "frame": 1,
+      "minNormalGapMetres": 0.0063587915792595595,
+      "maxNormalGapMetres": 0.008008152649153999,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "SideChest",
+      "frame": 25,
+      "minNormalGapMetres": 0.0063587915792595595,
+      "maxNormalGapMetres": 0.008008152649153999,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "SideChest",
+      "frame": 49,
+      "minNormalGapMetres": 0.0063587915792595595,
+      "maxNormalGapMetres": 0.008008152649153999,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "TrainingSquat",
+      "frame": 1,
+      "minNormalGapMetres": 0.007039364951197058,
+      "maxNormalGapMetres": 0.008006995338973866,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "grown",
+      "clip": "TrainingSquat",
+      "frame": 25,
+      "minNormalGapMetres": -0.0042575717670843005,
+      "maxNormalGapMetres": 0.008018931956030428,
+      "negativeVertexCount": 6
+    },
+    {
+      "variant": "grown",
+      "clip": "TrainingSquat",
+      "frame": 49,
+      "minNormalGapMetres": 0.007039364951197058,
+      "maxNormalGapMetres": 0.008006995338973866,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "Idle",
+      "frame": 1,
+      "minNormalGapMetres": 0.004028174211271107,
+      "maxNormalGapMetres": 0.007998229028999049,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "Idle",
+      "frame": 25,
+      "minNormalGapMetres": 0.004028174211271107,
+      "maxNormalGapMetres": 0.007998229028999049,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "Idle",
+      "frame": 49,
+      "minNormalGapMetres": 0.004028174211271107,
+      "maxNormalGapMetres": 0.007998229028999049,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "FrontDoubleBiceps",
+      "frame": 1,
+      "minNormalGapMetres": 0.004028174211271107,
+      "maxNormalGapMetres": 0.007998229028999049,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "FrontDoubleBiceps",
+      "frame": 25,
+      "minNormalGapMetres": 0.004028174211271107,
+      "maxNormalGapMetres": 0.007998229028999049,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "FrontDoubleBiceps",
+      "frame": 49,
+      "minNormalGapMetres": 0.004028174211271107,
+      "maxNormalGapMetres": 0.007998229028999049,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "SideChest",
+      "frame": 1,
+      "minNormalGapMetres": 0.004028162220492959,
+      "maxNormalGapMetres": 0.007998255565325962,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "SideChest",
+      "frame": 25,
+      "minNormalGapMetres": 0.004028162220492959,
+      "maxNormalGapMetres": 0.007998255565325962,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "SideChest",
+      "frame": 49,
+      "minNormalGapMetres": 0.004028162220492959,
+      "maxNormalGapMetres": 0.007998255565325962,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "TrainingSquat",
+      "frame": 1,
+      "minNormalGapMetres": 0.004450136562809348,
+      "maxNormalGapMetres": 0.00799837434558981,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "TrainingSquat",
+      "frame": 25,
+      "minNormalGapMetres": 0.0014221034944057465,
+      "maxNormalGapMetres": 0.008056629507336766,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-lean",
+      "clip": "TrainingSquat",
+      "frame": 49,
+      "minNormalGapMetres": 0.004450136562809348,
+      "maxNormalGapMetres": 0.00799837434558981,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "Idle",
+      "frame": 1,
+      "minNormalGapMetres": 0.0030984398326836526,
+      "maxNormalGapMetres": 0.007999295805348083,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "Idle",
+      "frame": 25,
+      "minNormalGapMetres": 0.0030984398326836526,
+      "maxNormalGapMetres": 0.007999295805348083,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "Idle",
+      "frame": 49,
+      "minNormalGapMetres": 0.0030984398326836526,
+      "maxNormalGapMetres": 0.007999295805348083,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "FrontDoubleBiceps",
+      "frame": 1,
+      "minNormalGapMetres": 0.0030984398326836526,
+      "maxNormalGapMetres": 0.007999295805348083,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "FrontDoubleBiceps",
+      "frame": 25,
+      "minNormalGapMetres": 0.0030984398326836526,
+      "maxNormalGapMetres": 0.007999295805348083,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "FrontDoubleBiceps",
+      "frame": 49,
+      "minNormalGapMetres": 0.0030984398326836526,
+      "maxNormalGapMetres": 0.007999295805348083,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "SideChest",
+      "frame": 1,
+      "minNormalGapMetres": 0.0030984092445578426,
+      "maxNormalGapMetres": 0.007999311106686946,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "SideChest",
+      "frame": 25,
+      "minNormalGapMetres": 0.0030984092445578426,
+      "maxNormalGapMetres": 0.007999311106686946,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "SideChest",
+      "frame": 49,
+      "minNormalGapMetres": 0.0030984092445578426,
+      "maxNormalGapMetres": 0.007999311106686946,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "TrainingSquat",
+      "frame": 1,
+      "minNormalGapMetres": 0.005981679656542838,
+      "maxNormalGapMetres": 0.007998627155757276,
+      "negativeVertexCount": 0
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "TrainingSquat",
+      "frame": 25,
+      "minNormalGapMetres": -0.004670174726925325,
+      "maxNormalGapMetres": 0.00798793194553582,
+      "negativeVertexCount": 12
+    },
+    {
+      "variant": "extreme-fat",
+      "clip": "TrainingSquat",
+      "frame": 49,
+      "minNormalGapMetres": 0.005981679656542838,
+      "maxNormalGapMetres": 0.007998627155757276,
+      "negativeVertexCount": 0
+    }
+  ],
+  "minimumGapMetres": -0.004670174726925325,
+  "limitations": "Normal gap at corresponding skin samples is a deformation diagnostic, not an exhaustive triangle collision proof."
+}

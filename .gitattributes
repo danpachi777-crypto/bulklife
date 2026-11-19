@@ -1,0 +1,2 @@
+# Preserve upstream CC0 source bytes so provenance SHA256 values survive checkout.
+assets/sources/makehuman/** -text

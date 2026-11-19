@@ -1,3 +1,5 @@
+> 0.3で追加・変更したホーム、日次結果、小規模大会、保存移行、3Dの現行仕様は [experience-redesign.md](experience-redesign.md) を参照。以下は元の統合仕様として保持する。
+
 BULK LIFE（仮）統合実装プロンプト
 改訂日：2026年11月18日
 
