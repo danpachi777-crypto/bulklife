@@ -1,2 +1,4 @@
 # Preserve upstream CC0 source bytes so provenance SHA256 values survive checkout.
 assets/sources/makehuman/** -text
+# Preserve downloaded source bytes so provenance SHA256 remains reproducible.
+assets/sources/makehuman-system-v3/** -text -whitespace

@@ -1,5 +1,10 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+let openSheets = 0;
+const overlayEvent = () =>
+  window.dispatchEvent(
+    new CustomEvent("bulk-life-overlay", { detail: openSheets > 0 }),
+  );
 
 export function ModalSheet({
   title,
@@ -24,9 +29,13 @@ export function ModalSheet({
   const busyRef = useRef(busy);
   busyRef.current = busy;
   useEffect(() => {
+    openSheets++;
+    overlayEvent();
     const trigger = document.activeElement as HTMLElement | null;
     const scroll = window.scrollY;
-    const app = document.querySelector<HTMLElement>(".experience-app");
+    const app = document.querySelector<HTMLElement>(
+      ".experience-app, .opening",
+    );
     const oldStyle = document.body.getAttribute("style");
     const wasInert = app?.inert ?? false;
     if (app) app.inert = true;
@@ -59,6 +68,8 @@ export function ModalSheet({
     };
     document.addEventListener("keydown", keydown);
     return () => {
+      openSheets--;
+      overlayEvent();
       document.removeEventListener("keydown", keydown);
       if (app) app.inert = wasInert;
       if (oldStyle === null) document.body.removeAttribute("style");

@@ -1,7 +1,7 @@
 {
   "name": "bulk-life",
   "private": true,
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
@@ -11,7 +11,8 @@
     "dev:lan": "vite --host 0.0.0.0 --port 5178 --strictPort",
     "lan:url": "node scripts/lan-url.mjs",
     "preview": "vite preview",
-    "assets:regions": "node scripts/sync-body-regions.mjs"
+    "assets:regions": "node scripts/sync-body-regions.mjs",
+    "assets:portrait": "node scripts/sync-portrait-asset.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",

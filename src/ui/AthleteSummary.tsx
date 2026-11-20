@@ -12,7 +12,6 @@ import { PROFILES } from "../core/content";
 import { BodyView } from "../view/BodyView";
 import { dayDate, signed, yen } from "./Experience";
 import { ModalSheet } from "./ModalSheet";
-import { useMobileLayout } from "./useMobileLayout";
 
 export function AthleteSummary({
   c,
@@ -25,7 +24,7 @@ export function AthleteSummary({
 }) {
   const a = c.athlete,
     b = a.body;
-  const mobile = useMobileLayout();
+
   const [comparison, setComparison] = useState(-1),
     [inspect, setInspect] = useState(false),
     [bodyOpen, setBodyOpen] = useState(false);
@@ -163,22 +162,20 @@ export function AthleteSummary({
       </details>
     </section>
   );
-  if (!mobile) return full;
   return (
-    <section className="mobile-athlete" aria-label="選手の現在の状態">
-      <div className="mobile-athlete-preview">
-        {!bodyOpen && (
-          <BodyView
-            body={b}
-            baseline={c.initial.body}
-            selected={part}
-            hair={a.appearance.hair}
-            model={c.versions.model}
-            preview
-          />
-        )}
-      </div>
-      <div className="mobile-athlete-stats">
+    <section className="athlete-hero" aria-label="ジムにいる選手">
+      {!bodyOpen && (
+        <BodyView
+          body={b}
+          baseline={c.initial.body}
+          selected={part}
+          hair={a.appearance.hair}
+          model={c.versions.model}
+          presentation="home"
+          defaultClip="GymIdle"
+        />
+      )}
+      <div className="hero-metrics">
         <span>
           体重{" "}
           <b>
@@ -197,23 +194,12 @@ export function AthleteSummary({
           回復{" "}
           <b>
             {Math.round((1 - a.systemicFatigue) * 100)}
-            <small> /100</small>
+            <small>/100</small>
           </b>
         </span>
-        <span className="athlete-condition">
-          {a.systemicFatigue > 0.6
-            ? "疲労が残っています"
-            : a.systemicFatigue > 0.3
-              ? "疲労を確認しながら"
-              : "回復は順調です"}
-        </span>
       </div>
-      <button
-        className="athlete-detail-link"
-        onClick={() => setBodyOpen(true)}
-        aria-label="3D選手を詳しく見る。回転・部位選択・過去との比較"
-      >
-        身体を詳しく見る<span aria-hidden="true">＋</span>
+      <button className="hero-inspect" onClick={() => setBodyOpen(true)}>
+        身体の詳細・過去との比較
       </button>
       {bodyOpen && (
         <ModalSheet

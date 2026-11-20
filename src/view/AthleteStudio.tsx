@@ -23,7 +23,16 @@ import {
   Vector3,
   SRGBColorSpace,
   Group,
+  LoopOnce,
+  DoubleSide,
 } from "three";
+import { GymRoom, ContactShade } from "./GymRoom";
+import {
+  useReducedMotion,
+  PRESENTATION_EVENT,
+} from "../ui/presentationSettings";
+import { linearVertexColors } from "./colorData";
+import { PORTRAIT_ASSET_URL } from "./portraitAsset";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
@@ -76,13 +85,17 @@ function Controls({
   revision,
   capture,
   interactive,
+  presentation,
+  framing,
 }: {
   angle: number;
   revision: number;
   capture: React.MutableRefObject<(() => string) | null>;
   interactive: boolean;
+  presentation: string;
+  framing: "full" | "face";
 }) {
-  const { camera, gl, scene, invalidate } = useThree();
+  const { camera, gl, scene, invalidate, size } = useThree();
   const controls = useMemo(
     () => new OrbitControls(camera, gl.domElement),
     [camera, gl],
@@ -90,11 +103,13 @@ function Controls({
   useEffect(() => {
     controls.target.set(0, 0.95, 0);
     controls.enablePan = false;
-    controls.minDistance = 2;
+    controls.minDistance = 0.6;
     controls.maxDistance = MAX_CAMERA_DISTANCE;
     controls.minPolarAngle = 0.5;
     controls.maxPolarAngle = 1.9;
     controls.enableDamping = true;
+    controls.dampingFactor = 0.15;
+    controls.rotateSpeed = 0.55;
     const changed = () => invalidate();
     controls.addEventListener("change", changed);
     capture.current = () => {
@@ -113,11 +128,32 @@ function Controls({
   }, [interactive, controls, gl]);
   useEffect(() => {
     controls.enableDamping = false;
-    camera.position.set(Math.sin(angle) * 3.35, 1.25, Math.cos(angle) * 3.35);
-    controls.target.set(0, 0.95, 0);
+    const seated = presentation === "title";
+    const distance =
+      framing === "face"
+        ? 0.76
+        : Math.max(2.85, 1.1 / (size.width / size.height));
+    const target = framing === "face" ? 1.63 : seated ? 0.76 : 0.94;
+    camera.position.set(
+      Math.sin(angle) * distance,
+      target + (framing === "face" ? 0.015 : 0.18),
+      Math.cos(angle) * distance,
+    );
+    controls.target.set(0, target, seated ? -0.35 : 0);
     controls.update();
     controls.enableDamping = true;
-  }, [angle, revision, controls, camera]);
+    invalidate();
+  }, [
+    angle,
+    revision,
+    controls,
+    camera,
+    presentation,
+    framing,
+    size.width,
+    size.height,
+    invalidate,
+  ]);
   useFrame(() => controls.update());
   return null;
 }
@@ -149,6 +185,8 @@ function Athlete({
   onSelect,
   onReady,
   model,
+  wear,
+  presentation,
 }: {
   body: BodyState;
   baseline?: BodyState;
@@ -160,12 +198,12 @@ function Athlete({
   onSelect?: (p: Part) => void;
   onReady: () => void;
   model: string;
+  wear: boolean;
+  presentation: string;
 }) {
   const gltf = useLoader(
     GLTFLoader,
-    model === "athlete-v2"
-      ? "/assets/athlete-v2.glb?revision=v2-anatomy-3b4ff1ed"
-      : BODY_ASSET_URL,
+    model === "athlete-v2" ? PORTRAIT_ASSET_URL : BODY_ASSET_URL,
   );
   const invalidate = useThree((s) => s.invalidate);
   const dumbbell = useLoader(GLTFLoader, "/assets/dumbbell-v1.glb");
@@ -174,12 +212,25 @@ function Athlete({
     r.traverse((o) => {
       if (o instanceof Mesh) {
         o.geometry = o.geometry.clone();
-        o.userData.baseColors = o.geometry.getAttribute("color")?.array.slice();
+        const colorAttribute = o.geometry.getAttribute("color");
+        if (colorAttribute) {
+          o.userData.baseColors = linearVertexColors(colorAttribute);
+        }
         o.material = Array.isArray(o.material)
           ? o.material.map((m) => m.clone())
           : o.material.clone();
         o.castShadow = true;
         o.receiveShadow = true;
+        if (o.name === "BL_V3_NaturalHair") {
+          for (const mat of Array.isArray(o.material)
+            ? o.material
+            : [o.material]) {
+            if ("color" in mat) (mat.color as Color).setRGB(0.38, 0.34, 0.3);
+            mat.alphaTest = 0.4;
+            mat.transparent = false;
+            mat.side = DoubleSide;
+          }
+        }
       }
     });
     return r;
@@ -211,11 +262,26 @@ function Athlete({
       gltf.animations.find((a) => a.name === "Breathing");
     if (!found) return;
     const action = mixer.clipAction(found);
-    action.reset().play();
+    action.reset();
+    if (clip === "StandUp") {
+      action.setLoop(LoopOnce, 1);
+      action.clampWhenFinished = true;
+    }
+    action.play();
+    if (!playing && clip === "SeatedPrepare") action.time = 5;
+    const finished = () => {
+      if (clip !== "StandUp") return;
+      action.fadeOut(0.25);
+      const idle = gltf.animations.find((a) => a.name === "GymIdle");
+      if (idle) mixer.clipAction(idle).reset().fadeIn(0.25).play();
+    };
+    mixer.addEventListener("finished", finished);
     mixer.update(0);
     invalidate();
     return () => {
       action.stop();
+      mixer.removeEventListener("finished", finished);
+      mixer.stopAllAction();
     };
   }, [mixer, gltf, clip, invalidate]);
   useEffect(
@@ -241,8 +307,12 @@ function Athlete({
           o.morphTargetInfluences[index] =
             values[name as keyof typeof values] ?? 0;
       if (o.name.startsWith("HairSide")) o.visible = hair === 0;
-      if (o.name === "Hair" || o.name === "BL_V2_Hair")
-        o.scale.y = hair === 1 ? 0.6 : 1;
+      if (o.name === "Hair") o.scale.y = hair === 1 ? 0.6 : 1;
+      if (o.name === "BL_V2_Hair" || o.name === "BL_V3_HairFlow")
+        o.visible = hair === 1;
+      if (o.name === "BL_V3_NaturalHair") o.visible = hair === 0;
+      if (o.name === "BL_V3_TrainingTank" || o.name === "BL_V3_Trainers")
+        o.visible = wear;
       if (!["BL_AthleteBody", "BL_V2_AthleteBody"].includes(o.name)) return;
       const positions = o.geometry.attributes.position,
         colors = new Float32Array(positions.count * 3),
@@ -256,7 +326,12 @@ function Athlete({
           const w = influence(v, region, model);
           let amount = 0;
           if (mode === "normal") {
-            if (region === selected) color.setRGB(1, 1, 0.78);
+            if (
+              region === selected &&
+              onSelect &&
+              presentation === "inspection"
+            )
+              color.setRGB(1, 1, 0.78);
           } else {
             amount =
               mode === "growth"
@@ -296,9 +371,31 @@ function Athlete({
     });
     root.scale.set(body.shoulder, body.height / 176.5, 1);
     onReady();
-  }, [body, baseline, selected, mode, root, hair, onReady, model]);
+  }, [
+    body,
+    baseline,
+    selected,
+    mode,
+    root,
+    hair,
+    onReady,
+    model,
+    wear,
+    presentation,
+    onSelect,
+  ]);
   useFrame((_, delta) => {
-    if (playing) mixer.update(Math.min(delta, 0.05));
+    if (playing) {
+      const action = gltf.animations.find((a) => a.name === clip);
+      if (clip === "SeatedPrepare" && action) {
+        const current = mixer.clipAction(action);
+        if (current.time + delta >= action.duration - 0.05) current.time = 5;
+      }
+      mixer.update(Math.min(delta, 0.05));
+      root.position.z +=
+        ((presentation === "title" ? -0.48 : 0) - root.position.z) *
+        Math.min(1, delta * 4);
+    } else root.position.z = presentation === "title" ? -0.48 : 0;
   });
   const click = (e: ThreeEvent<MouseEvent>) => {
     if (!onSelect || e.delta > 8 || !e.face || !(e.object instanceof Mesh))
@@ -407,6 +504,7 @@ export function BodyView({
   title = "身体の記録",
   model = "athlete-v1",
   preview = false,
+  presentation = "inspection",
 }: {
   body: BodyState;
   selected: Part;
@@ -418,38 +516,48 @@ export function BodyView({
   title?: string;
   model?: string;
   preview?: boolean;
+  presentation?: "inspection" | "home" | "title" | "creation";
 }) {
   const studio = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   const [visible, setVisible] = useState(true),
     [foreground, setForeground] = useState(!document.hidden);
+  const [covered, setCovered] = useState(false);
   const [mobile, setMobile] = useState(
     () => matchMedia("(max-width:800px)").matches,
   );
   const [touchRotation, setTouchRotation] = useState(false);
-  const active = visible && foreground;
-  const interactive = !preview && (!mobile || touchRotation);
+  const active = visible && foreground && !covered;
+  const opening = presentation === "title" || presentation === "creation";
+  const immersive = presentation !== "inspection";
+  const interactive = !preview && !opening && (!mobile || touchRotation);
   useEffect(() => {
     const observer = new IntersectionObserver((entries) =>
       setVisible(entries[0]?.isIntersecting ?? false),
     );
     if (studio.current) observer.observe(studio.current);
     const visibility = () => setForeground(!document.hidden);
+    const overlay = (e: Event) =>
+      setCovered(
+        (e as CustomEvent<boolean>).detail &&
+          !studio.current?.closest('[aria-modal="true"]'),
+      );
     const query = matchMedia("(max-width:800px)");
     const resize = () => setMobile(query.matches);
     document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("bulk-life-overlay", overlay);
     query.addEventListener("change", resize);
     return () => {
       observer.disconnect();
       document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("bulk-life-overlay", overlay);
       query.removeEventListener("change", resize);
     };
   }, []);
   const [loadedModel, setLoadedModel] = useState<string | null>(null);
   const loaded = loadedModel === model;
   const [view, setView] = useState({ angle: 0, revision: 0 }),
-    [playing, setPlaying] = useState(
-      () => !preview && !matchMedia("(prefers-reduced-motion: reduce)").matches,
-    ),
+    [playing, setPlaying] = useState(() => !preview && !reduced),
     [quality, setQuality] = useState(() => {
       try {
         const saved = localStorage.getItem("bulk-life-quality");
@@ -459,8 +567,22 @@ export function BodyView({
       return !window.matchMedia("(max-width:800px)").matches;
     }),
     [clip, setClip] = useState(defaultClip),
-    [mode, setMode] = useState<Mode>("normal");
+    [mode, setMode] = useState<Mode>("normal"),
+    [framing, setFraming] = useState<"full" | "face">("full"),
+    [wear, setWear] = useState(immersive);
   const capture = useRef<(() => string) | null>(null);
+  useEffect(() => setPlaying(!preview && !reduced), [reduced, preview]);
+  useEffect(() => {
+    const update = () => {
+      try {
+        const saved = localStorage.getItem("bulk-life-quality");
+        if (saved === "standard" || saved === "light")
+          setQuality(saved === "standard");
+      } catch {}
+    };
+    window.addEventListener(PRESENTATION_EVENT, update);
+    return () => window.removeEventListener(PRESENTATION_EVENT, update);
+  }, []);
   useEffect(() => setClip(defaultClip), [defaultClip]);
   const onReady = useMemo(() => () => setLoadedModel(model), [stage, model]);
   const download = () => {
@@ -501,11 +623,14 @@ export function BodyView({
   return (
     <div
       ref={studio}
-      className={`body-studio${preview ? " studio-preview" : ""}`}
+      className={`body-studio presentation-${presentation}${preview ? " studio-preview" : ""}`}
       data-rendering={active ? "visible" : "paused"}
       data-rotation={interactive ? "free" : "locked"}
     >
       <div className="body-view">
+        {!loaded && !stage && (
+          <img className="scene-poster" src="/assets/gym-loading.jpg" alt="" />
+        )}
         {!loaded && (
           <div className="model-loading" role="status">
             3Dモデルを読み込み中…
@@ -523,12 +648,13 @@ export function BodyView({
               preserveDrawingBuffer: !preview,
             }}
           >
-            <color attach="background" args={["#283530"]} />
-            <ambientLight intensity={0.95} />
-            <hemisphereLight args={["#e9f0ed", "#4b4940", 1.3]} />
+            <color attach="background" args={["#172b27"]} />
+            <ambientLight intensity={0.28} />
+            <hemisphereLight args={["#c6d7e0", "#424338", 0.65]} />
             <directionalLight
               position={[-2, 4, 3]}
-              intensity={2.6}
+              intensity={1.8}
+              color="#fff0db"
               castShadow={quality && !preview}
               shadow-mapSize={[1024, 1024]}
               shadow-normalBias={0.02}
@@ -536,12 +662,13 @@ export function BodyView({
             />
             <directionalLight
               position={[0, 3, -4]}
-              intensity={2.6}
-              color="#d1dbcd"
+              intensity={1.6}
+              color="#c1d8df"
             />
-            <directionalLight position={[2, 2, 3]} intensity={1} />
+            <directionalLight position={[2, 2, 3]} intensity={0.55} />
             <Suspense fallback={null}>
-              {stage ? <Environment stage={stage} /> : <Studio />}
+              {stage ? <Environment stage={stage} /> : <GymRoom />}
+              <ContactShade />
               <Athlete
                 body={body}
                 baseline={baseline}
@@ -550,9 +677,13 @@ export function BodyView({
                 clip={clip}
                 playing={playing && active}
                 mode={mode}
-                onSelect={onSelectPart}
+                onSelect={
+                  presentation === "inspection" ? onSelectPart : undefined
+                }
                 onReady={onReady}
                 model={model}
+                wear={wear || opening}
+                presentation={presentation}
               />
             </Suspense>
             <Controls
@@ -560,6 +691,8 @@ export function BodyView({
               revision={view.revision}
               capture={capture}
               interactive={interactive}
+              presentation={presentation}
+              framing={framing}
             />
             <FrameClock
               active={active}
@@ -568,7 +701,7 @@ export function BodyView({
             />
           </Canvas>
         </ViewError>
-        {!preview && (
+        {!preview && !immersive && (
           <div className="scene-label">
             <span>{stage ? "COMPETITION STAGE" : "BODY STUDIO"}</span>
             <small>
@@ -582,7 +715,7 @@ export function BodyView({
             </small>
           </div>
         )}
-        {!preview && (
+        {!preview && !immersive && (
           <div className="view-controls">
             <div>
               {[
@@ -625,18 +758,41 @@ export function BodyView({
           </div>
         )}
       </div>
-      {!preview && mobile && (
+      {!preview && !opening && (
+        <div className="hero-view-tools" aria-label="人物の見方">
+          <button
+            onClick={() => {
+              setFraming("full");
+              setView((v) => ({ angle: 0, revision: v.revision + 1 }));
+            }}
+          >
+            視点を戻す
+          </button>
+          <button
+            onClick={() => {
+              setFraming((v) => (v === "face" ? "full" : "face"));
+              setView((v) => ({ angle: 0, revision: v.revision + 1 }));
+            }}
+          >
+            {framing === "face" ? "全身を見る" : "顔を近くで見る"}
+          </button>
+          <button onClick={() => setWear(!wear)}>
+            {wear ? "身体を確認" : "ウェアを着る"}
+          </button>
+        </div>
+      )}
+      {!preview && mobile && !opening && (
         <button
           className="touch-rotation"
           aria-pressed={touchRotation}
           onClick={() => setTouchRotation(!touchRotation)}
         >
           {touchRotation
-            ? "回転操作をロックしてスクロール"
-            : "回転操作を有効にする"}
+            ? "3D操作を終了してスクロール"
+            : "指で回転・ピンチで拡大"}
         </button>
       )}
-      {!preview && (
+      {!preview && !immersive && (
         <div className="body-options">
           <label>
             ポーズ・動作
@@ -664,7 +820,7 @@ export function BodyView({
           <button onClick={download}>身体カードを保存</button>
         </div>
       )}
-      {!preview && mode !== "normal" && (
+      {!preview && !immersive && mode !== "normal" && (
         <p className="heat-legend">
           {MODES[mode]}：青は低い値、赤は高い値。
           {mode === "recovery"

@@ -5,3 +5,4 @@ import './ui/career.css';
 createRoot(document.getElementById('root')!).render(<App/>);
 
 import "./ui/mobile.css";
+import "./ui/cinematic.css";

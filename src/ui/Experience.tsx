@@ -362,6 +362,14 @@ export function DayResult({
   summary: DailySummary;
   onNext: () => void;
 }) {
+  // The result action occupies the same mobile position as the day action.
+  // A second tap from the previous screen must not dismiss the new result.
+  const [canContinue, setCanContinue] = useState(false);
+  useEffect(() => {
+    setCanContinue(false);
+    const timer = window.setTimeout(() => setCanContinue(true), 500);
+    return () => window.clearTimeout(timer);
+  }, [s.day]);
   const d = s.detail;
   const skill = d
     ? (PARTS.reduce((v, p) => v + d.after.ability[p] - d.before.ability[p], 0) /
@@ -489,7 +497,7 @@ export function DayResult({
           {yen(s.fixed)} / ジム {yen(s.gym)}
         </p>
       </details>
-      <button className="primary" onClick={onNext}>
+      <button className="primary" disabled={!canContinue} onClick={onNext}>
         翌日の作戦を決める
       </button>
     </section>

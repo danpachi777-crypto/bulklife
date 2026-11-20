@@ -54,6 +54,7 @@ import { careerId } from "../core/identity";
 import { PwaSettings, PwaNotice } from "../pwa/PwaControls";
 import { usePwa } from "../pwa/usePwa";
 import "./experience.css";
+import { Opening } from "./Opening";
 type Tab = "today" | "plan" | "career" | "records" | "settings";
 type Panel = { kind: "training" | "food" | "rest"; value: Career } | null;
 const seed = () => crypto.getRandomValues(new Uint32Array(1))[0] || 1;
@@ -67,6 +68,7 @@ const NAV = [
 export function App() {
   useVisualViewport();
   const pwa = usePwa();
+  const [screen, setScreen] = useState<"title" | "create" | "game">("title");
   const [lib, setLib] = useState<Library | null>(null),
     [career, setCareer] = useState<Career | null>(null),
     [tab, setTab] = useState<Tab>("today"),
@@ -134,8 +136,8 @@ export function App() {
     if (tab === "records" && career)
       void run(async () => setLogs(await readLogs(career.athlete.id)));
   }, [tab, careerArea, career?.athlete.id]);
-  const draft = lib?.draft ?? null,
-    shown = draft ?? career;
+  const draft = screen === "create" ? (lib?.draft ?? null) : null,
+    shown = draft ?? career ?? lib?.draft;
   const commit = async (c: Career, extra: DailySummary[] = []) => {
     if (!lib) return;
     await save(lib, c, extra);
@@ -165,6 +167,7 @@ export function App() {
       const next = drawDraft(lib, id());
       await save(next);
       setLib(next);
+      setScreen("create");
       setTab("today");
       setResult(null);
     }, true);
@@ -184,6 +187,7 @@ export function App() {
       await save(next, started);
       setLib(next);
       setCareer(started);
+      setScreen("game");
       setTab("today");
     }, true);
   };
@@ -209,6 +213,7 @@ export function App() {
       setLib(next);
       if (next.activeId) setCareer(await loadCareer(next.activeId));
       setRoster(await Promise.all(next.ids.map(loadCareer)));
+      setScreen(next.activeId ? "game" : "create");
       setTab("career");
       setCareerArea("roster");
       setResult(null);
@@ -241,8 +246,131 @@ export function App() {
     );
   const a = shown.athlete,
     retired = a.status === "retired";
+  const creationForm = draft ? (
+    <section className="draft-banner">
+      <div>
+        <b>
+          抽選された選手：{a.profileId} / {a.profileTitle}
+        </b>
+        <span>6種類から毎回1/6。得意なことと生活条件が違います。</span>
+        <label>
+          選手名
+          <input
+            maxLength={32}
+            value={a.name}
+            onChange={(e) =>
+              setLib({
+                ...lib,
+                draft: {
+                  ...draft,
+                  athlete: { ...a, name: e.target.value },
+                },
+              })
+            }
+          />
+        </label>
+        <label>
+          髪型
+          <select
+            value={a.appearance.hair}
+            onChange={(e) =>
+              setLib({
+                ...lib,
+                draft: {
+                  ...draft,
+                  athlete: {
+                    ...a,
+                    appearance: {
+                      ...a.appearance,
+                      hair: Number(e.target.value),
+                    },
+                  },
+                },
+              })
+            }
+          >
+            <option value={0}>ナチュラルショート</option>
+            <option value={1}>クロップ</option>
+          </select>
+        </label>
+      </div>
+      <div className="button-row">
+        <button disabled={busy} onClick={reroll}>
+          もう一度抽選
+        </button>
+        {lib.activeId && (
+          <button
+            disabled={busy}
+            onClick={() =>
+              void run(async () => {
+                const next = { ...lib, draft: null };
+                await save(next);
+                setLib(next);
+                setScreen("game");
+              }, true)
+            }
+          >
+            今の選手へ戻る
+          </button>
+        )}
+        <button disabled={busy} onClick={exportData}>
+          保存を書き出す
+        </button>
+        <button disabled={busy} onClick={() => file.current?.click()}>
+          保存を読み込む
+        </button>
+        <button
+          className="primary"
+          disabled={busy || !a.name.trim()}
+          onClick={start}
+        >
+          この選手で始める
+        </button>
+      </div>
+    </section>
+  ) : null;
+  if (screen !== "game")
+    return (
+      <>
+        <Opening
+          c={screen === "title" ? (career ?? shown) : shown}
+          phase={screen === "title" ? "title" : "create"}
+          hasSave={!!career}
+          busy={busy}
+          pwa={pwa}
+          error={error}
+          onBegin={() => {
+            if (lib.draft) setScreen("create");
+            else reroll();
+          }}
+          onContinue={() => {
+            setScreen("game");
+            setTab("today");
+            setResult(null);
+          }}
+          onTitle={() => setScreen("title")}
+          onExport={exportData}
+          onImport={() => file.current?.click()}
+        >
+          {creationForm}
+        </Opening>
+        <input
+          ref={file}
+          type="file"
+          accept="application/json,.json"
+          hidden
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) importData(f);
+            e.target.value = "";
+          }}
+        />
+      </>
+    );
   return (
-    <div className="experience-app">
+    <div
+      className={`experience-app${tab === "today" && !result ? " athlete-first" : ""}`}
+    >
       <aside className="main-nav">
         <button
           className="wordmark"
@@ -346,88 +474,6 @@ export function App() {
             <button onClick={() => setError("")}>閉じる</button>
           </div>
         )}
-        {draft && (
-          <section className="draft-banner">
-            <div>
-              <b>
-                抽選された選手：{a.profileId} / {a.profileTitle}
-              </b>
-              <span>6種類から毎回1/6。得意なことと生活条件が違います。</span>
-              <label>
-                選手名
-                <input
-                  maxLength={32}
-                  value={a.name}
-                  onChange={(e) =>
-                    setLib({
-                      ...lib,
-                      draft: {
-                        ...draft,
-                        athlete: { ...a, name: e.target.value },
-                      },
-                    })
-                  }
-                />
-              </label>
-              <label>
-                髪型
-                <select
-                  value={a.appearance.hair}
-                  onChange={(e) =>
-                    setLib({
-                      ...lib,
-                      draft: {
-                        ...draft,
-                        athlete: {
-                          ...a,
-                          appearance: {
-                            ...a.appearance,
-                            hair: Number(e.target.value),
-                          },
-                        },
-                      },
-                    })
-                  }
-                >
-                  <option value={0}>クロップ</option>
-                  <option value={1}>ショート</option>
-                </select>
-              </label>
-            </div>
-            <div className="button-row">
-              <button disabled={busy} onClick={reroll}>
-                もう一度抽選
-              </button>
-              {lib.activeId && (
-                <button
-                  disabled={busy}
-                  onClick={() =>
-                    void run(async () => {
-                      const next = { ...lib, draft: null };
-                      await save(next);
-                      setLib(next);
-                    }, true)
-                  }
-                >
-                  今の選手へ戻る
-                </button>
-              )}
-              <button disabled={busy} onClick={exportData}>
-                保存を書き出す
-              </button>
-              <button disabled={busy} onClick={() => file.current?.click()}>
-                保存を読み込む
-              </button>
-              <button
-                className="primary"
-                disabled={busy || !a.name.trim()}
-                onClick={start}
-              >
-                この選手で始める
-              </button>
-            </div>
-          </section>
-        )}
         {!draft && shown.pendingEvent && (
           <section className="event" role="alert">
             <b>進行を一時停止しています</b>
@@ -486,6 +532,15 @@ export function App() {
               onChange={changeCareer}
             />
           )
+        )}
+        {!draft && !result && tab === "settings" && (
+          <button
+            className="title-return"
+            disabled={busy}
+            onClick={() => setScreen("title")}
+          >
+            タイトルへ戻る
+          </button>
         )}
         {!draft && !result && tab === "plan" && (
           <Weekly
@@ -589,6 +644,7 @@ export function App() {
             <PwaSettings state={pwa} />
             <section className="paper">
               <h2>保存・再開</h2>
+
               <p>
                 この端末・このブラウザーのIndexedDBへ、確定した設定・日次実績・選手をその都度保存します。端末間の自動共有はありません。別の端末やURLへ移る時は保存を書き出し、移動先で読み込んでください。読み込みは既存の選手を消さず、別枠へ追加します。
               </p>
@@ -676,7 +732,7 @@ export function App() {
         />
         <footer>
           BULK LIFE <span>その選択が、身体になる。</span>
-          <small>LOCAL SAVE / 0.3.1</small>
+          <small>LOCAL SAVE / 0.4.0</small>
         </footer>
       </main>
       {panel && (

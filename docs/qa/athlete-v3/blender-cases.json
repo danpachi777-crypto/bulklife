@@ -1,0 +1,32 @@
+[
+  {
+    "case": "slim",
+    "muscleMorph": -0.45,
+    "fatMorph": -0.45,
+    "note": "Asset-space comparison, not a saved career or real measurement"
+  },
+  {
+    "case": "standard",
+    "muscleMorph": 0,
+    "fatMorph": 0,
+    "note": "Asset-space comparison, not a saved career or real measurement"
+  },
+  {
+    "case": "intermediate",
+    "muscleMorph": 0.45,
+    "fatMorph": 0.15,
+    "note": "Asset-space comparison, not a saved career or real measurement"
+  },
+  {
+    "case": "muscular-fat",
+    "muscleMorph": 1,
+    "fatMorph": 0.75,
+    "note": "Asset-space comparison, not a saved career or real measurement"
+  },
+  {
+    "case": "muscular-lean",
+    "muscleMorph": 1,
+    "fatMorph": -0.6,
+    "note": "Asset-space comparison, not a saved career or real measurement"
+  }
+]

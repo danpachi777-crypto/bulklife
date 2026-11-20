@@ -16,8 +16,11 @@ export function pwaBuild() {
           if (fs.statSync(file).isDirectory()) walk(file);
           else {
             const url = "/" + path.relative(root, file).replaceAll("\\", "/");
+            // The preserved authoring/reference v2 file is not a runtime URL.
+            if (url === "/assets/athlete-v2.glb") continue;
             if (
               /\.(js|css|html|glb|webmanifest)$/.test(url) ||
+              url === "/assets/gym-loading.jpg" ||
               url.startsWith("/icons/")
             )
               files.push(url);
