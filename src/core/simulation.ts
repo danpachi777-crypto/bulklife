@@ -9,6 +9,7 @@ import { lifecycleBeforeDay, lifecycleAfterDay } from "./competitions";
 import { nutritionPlan } from "./nutrition";
 import { executeExercises } from "./training";
 import { sessionMinutes } from "./exercises";
+import { recordCoachDay } from "./coachHistory";
 import { gameDate } from "./calendar";
 export { gameDate } from "./calendar";
 import {
@@ -591,7 +592,7 @@ export function simulateDay(
       posing: after.progress?.posing ?? 0,
     },
   };
-  return { career: after, summary };
+  return { career: recordCoachDay(after, summary), summary };
 }
 export function advance(
   input: Career,

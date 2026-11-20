@@ -11,6 +11,7 @@ import { validateProgress, validateExercisePlans } from "./validateProgress";
 import { validateLocal } from "./localCompetitions";
 import { EXERCISES } from "./exercises";
 import { unpackLog } from "./logCodec";
+import { validateCoach } from './validateCoach';
 function obj(x: unknown): x is Record<string, any> {
   return !!x && typeof x === "object" && !Array.isArray(x);
 }
@@ -265,6 +266,7 @@ export function validateCareer(x: unknown): asserts x is Career {
   )
     fail();
   validateBody(a.body);
+  if(x.coachingGuide!==undefined)validateCoach(x.coachingGuide,a.day);
   validatePlan(x.plan);
   if (x.savedPlan !== undefined) validatePlan(x.savedPlan);
   if (

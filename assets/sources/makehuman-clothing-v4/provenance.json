@@ -1,0 +1,46 @@
+{
+  "author": "makehuman_system / MakeHuman Community",
+  "license": "CC0-1.0",
+  "catalog": "https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+  "url": "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip",
+  "archiveBytes": 280737770,
+  "archiveLastModified": "2024-04-14",
+  "retrieved": "2026-11-21",
+  "files": [
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06.thumb",
+      "bytes": 31691,
+      "sha256": "df34cd082fd23e39f25f78d64fb49c27ad5ed054077b4ea3b101c7a59a93e459"
+    },
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06.obj",
+      "bytes": 300507,
+      "sha256": "9a86386435d7557a520320b8db4cd0ffe4755040044d1925c2b5730b864a603e"
+    },
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06.mhmat",
+      "bytes": 1396,
+      "sha256": "2210d331d0e319147280363e281a4e98d24b71e678dac243d1250f5d27e9169f"
+    },
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06_ao.png",
+      "bytes": 1663549,
+      "sha256": "dc27b02602060a8df4c1117f55bde7dea952342d847003afe2c6e12145301147"
+    },
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06.mhclo",
+      "bytes": 252642,
+      "sha256": "9cebda22a0fa57fc556a1a77723f59b176724dc7e987c01214283677444ddcc5"
+    },
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06_normal.png",
+      "bytes": 2235477,
+      "sha256": "ccdbf48a86eb922f5ccf38a7d3dc9de8828a6460c687eb84dacf8315d079a343"
+    },
+    {
+      "path": "clothes/male_casualsuit06/male_casualsuit06_diffuse.png",
+      "bytes": 1923464,
+      "sha256": "e9a581e0d4eb64c7a031886f2faf109a4703a3046a5fcc97ea9ce9112e99a344"
+    }
+  ]
+}

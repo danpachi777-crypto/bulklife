@@ -218,6 +218,7 @@ export const VERSIONS = {
   rules: "2026-jbbf-ifbb-2027oqs-game-1",
 } as const;
 export interface Career {
+  coachingGuide?: import('./coachTypes').CoachingGuide;
   versions: DataVersions;
   athlete: AthleteState;
   plan: WeeklyPlan;

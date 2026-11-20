@@ -17,7 +17,11 @@ export function suggestMeals(c:Career,purpose:CareerProgress['purpose']):MealIte
 export function nutritionPlan(c:Career){
  const p=c.progress;
  if(!p||p.mealMode==='aggregate')return {calories:c.plan.calories,protein:c.plan.protein,cost:c.plan.foodCost,prep:c.plan.prep,nutrients:null};
- const n=mealTotals(p.meals);return {calories:n.calories,protein:n.protein,cost:n.cost,prep:clamp(n.prep/60,.25,2),nutrients:n};
+ const n=mealTotals(p.meals),guide=c.coachingGuide;
+ const coached=guide?.ownership.food==='coach';
+ const service=coached?(guide.foodStyle==='quick'?1.38:guide.foodStyle==='budget'?.83:1):1;
+ const effort=coached?(guide.foodStyle==='quick'?.35:guide.foodStyle==='budget'?1.35:1):1;
+ return {calories:n.calories,protein:n.protein,cost:coached?Math.min(guide!.budget,Math.max(300,Math.round(n.cost*service))):n.cost,prep:clamp(n.prep/60*effort,.25,2),nutrients:n};
 }
 export function useMealTemplate(c:Career,purpose:CareerProgress['purpose']):Career{
  if(!c.progress)throw new Error('競技キャリアを有効にしてください');const next={...c,progress:{...c.progress,purpose,mealMode:'foods' as const,meals:suggestMeals(c,purpose)}};

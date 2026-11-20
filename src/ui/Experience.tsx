@@ -16,6 +16,8 @@ import { planIssues, gameDate } from "../core/simulation";
 import { BodyView } from "../view/BodyView";
 import { AthleteSummary } from "./AthleteSummary";
 import { useMobileLayout } from "./useMobileLayout";
+import {CoachToday,CoachReview,CoachWeek} from './Coach';
+import {explainCoachResult,FOOD_STYLES} from '../core/coach';
 import {
   LOCAL_DEFS,
   localEditions,
@@ -54,6 +56,8 @@ export function Today({
   onStep,
   onTab,
   onChange,
+  onConsult,
+  onCoachChange,
 }: {
   c: Career;
   busy: boolean;
@@ -64,6 +68,8 @@ export function Today({
   onStep: () => void;
   onTab: (s: "plan" | "career" | "records") => void;
   onChange: (c: Career) => void;
+  onConsult:()=>void;
+  onCoachChange:(c:Career)=>void;
 }) {
   const a = c.athlete,
     b = a.body,
@@ -95,6 +101,7 @@ export function Today({
     <div className="today-layout">
       <AthleteSummary c={c} part={part} setPart={setPart} />
       <section className="strategy-column">
+        <CoachToday c={c} busy={busy} onConsult={onConsult}/>
         <div className="section-heading">
           <div>
             <span className="eyebrow">TODAY'S STRATEGY</span>
@@ -104,7 +111,7 @@ export function Today({
             {["月", "火", "水", "木", "金", "土", "日"][a.day % 7]}曜日
           </span>
         </div>
-        {!c.tutorialHidden && (
+        {!c.tutorialHidden && !c.coachingGuide && (
           <div className="first-guide">
             <b>
               {a.day === 0
@@ -161,7 +168,7 @@ export function Today({
                 ? "回復期間中は筋力練習を休み、予定と実績の違いを記録します。"
                 : d.focus === "rest"
                   ? "筋力練習は行わず、回復に時間を使います。"
-                  : `${d.start}時開始 · ${d.exercises ? d.exercises.reduce((s, e) => s + e.sets, 0) + "セット（種目別）" : d.sets + "セット単位（簡単計画）"} · 余力 RIR ${d.rir}`}
+                  : `${d.start}時開始 · ${d.exercises ? d.exercises.reduce((s, e) => s + e.sets, 0) + "セット（種目別）" : d.sets + "セット単位（簡単計画）"} · ${c.coachingGuide?.ownership.training==='coach'?(d.rir>=5?'軽め':d.rir>=3?'標準':'しっかり'):`余力 RIR ${d.rir}`}`}
           </p>
           <button
             disabled={busy || draft || retired}
@@ -186,7 +193,7 @@ export function Today({
             </p>
           )}
         </article>
-        <article className="strategy-card">
+        <article className={`strategy-card${c.coachingGuide?.ownership.food==='coach'?' coached-food':''}`}>
           <span className="card-number">02 / EAT</span>
           <h3>
             食事{" "}
@@ -195,13 +202,12 @@ export function Today({
             </span>
           </h3>
           <strong>
-            {c.progress?.mealMode === "foods"
+            {c.coachingGuide?.ownership.food==='coach'?FOOD_STYLES[c.coachingGuide.foodStyle]:c.progress?.mealMode === "foods"
               ? "食品と量から作る食事"
               : "エネルギーとタンパク質の簡単設定"}
           </strong>
           <p>
-            {Math.round(n.calories)} kcal · P {Math.round(n.protein)}g ·{" "}
-            {yen(n.cost)}/日
+            {c.coachingGuide?.ownership.food==='coach'?`${yen(n.cost)} / 準備${Math.round(n.prep*60)}分`:`${Math.round(n.calories)} kcal · P ${Math.round(n.protein)}g · ${yen(n.cost)}/日`}
           </p>
           <button
             disabled={busy || draft || retired}
@@ -259,9 +265,9 @@ export function Today({
             disabled={busy || draft || retired || !!c.pendingEvent}
             onClick={onStep}
           >
-            {busy ? "今日を処理・保存中…" : "この内容で今日を過ごす"}
+            {busy ? "今日を処理・保存中…" : "この計画で進める"}
           </button>
-          <small>練習・食事・休養を実行して、翌日の結果を表示します。</small>
+          <small>予定：{eventRest||injuryRest||d.focus==='rest'?'練習休み':`${FOCUS_LABELS[d.focus]}${Math.round(minutes)}分`}・食費{yen(n.cost)}・睡眠{c.plan.sleep}時間。実行後、翌日の結果へ。</small>
           {draft && (
             <small>先に「この選手で始める」を押すと実行できます。</small>
           )}
@@ -269,6 +275,8 @@ export function Today({
         </div>
       </section>
       <aside className="goals-column">
+        <CoachReview c={c} busy={busy} onChange={onCoachChange}/>
+        {c.coachingGuide&&c.athlete.day%7===0&&<CoachWeek c={c} onRecords={()=>onTab('records')}/>}
         <details className="home-agenda" open={!mobile}>
           <summary>目標・大会・今週の予定</summary>
           <section className="paper">
@@ -358,9 +366,13 @@ export function Today({
 export function DayResult({
   summary: s,
   onNext,
+  career,
+  onRecords,
 }: {
   summary: DailySummary;
   onNext: () => void;
+  career?:Career;
+  onRecords?:()=>void;
 }) {
   // The result action occupies the same mobile position as the day action.
   // A second tap from the previous screen must not dismiss the new result.
@@ -371,6 +383,7 @@ export function DayResult({
     return () => window.clearTimeout(timer);
   }, [s.day]);
   const d = s.detail;
+  const explanation=explainCoachResult(s);
   const skill = d
     ? (PARTS.reduce((v, p) => v + d.after.ability[p] - d.before.ability[p], 0) /
         16) *
@@ -381,6 +394,8 @@ export function DayResult({
       <span className="eyebrow">A DAY IN YOUR CAREER</span>
       <h2>{dayDate(s.day)}の結果</h2>
       <p>小さな変化も、今日の実績として残りました。</p>
+      <div className="coach-result"><h3>{explanation.what}</h3><p>{explanation.meaning}</p><p>{explanation.next}</p></div>
+      {career&&onRecords&&career.athlete.day%7===0&&<CoachWeek c={career} onRecords={onRecords}/>}
       <div className="result-grid">
         <article>
           <h3>練習</h3>

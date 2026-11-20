@@ -27,6 +27,7 @@ import {
   DoubleSide,
 } from "three";
 import { GymRoom, ContactShade } from "./GymRoom";
+import {coveredSkinIndex} from './clothingCoverage';
 import {
   useReducedMotion,
   PRESENTATION_EVENT,
@@ -56,6 +57,7 @@ import { influence, selectedRegion } from "./bodyRegions";
 const CLIPS: Record<string, string> = {
   Breathing: "リラックス・呼吸",
   Idle: "待機",
+  GymIdle: "自然な待機・呼吸",
   FrontDoubleBiceps: "フロント・ダブルバイセップス",
   FrontLatSpread: "フロント・ラットスプレッド",
   SideChest: "サイドチェスト",
@@ -93,7 +95,7 @@ function Controls({
   capture: React.MutableRefObject<(() => string) | null>;
   interactive: boolean;
   presentation: string;
-  framing: "full" | "face";
+  framing: "full" | "face" | "upper";
 }) {
   const { camera, gl, scene, invalidate, size } = useThree();
   const controls = useMemo(
@@ -106,7 +108,7 @@ function Controls({
     controls.minDistance = 0.6;
     controls.maxDistance = MAX_CAMERA_DISTANCE;
     controls.minPolarAngle = 0.5;
-    controls.maxPolarAngle = 1.9;
+    controls.maxPolarAngle = 1.48;
     controls.enableDamping = true;
     controls.dampingFactor = 0.15;
     controls.rotateSpeed = 0.55;
@@ -131,9 +133,9 @@ function Controls({
     const seated = presentation === "title";
     const distance =
       framing === "face"
-        ? 0.76
-        : Math.max(2.85, 1.1 / (size.width / size.height));
-    const target = framing === "face" ? 1.63 : seated ? 0.76 : 0.94;
+        ? 0.82
+        : framing==='upper'?1.45:Math.max(seated?2.65:2.85, 1.05 / (size.width / size.height));
+    const target = framing === "face" ? 1.63 : framing==='upper'?1.25:seated ? 0.76 : 0.91;
     camera.position.set(
       Math.sin(angle) * distance,
       target + (framing === "face" ? 0.015 : 0.18),
@@ -212,6 +214,10 @@ function Athlete({
     r.traverse((o) => {
       if (o instanceof Mesh) {
         o.geometry = o.geometry.clone();
+        if(o instanceof SkinnedMesh&&o.name==='BL_V2_AthleteBody'&&r.getObjectByName('BL_V4_TrainingShorts')){
+          o.userData.fullSkinIndex=o.geometry.index;
+          o.userData.clothedSkinIndex=coveredSkinIndex(o);
+        }
         const colorAttribute = o.geometry.getAttribute("color");
         if (colorAttribute) {
           o.userData.baseColors = linearVertexColors(colorAttribute);
@@ -221,12 +227,16 @@ function Athlete({
           : o.material.clone();
         o.castShadow = true;
         o.receiveShadow = true;
-        if (o.name === "BL_V3_NaturalHair") {
+        if (o.name === "BL_V3_NaturalHair" || o.name === 'BL_V4_Hair') {
           for (const mat of Array.isArray(o.material)
             ? o.material
             : [o.material]) {
-            if ("color" in mat) (mat.color as Color).setRGB(0.38, 0.34, 0.3);
+            if ("color" in mat) {
+              if(o.name==='BL_V4_Hair')(mat.color as Color).setRGB(0.45,0.35,0.27);
+              else (mat.color as Color).setRGB(0.38,0.34,0.3);
+            }
             mat.alphaTest = 0.4;
+            mat.alphaToCoverage = true;
             mat.transparent = false;
             mat.side = DoubleSide;
           }
@@ -242,7 +252,7 @@ function Athlete({
   useEffect(() => {
     const bones = ["handL", "handR"];
     equipment.forEach((prop, i) => {
-      const bone = root.getObjectByName(bones[i]);
+      const bone = root.getObjectByName(bones[i]) ?? root.getObjectByName(i===0?'hand.L':'hand.R');
       if (bone) {
         bone.add(prop);
         prop.position.set(0, 0.04, 0);
@@ -256,6 +266,8 @@ function Athlete({
     });
   }, [equipment, clip]);
   const mixer = useMemo(() => new AnimationMixer(root), [root]);
+  const expressionTime=useRef(0);
+  const faceParts=useMemo(()=>{const blink:Mesh[]=[],cloth:Mesh[]=[],eyes:{mesh:Mesh;origin:Vector3}[]=[];root.traverse(o=>{if(o instanceof Mesh){if(o.morphTargetDictionary?.blink!==undefined)blink.push(o);if(o.morphTargetDictionary?.seatedCloth!==undefined)cloth.push(o);if(/Iris|Pupil/.test(o.name))eyes.push({mesh:o,origin:o.position.clone()});}});return {blink,cloth,eyes};},[root]);
   useEffect(() => {
     const found =
       gltf.animations.find((a) => a.name === clip) ??
@@ -301,6 +313,7 @@ function Athlete({
     const values = morphValues(body),
       v = new Vector3();
     root.traverse((o) => {
+      if(o.name==='BL_V3_Trainers')o.visible=wear;
       if (!(o instanceof Mesh)) return;
       if (o.morphTargetDictionary && o.morphTargetInfluences)
         for (const [name, index] of Object.entries(o.morphTargetDictionary))
@@ -311,9 +324,11 @@ function Athlete({
       if (o.name === "BL_V2_Hair" || o.name === "BL_V3_HairFlow")
         o.visible = hair === 1;
       if (o.name === "BL_V3_NaturalHair") o.visible = hair === 0;
-      if (o.name === "BL_V3_TrainingTank" || o.name === "BL_V3_Trainers")
+      if (o.name === "BL_V3_TrainingTank" || o.name === "BL_V3_Trainers" || o.name === 'BL_V4_TrainingTank' || o.name === 'BL_V4_TrainingShorts')
         o.visible = wear;
+      if(o.name==='BL_V2_Shorts'&&root.getObjectByName('BL_V4_TrainingShorts'))o.visible=!wear;
       if (!["BL_AthleteBody", "BL_V2_AthleteBody"].includes(o.name)) return;
+      if(o.userData.fullSkinIndex)o.geometry.setIndex(wear?o.userData.clothedSkinIndex:o.userData.fullSkinIndex);
       const positions = o.geometry.attributes.position,
         colors = new Float32Array(positions.count * 3),
         color = new Color();
@@ -385,6 +400,14 @@ function Athlete({
     onSelect,
   ]);
   useFrame((_, delta) => {
+    if(playing)expressionTime.current+=Math.min(delta,.05);
+    const time=expressionTime.current;let cycle=time%27.9,blink=0;
+    for(const interval of [3.8,6.2,4.9,7.4,5.6]){if(cycle<interval){const t=(cycle-(interval-.18))/.18;if(t>=0&&t<=1)blink=Math.sin(t*Math.PI)**2;break;}cycle-=interval;}
+    for(const m of faceParts.blink)m.morphTargetInfluences![m.morphTargetDictionary!.blink]=playing?blink:0;
+    for(const {mesh,origin} of faceParts.eyes){mesh.position.copy(origin);if(playing){mesh.position.x+=.0008*Math.sin(time*.37);mesh.position.y+=.0003*Math.sin(time*.21+.7);}}
+    const actionData=gltf.animations.find(a=>a.name===clip),actionTime=actionData?mixer.clipAction(actionData).time:0;
+    const seated=clip==='SeatedPrepare'?1:clip==='StandUp'&&actionData?1-Math.min(1,actionTime/actionData.duration):0;
+    for(const m of faceParts.cloth)m.morphTargetInfluences![m.morphTargetDictionary!.seatedCloth]=seated;
     if (playing) {
       const action = gltf.animations.find((a) => a.name === clip);
       if (clip === "SeatedPrepare" && action) {
@@ -568,7 +591,7 @@ export function BodyView({
     }),
     [clip, setClip] = useState(defaultClip),
     [mode, setMode] = useState<Mode>("normal"),
-    [framing, setFraming] = useState<"full" | "face">("full"),
+    [framing, setFraming] = useState<"full" | "face" | "upper">("full"),
     [wear, setWear] = useState(immersive);
   const capture = useRef<(() => string) | null>(null);
   useEffect(() => setPlaying(!preview && !reduced), [reduced, preview]);
@@ -649,12 +672,12 @@ export function BodyView({
             }}
           >
             <color attach="background" args={["#172b27"]} />
-            <ambientLight intensity={0.28} />
-            <hemisphereLight args={["#c6d7e0", "#424338", 0.65]} />
+            <ambientLight intensity={0.42} />
+            <hemisphereLight args={["#e4e8ed", "#555253", 0.85]} />
             <directionalLight
-              position={[-2, 4, 3]}
-              intensity={1.8}
-              color="#fff0db"
+              position={[-1.5, 3.3, 2.2]}
+              intensity={2.0}
+              color="#fff5eb"
               castShadow={quality && !preview}
               shadow-mapSize={[1024, 1024]}
               shadow-normalBias={0.02}
@@ -662,10 +685,10 @@ export function BodyView({
             />
             <directionalLight
               position={[0, 3, -4]}
-              intensity={1.6}
-              color="#c1d8df"
+              intensity={0.9}
+              color="#d8e3f0"
             />
-            <directionalLight position={[2, 2, 3]} intensity={0.55} />
+            <directionalLight position={[2, 2, 2.5]} intensity={0.65} />
             <Suspense fallback={null}>
               {stage ? <Environment stage={stage} /> : <GymRoom />}
               <ContactShade />
@@ -766,15 +789,16 @@ export function BodyView({
               setView((v) => ({ angle: 0, revision: v.revision + 1 }));
             }}
           >
-            視点を戻す
+            全身・正面
           </button>
+          <button onClick={()=>{setFraming('upper');setView(v=>({angle:0,revision:v.revision+1}));}}>上半身</button>
           <button
             onClick={() => {
               setFraming((v) => (v === "face" ? "full" : "face"));
               setView((v) => ({ angle: 0, revision: v.revision + 1 }));
             }}
           >
-            {framing === "face" ? "全身を見る" : "顔を近くで見る"}
+            {framing === "face" ? "全身" : "顔"}
           </button>
           <button onClick={() => setWear(!wear)}>
             {wear ? "身体を確認" : "ウェアを着る"}
@@ -793,7 +817,7 @@ export function BodyView({
         </button>
       )}
       {!preview && !immersive && (
-        <div className="body-options">
+        <details className="studio-more"><summary>ポーズ・表示・画像保存</summary><div className="body-options">
           <label>
             ポーズ・動作
             <select value={clip} onChange={(e) => setClip(e.target.value)}>
@@ -818,7 +842,7 @@ export function BodyView({
             </select>
           </label>
           <button onClick={download}>身体カードを保存</button>
-        </div>
+        </div></details>
       )}
       {!preview && !immersive && mode !== "normal" && (
         <p className="heat-legend">

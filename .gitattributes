@@ -2,3 +2,4 @@
 assets/sources/makehuman/** -text
 # Preserve downloaded source bytes so provenance SHA256 remains reproducible.
 assets/sources/makehuman-system-v3/** -text -whitespace
+assets/sources/makehuman-clothing-v4/** -text -whitespace

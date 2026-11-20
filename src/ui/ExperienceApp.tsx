@@ -55,6 +55,9 @@ import { PwaSettings, PwaNotice } from "../pwa/PwaControls";
 import { usePwa } from "../pwa/usePwa";
 import "./experience.css";
 import { Opening } from "./Opening";
+import {CoachSetup,CoachConsult} from './Coach';
+import {setupCoach,prepareCoachDay,markManual,markChangedManual} from '../core/coach';
+import type {CoachSection} from '../core/coachTypes';
 type Tab = "today" | "plan" | "career" | "records" | "settings";
 type Panel = { kind: "training" | "food" | "rest"; value: Career } | null;
 const seed = () => crypto.getRandomValues(new Uint32Array(1))[0] || 1;
@@ -69,6 +72,8 @@ export function App() {
   useVisualViewport();
   const pwa = usePwa();
   const [screen, setScreen] = useState<"title" | "create" | "game">("title");
+  const [coachOpen,setCoachOpen]=useState(false);
+  const [coachSection,setCoachSection]=useState<CoachSection|undefined>();
   const [lib, setLib] = useState<Library | null>(null),
     [career, setCareer] = useState<Career | null>(null),
     [tab, setTab] = useState<Tab>("today"),
@@ -147,14 +152,15 @@ export function App() {
   const changeCareer = (value: Career | (() => Career)) => {
     if (career?.athlete.status === "retired") return;
     void run(async () => {
-      await commit(typeof value === "function" ? value() : value);
+      const next=typeof value === "function" ? value() : value;
+      await commit(career?markChangedManual(career,next):next);
     });
   };
   const step = (days: number) => {
     if (!career) return;
     void run(async () => {
       const next = advance(career, days);
-      await commit(next.career, next.logs);
+      await commit(prepareCoachDay(next.career), next.logs);
       setResult(next.logs.at(-1) ?? null);
       setNotice(
         `${next.logs.length}日分の実績を保存しました${next.career.pendingEvent ? "。重要な判断で停止しました" : ""}`,
@@ -181,9 +187,10 @@ export function App() {
         activeId: draft.athlete.id,
         ids: [...lib.ids, draft.athlete.id],
       };
-      const started = draft.local
+      const compatible = draft.local
         ? draft
         : { ...draft, local: createLocal(draft) };
+      const started=setupCoach(compatible);
       await save(next, started);
       setLib(next);
       setCareer(started);
@@ -269,31 +276,9 @@ export function App() {
             }
           />
         </label>
-        <label>
-          髪型
-          <select
-            value={a.appearance.hair}
-            onChange={(e) =>
-              setLib({
-                ...lib,
-                draft: {
-                  ...draft,
-                  athlete: {
-                    ...a,
-                    appearance: {
-                      ...a.appearance,
-                      hair: Number(e.target.value),
-                    },
-                  },
-                },
-              })
-            }
-          >
-            <option value={0}>ナチュラルショート</option>
-            <option value={1}>クロップ</option>
-          </select>
-        </label>
+        <span>外見で得意分野や生活条件は変わりません。</span>
       </div>
+      <CoachSetup c={draft} onChange={value=>setLib({...lib,draft:value})}/>
       <div className="button-row">
         <button disabled={busy} onClick={reroll}>
           もう一度抽選
@@ -324,7 +309,7 @@ export function App() {
           disabled={busy || !a.name.trim()}
           onClick={start}
         >
-          この選手で始める
+          おすすめの計画で始める
         </button>
       </div>
     </section>
@@ -513,6 +498,8 @@ export function App() {
         {result && !draft ? (
           <DayResult
             summary={result}
+            career={shown}
+            onRecords={()=>{setResult(null);setTab('records');}}
             onNext={() => {
               setResult(null);
               setTab("today");
@@ -526,7 +513,12 @@ export function App() {
               busy={busy}
               part={part}
               setPart={setPart}
-              onEdit={openPanel}
+              onEdit={kind=>{
+                if(kind!=='rest'&&career?.coachingGuide?.ownership[kind]==='coach'){setCoachSection(kind);setCoachOpen(true);}
+                else openPanel(kind);
+              }}
+              onConsult={()=>{setCoachSection(undefined);setCoachOpen(true);}}
+              onCoachChange={value=>void run(async()=>{await commit(value);})}
               onStep={() => step(1)}
               onTab={setTab}
               onChange={changeCareer}
@@ -732,9 +724,10 @@ export function App() {
         />
         <footer>
           BULK LIFE <span>その選択が、身体になる。</span>
-          <small>LOCAL SAVE / 0.4.0</small>
+          <small>LOCAL SAVE / 0.5.0</small>
         </footer>
       </main>
+      {coachOpen&&career&&<CoachConsult c={career} initialSection={coachSection} busy={busy} onClose={()=>setCoachOpen(false)} onAdopt={value=>void run(async()=>{await commit(value);setCoachOpen(false);})} onDetailed={(section:CoachSection)=>{setCoachOpen(false);openPanel(section);}}/>}
       {panel && (
         <ModalSheet
           title={
@@ -754,7 +747,7 @@ export function App() {
                 disabled={busy}
                 onClick={() =>
                   void run(async () => {
-                    await commit(panel.value);
+                    await commit(markManual(career?markChangedManual(career,panel.value):panel.value,[panel.kind]));
                     setPanel(null);
                   })
                 }

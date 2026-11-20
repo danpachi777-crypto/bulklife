@@ -24,6 +24,7 @@ export function TrainingScreen({
     [selected, setSelected] = useState("bench");
   const d = c.plan.days[day],
     e = exerciseById(selected)!;
+  const demonstration=selected==='ohp'?{clip:'TrainingPress',part:'frontDelts' as const,label:'立位オーバーヘッドプレス'}:selected==='squat'?{clip:'TrainingSquat',part:'quads' as const,label:'自重スクワット（荷重の実演ではありません）'}:null;
   const setExercises = (exercises: NonNullable<typeof d.exercises>) =>
     onChange({
       ...c,
@@ -376,16 +377,16 @@ export function TrainingScreen({
           </p>
           <details>
             <summary>練習動作を3Dで見る</summary>
-            <BodyView
+            {demonstration?<><p>{demonstration.label}</p><BodyView
               model={c.versions.model}
               body={c.athlete.body}
-              selected="sideDelts"
+              selected={demonstration.part}
               stage="gym"
-              defaultClip="TrainingPress"
-            />
+              defaultClip={demonstration.clip}
+            /></>:<p>この種目に対応する実演は準備していません。説明と対象部位を確認できます。</p>}
           </details>
           <p className="muted">
-            上の専用動作は立位オーバーヘッドプレス、前傾ダンベルロウ、自重スクワットです。他の種目と同じ動作であるとは扱いません。
+            実演は対応する動作がある種目だけに表示します。重量・姿勢はゲーム内の説明用で、現実の運動指導ではありません。
           </p>
         </section>
       )}
