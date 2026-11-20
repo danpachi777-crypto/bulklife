@@ -1,13 +1,17 @@
 {
   "name": "bulk-life",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "build": "tsc -b && vite build",
     "test": "tsx --test tests/*.test.ts",
-    "check": "tsc -b"
+    "check": "tsc -b",
+    "dev:lan": "vite --host 0.0.0.0 --port 5178 --strictPort",
+    "lan:url": "node scripts/lan-url.mjs",
+    "preview": "vite preview",
+    "assets:regions": "node scripts/sync-body-regions.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",

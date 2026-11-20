@@ -43,7 +43,7 @@ Open the preserved v1 source as the environment donor, then run the following in
 4. `refine_skinning_v2.py` keeps the shoulder field primarily on the clavicle instead of pulling the upper pectorals with the humerus. `sculpt_fat_v2.py` adds independent abdominal, flank, lumbar, hip and modest limb/cheek adipose volume to `bodyFat`.
 5. `animate_athlete_v2.py`, `texture_athlete_v2.py`, `finish_face_v2.py`, `fit_shorts_v2.py`.
 6. `export_athlete_v2.py` selects only the v2 collection and active scene. The output includes the 16 filtered actions and packed images.
-7. `qa_athlete_v2.py`, `qa_extremes_v2.py`, then `node scripts/verify-athlete-v2.mjs`.
+7. `qa_athlete_v2.py`, `qa_extremes_v2.py`, then `npm.cmd run assets:regions` and `node scripts/verify-athlete-v2.mjs`. The region sync writes only the small picking fields to `src/view/regionFields-v2.json`, because Vite does not allow runtime imports from its public directory. A regression test checks that these fields still exactly match the authored mapping.
 
 `protect_groin_v2.py` is a one-time migration of the prototype made before the midline mask was added to the sculpt script. Do not run it on a fresh build with the current sculpt script. The shipped blend already includes that correction. It prevents expanding thigh bellies from crossing the pelvis midline.
 

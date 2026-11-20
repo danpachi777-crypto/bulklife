@@ -48,11 +48,16 @@ import {
 } from "./Experience";
 import { createLocal, LOCAL_DEFS } from "../core/localCompetitions";
 import { draftAutosave } from "../core/draftAutosave";
+import { ModalSheet } from "./ModalSheet";
+import { useVisualViewport, useMobileLayout } from "./useMobileLayout";
+import { careerId } from "../core/identity";
+import { PwaSettings, PwaNotice } from "../pwa/PwaControls";
+import { usePwa } from "../pwa/usePwa";
 import "./experience.css";
 type Tab = "today" | "plan" | "career" | "records" | "settings";
 type Panel = { kind: "training" | "food" | "rest"; value: Career } | null;
 const seed = () => crypto.getRandomValues(new Uint32Array(1))[0] || 1;
-const id = () => "bl-" + crypto.randomUUID();
+const id = careerId;
 const NAV = [
   ["today", "今日"],
   ["plan", "週間計画"],
@@ -60,6 +65,8 @@ const NAV = [
   ["records", "記録"],
 ] as const;
 export function App() {
+  useVisualViewport();
+  const pwa = usePwa();
   const [lib, setLib] = useState<Library | null>(null),
     [career, setCareer] = useState<Career | null>(null),
     [tab, setTab] = useState<Tab>("today"),
@@ -127,38 +134,6 @@ export function App() {
     if (tab === "records" && career)
       void run(async () => setLogs(await readLogs(career.athlete.id)));
   }, [tab, careerArea, career?.athlete.id]);
-  useEffect(() => {
-    if (!panel) return;
-    const previous = document.activeElement as HTMLElement | null;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setPanel(null);
-        previous?.focus();
-      }
-      if (e.key === "Tab") {
-        const nodes = Array.from(
-          document.querySelectorAll<HTMLElement>(
-            ".edit-panel button:not([disabled]),.edit-panel input:not([disabled]),.edit-panel select:not([disabled])",
-          ),
-        );
-        const first = nodes[0],
-          last = nodes.at(-1);
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last?.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first?.focus();
-        }
-      }
-    };
-    document.addEventListener("keydown", handler);
-    document.querySelector<HTMLElement>(".edit-panel button")?.focus();
-    return () => {
-      document.removeEventListener("keydown", handler);
-      previous?.focus();
-    };
-  }, [!!panel]);
   const draft = lib?.draft ?? null,
     shown = draft ?? career;
   const commit = async (c: Career, extra: DailySummary[] = []) => {
@@ -284,6 +259,7 @@ export function App() {
             <button
               disabled={busy}
               className={tab === key ? "active" : ""}
+              aria-current={tab === key ? "page" : undefined}
               key={key}
               onClick={() => {
                 setTab(key);
@@ -311,14 +287,34 @@ export function App() {
       </aside>
       <main className="experience-main">
         <header className="career-header">
+          <button
+            className="mobile-settings"
+            disabled={busy}
+            onClick={() => {
+              setTab("settings");
+              setResult(null);
+            }}
+          >
+            知識・設定
+          </button>
           <div>
             <span className="eyebrow">
               {draft ? "YOUR STORY STARTS HERE" : "BULK LIFE / YOUR CAREER"}
             </span>
             <h1>
-              {draft
-                ? "ひとりの選手と、長いキャリアを。"
-                : `${a.name}のキャリア　${Math.floor(a.day / 7) + 1}週目・${["月", "火", "水", "木", "金", "土", "日"][a.day % 7]}曜日`}
+              <span className="mobile-label">
+                {draft ? "選手を迎えよう" : a.name}
+                <small>
+                  {draft
+                    ? "新しいキャリア"
+                    : `${Math.floor(a.day / 7) + 1}週目・${["月", "火", "水", "木", "金", "土", "日"][a.day % 7]}曜日`}
+                </small>
+              </span>
+              <span className="desktop-label">
+                {draft
+                  ? "ひとりの選手と、長いキャリアを。"
+                  : `${a.name}のキャリア　${Math.floor(a.day / 7) + 1}週目・${["月", "火", "水", "木", "金", "土", "日"][a.day % 7]}曜日`}
+              </span>
             </h1>
             <p>
               {draft
@@ -334,6 +330,16 @@ export function App() {
             </span>
           </div>
         </header>
+        <PwaNotice
+          state={pwa}
+          busy={busy}
+          onUpdate={() =>
+            void run(async () => {
+              await save(lib, draft ? undefined : shown);
+              pwa.applyUpdate();
+            }, true)
+          }
+        />
         {error && (
           <div className="error" role="alert">
             {error}
@@ -417,7 +423,7 @@ export function App() {
                 disabled={busy || !a.name.trim()}
                 onClick={start}
               >
-                この選手で始める →
+                この選手で始める
               </button>
             </div>
           </section>
@@ -580,10 +586,11 @@ export function App() {
         )}
         {!draft && !result && tab === "settings" && (
           <>
+            <PwaSettings state={pwa} />
             <section className="paper">
               <h2>保存・再開</h2>
               <p>
-                このブラウザーのIndexedDBへ、日次実績と選手を一緒に保存します。読み込みは既存の選手を消さず、別枠へ追加します。
+                この端末・このブラウザーのIndexedDBへ、確定した設定・日次実績・選手をその都度保存します。端末間の自動共有はありません。別の端末やURLへ移る時は保存を書き出し、移動先で読み込んでください。読み込みは既存の選手を消さず、別枠へ追加します。
               </p>
               <div className="button-row">
                 <button disabled={busy} onClick={exportData}>
@@ -669,63 +676,23 @@ export function App() {
         />
         <footer>
           BULK LIFE <span>その選択が、身体になる。</span>
-          <small>LOCAL SAVE / 0.3</small>
+          <small>LOCAL SAVE / 0.3.1</small>
         </footer>
       </main>
       {panel && (
-        <div className="panel-scrim">
-          <section
-            className="edit-panel"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${panel.kind === "training" ? "練習" : panel.kind === "food" ? "食事" : "休養"}の編集`}
-          >
-            <header>
-              <div>
-                <span className="eyebrow">EDIT YOUR STRATEGY</span>
-                <h2>
-                  {panel.kind === "training"
-                    ? "今日と今週の練習"
-                    : panel.kind === "food"
-                      ? "食事・生活を選ぶ"
-                      : "休養と補助練習を決める"}
-                </h2>
-              </div>
-              <button disabled={busy} onClick={() => setPanel(null)}>
-                変更を破棄して閉じる
-              </button>
-            </header>
-            <div className="panel-content">
-              {error && (
-                <p className="error" role="alert">
-                  {error}
-                </p>
-              )}
-              {panel.kind === "training" ? (
-                <TrainingScreen
-                  career={panel.value}
-                  onChange={panelChange}
-                  busy={busy}
-                />
-              ) : panel.kind === "food" ? (
-                <>
-                  <AggregateFood
-                    c={panel.value}
-                    onChange={panelChange}
-                    busy={busy}
-                  />
-                  <FoodLifeScreen
-                    career={panel.value}
-                    onChange={panelChange}
-                    busy={busy}
-                  />
-                </>
-              ) : (
-                <Rest c={panel.value} busy={busy} onChange={panelChange} />
-              )}
-            </div>
-            <div className="panel-actions">
-              <p>保存するまで実際の設定には反映されません。</p>
+        <ModalSheet
+          title={
+            panel.kind === "training"
+              ? "練習を変更"
+              : panel.kind === "food"
+                ? "食事を変更"
+                : "休養を変更"
+          }
+          busy={busy}
+          onClose={() => setPanel(null)}
+          actions={
+            <>
+              <p>保存すると今日の設定に反映します。</p>
               <button
                 className="primary"
                 disabled={busy}
@@ -733,15 +700,42 @@ export function App() {
                   void run(async () => {
                     await commit(panel.value);
                     setPanel(null);
-                    setTab("today");
                   })
                 }
               >
-                保存して今日へ戻る →
+                {busy ? "保存中…" : "保存して戻る"}
               </button>
-            </div>
-          </section>
-        </div>
+            </>
+          }
+        >
+          {error && (
+            <p className="error" role="alert">
+              {error}
+            </p>
+          )}
+          {panel.kind === "training" ? (
+            <TrainingScreen
+              career={panel.value}
+              onChange={panelChange}
+              busy={busy}
+            />
+          ) : panel.kind === "food" ? (
+            <>
+              <AggregateFood
+                c={panel.value}
+                onChange={panelChange}
+                busy={busy}
+              />
+              <FoodLifeScreen
+                career={panel.value}
+                onChange={panelChange}
+                busy={busy}
+              />
+            </>
+          ) : (
+            <Rest c={panel.value} busy={busy} onChange={panelChange} />
+          )}
+        </ModalSheet>
       )}
     </div>
   );
@@ -867,6 +861,7 @@ function Weekly({
   onEdit: (p: "training" | "food" | "rest") => void;
   onStep: () => void;
 }) {
+  const mobile = useMobileLayout();
   const n = nutritionPlan(c),
     disabled = busy || c.athlete.status === "retired";
   return (
@@ -901,133 +896,152 @@ function Weekly({
         </p>
         <div className="week-grid">
           {c.plan.days.map((d, i) => (
-            <article className="day-card" key={i}>
-              <b>{["月", "火", "水", "木", "金", "土", "日"][i]}曜日</b>
-              <small>
-                {i < 5
-                  ? `仕事${c.athlete.life.work / 5}h / 通勤${c.athlete.life.commute / 5}h`
-                  : "仕事なし"}
-              </small>
-              <label>
-                練習
-                <select
-                  value={d.focus}
-                  onChange={(e) => {
-                    const focus = e.target.value as Focus;
-                    onChange({
-                      ...c,
-                      plan: {
-                        ...c.plan,
-                        days: c.plan.days.map((x, j) =>
-                          i === j
-                            ? {
-                                ...x,
-                                focus,
-                                ...(x.exercises
-                                  ? { exercises: exerciseRecipe(focus, 2) }
-                                  : {}),
-                              }
-                            : x,
-                        ),
-                      },
-                    });
-                  }}
-                >
-                  {Object.entries(FOCUS_LABELS).map(([k, v]) => (
-                    <option key={k} value={k}>
-                      {v}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {d.focus !== "rest" && (
-                <>
-                  <Numeric
-                    label="開始時刻"
-                    value={d.start}
-                    min={6}
-                    max={23}
-                    step={0.5}
-                    onCommit={(start) =>
-                      onChange({
-                        ...c,
-                        plan: {
-                          ...c.plan,
-                          days: c.plan.days.map((x, j) =>
-                            i === j ? { ...x, start } : x,
-                          ),
-                        },
-                      })
-                    }
-                  />
-                  <Numeric
-                    label={d.exercises ? "各種目のセット" : "セット単位"}
-                    value={d.sets}
-                    min={1}
-                    max={8}
-                    onCommit={(sets) =>
-                      onChange({
-                        ...c,
-                        plan: {
-                          ...c.plan,
-                          days: c.plan.days.map((x, j) =>
-                            i === j
-                              ? {
-                                  ...x,
-                                  sets,
-                                  ...(x.exercises
-                                    ? {
-                                        exercises: x.exercises.map((e) => ({
-                                          ...e,
-                                          sets,
-                                        })),
-                                      }
-                                    : {}),
-                                }
-                              : x,
-                          ),
-                        },
-                      })
-                    }
-                  />
-                  <Numeric
-                    label="余力 RIR"
-                    value={d.rir}
-                    min={0}
-                    max={6}
-                    onCommit={(rir) =>
-                      onChange({
-                        ...c,
-                        plan: {
-                          ...c.plan,
-                          days: c.plan.days.map((x, j) =>
-                            i === j
-                              ? {
-                                  ...x,
-                                  rir,
-                                  ...(x.exercises
-                                    ? {
-                                        exercises: x.exercises.map((e) => ({
-                                          ...e,
-                                          rir,
-                                        })),
-                                      }
-                                    : {}),
-                                }
-                              : x,
-                          ),
-                        },
-                      })
-                    }
-                  />
-                </>
-              )}
-              {planIssues(c, i).map((x) => (
-                <small className="warning" key={x}>
-                  {x}
+            <details
+              className="weekly-day"
+              key={i}
+              open={!mobile || i === c.athlete.day % 7}
+            >
+              <summary>
+                <span>
+                  <b>
+                    {["月", "火", "水", "木", "金", "土", "日"][i]}曜日
+                    {i === c.athlete.day % 7 ? "・今日" : ""}
+                  </b>
+                  <small>
+                    {FOCUS_LABELS[d.focus]}
+                    {d.focus !== "rest" ? ` / ${d.start}時` : ""}
+                  </small>
+                </span>
+                <span className="weekly-disclosure">変更</span>
+              </summary>
+              <article className="day-card">
+                <b>{["月", "火", "水", "木", "金", "土", "日"][i]}曜日</b>
+                <small>
+                  {i < 5
+                    ? `仕事${c.athlete.life.work / 5}h / 通勤${c.athlete.life.commute / 5}h`
+                    : "仕事なし"}
                 </small>
-              ))}
-            </article>
+                <label>
+                  練習
+                  <select
+                    value={d.focus}
+                    onChange={(e) => {
+                      const focus = e.target.value as Focus;
+                      onChange({
+                        ...c,
+                        plan: {
+                          ...c.plan,
+                          days: c.plan.days.map((x, j) =>
+                            i === j
+                              ? {
+                                  ...x,
+                                  focus,
+                                  ...(x.exercises
+                                    ? { exercises: exerciseRecipe(focus, 2) }
+                                    : {}),
+                                }
+                              : x,
+                          ),
+                        },
+                      });
+                    }}
+                  >
+                    {Object.entries(FOCUS_LABELS).map(([k, v]) => (
+                      <option key={k} value={k}>
+                        {v}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {d.focus !== "rest" && (
+                  <>
+                    <Numeric
+                      label="開始時刻"
+                      value={d.start}
+                      min={6}
+                      max={23}
+                      step={0.5}
+                      onCommit={(start) =>
+                        onChange({
+                          ...c,
+                          plan: {
+                            ...c.plan,
+                            days: c.plan.days.map((x, j) =>
+                              i === j ? { ...x, start } : x,
+                            ),
+                          },
+                        })
+                      }
+                    />
+                    <Numeric
+                      label={d.exercises ? "各種目のセット" : "セット単位"}
+                      value={d.sets}
+                      min={1}
+                      max={8}
+                      onCommit={(sets) =>
+                        onChange({
+                          ...c,
+                          plan: {
+                            ...c.plan,
+                            days: c.plan.days.map((x, j) =>
+                              i === j
+                                ? {
+                                    ...x,
+                                    sets,
+                                    ...(x.exercises
+                                      ? {
+                                          exercises: x.exercises.map((e) => ({
+                                            ...e,
+                                            sets,
+                                          })),
+                                        }
+                                      : {}),
+                                  }
+                                : x,
+                            ),
+                          },
+                        })
+                      }
+                    />
+                    <Numeric
+                      label="余力 RIR"
+                      value={d.rir}
+                      min={0}
+                      max={6}
+                      onCommit={(rir) =>
+                        onChange({
+                          ...c,
+                          plan: {
+                            ...c.plan,
+                            days: c.plan.days.map((x, j) =>
+                              i === j
+                                ? {
+                                    ...x,
+                                    rir,
+                                    ...(x.exercises
+                                      ? {
+                                          exercises: x.exercises.map((e) => ({
+                                            ...e,
+                                            rir,
+                                          })),
+                                        }
+                                      : {}),
+                                  }
+                                : x,
+                            ),
+                          },
+                        })
+                      }
+                    />
+                  </>
+                )}
+                {planIssues(c, i).map((x) => (
+                  <small className="warning" key={x}>
+                    {x}
+                  </small>
+                ))}
+              </article>
+            </details>
           ))}
         </div>
         <div className="button-row">

@@ -1,3 +1,4 @@
+import { careerId } from "./identity";
 import { type Career, type Library, type DailySummary } from "./model";
 import {
   validateCareer,
@@ -137,7 +138,7 @@ export async function importSave(
   const careers = data.careers.map((original) => {
     const c = structuredClone(original),
       old = c.athlete.id;
-    c.athlete.id = "bl-" + crypto.randomUUID();
+    c.athlete.id = careerId();
     if (c.progress)
       for (const result of c.progress.results)
         for (const person of result.podium)
@@ -148,7 +149,7 @@ export async function importSave(
   const importedDraft = data.library.draft
     ? structuredClone(data.library.draft)
     : null;
-  if (importedDraft) importedDraft.athlete.id = "bl-" + crypto.randomUUID();
+  if (importedDraft) importedDraft.athlete.id = careerId();
   const preservedDraft =
     importedDraft && current.draft ? structuredClone(current.draft) : null;
   if (preservedDraft) {

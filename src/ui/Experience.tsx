@@ -14,6 +14,8 @@ import { nutritionPlan } from "../core/nutrition";
 import { sessionMinutes } from "../core/exercises";
 import { planIssues, gameDate } from "../core/simulation";
 import { BodyView } from "../view/BodyView";
+import { AthleteSummary } from "./AthleteSummary";
+import { useMobileLayout } from "./useMobileLayout";
 import {
   LOCAL_DEFS,
   localEditions,
@@ -73,21 +75,12 @@ export function Today({
         : d.exercises
           ? sessionMinutes(d.exercises)
           : (0.3 + d.sets * 0.18) * 60;
-  const [comparison, setComparison] = useState(-1),
-    [inspect, setInspect] = useState(false);
-  const old =
-      comparison === -1
-        ? null
-        : comparison === 0
-          ? c.initial
-          : c.snapshots[comparison - 1],
-    profile = PROFILES.find((p) => p.id === a.profileId),
-    next =
+  const mobile = useMobileLayout();
+  const next =
       c.local?.entries.find((e) => e.status === "entered") ??
       localEditions(c).find((e) => e.deadlineDay >= a.day),
     issues = planIssues(c, a.day % 7),
     retired = a.status === "retired";
-  const displayedBody = old?.body ?? b;
   const eventRest =
     !!c.local?.results.some((r) => r.day === a.day) ||
     !!c.progress?.results.some((r) => r.day === a.day) ||
@@ -100,132 +93,7 @@ export function Today({
   const injuryRest = !!c.progress && a.day < c.progress.injuryUntil;
   return (
     <div className="today-layout">
-      <section className="athlete-column">
-        <div className="athlete-heading">
-          <span className="eyebrow">YOUR ATHLETE</span>
-          <h2>
-            {a.name}
-            <small>
-              {a.ageAtStart + Math.floor(a.day / 365.2425)}歳 · {a.profileId}
-            </small>
-          </h2>
-          <p>{a.profileTitle}</p>
-        </div>
-        <BodyView
-          body={displayedBody}
-          baseline={c.initial.body}
-          selected={part}
-          onSelectPart={(p) => {
-            setPart(p);
-            setInspect(true);
-          }}
-          hair={a.appearance.hair}
-          model={c.versions.model}
-          title={`${a.name} / ${old ? dayDate(old.day) : "現在"}`}
-        />
-        <small className="comparison-date">
-          {old ? `${dayDate(old.day)}時点の身体値` : "現在の身体値"}
-        </small>
-        <div className="athlete-metrics">
-          <span>
-            体重
-            <b>
-              {weight(displayedBody).toFixed(2)}
-              <small>kg</small>
-            </b>
-          </span>
-          <span>
-            筋質量
-            <b>
-              {muscleMass(displayedBody).toFixed(2)}
-              <small>kg</small>
-            </b>
-          </span>
-          <span>
-            全身回復
-            <b>
-              {old ? "未記録" : Math.round((1 - a.systemicFatigue) * 100)}
-              {!old && <small>/100</small>}
-            </b>
-          </span>
-        </div>
-        <div className="button-row">
-          <button onClick={() => setInspect(!inspect)}>
-            {inspect ? "身体の詳細を閉じる" : "身体を調べる"}
-          </button>
-          <label>
-            過去との比較
-            <select
-              value={comparison}
-              onChange={(e) => setComparison(Number(e.target.value))}
-            >
-              <option value={-1}>現在の身体</option>
-              <option value={0}>初日の身体</option>
-              {c.snapshots.map((s, i) => (
-                <option key={s.day} value={i + 1}>
-                  {dayDate(s.day)} / {s.day}日経過
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        {old && (
-          <p className="muted">
-            過去の身体値を、現在と同じモデル・照明・カメラ条件で表示しています。通常表示では短期のパンプも含まれます。
-          </p>
-        )}
-        {inspect && (
-          <div className="body-inspection">
-            <label>
-              調べる部位
-              <select
-                value={part}
-                onChange={(e) => setPart(e.target.value as Part)}
-              >
-                {PARTS.map((p) => (
-                  <option key={p} value={p}>
-                    {LABELS[p]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <dl>
-              <dt>筋質量</dt>
-              <dd>{displayedBody.muscle[part].toFixed(3)}kg</dd>
-              <dt>初日との差</dt>
-              <dd>
-                {signed(
-                  displayedBody.muscle[part] - c.initial.body.muscle[part],
-                )}
-                kg
-              </dd>
-              <dt>局所回復</dt>
-              <dd>{Math.round((1 - displayedBody.fatigue[part]) * 100)}/100</dd>
-              <dt>動作習熟{old ? "（現在の値）" : ""}</dt>
-              <dd>{(a.ability[part] * 100).toFixed(1)}/100</dd>
-              <dt>一時的なパンプ</dt>
-              <dd>{Math.round(displayedBody.pump[part] * 100)}/100</dd>
-              <dt>体脂肪率</dt>
-              <dd>{fatPercent(displayedBody).toFixed(1)}% / ゲーム値</dd>
-            </dl>
-            <small>
-              筋質量は平常時の水分を含むゲーム推定値。部位は機能上の区分で、独立した筋を意味しません。
-            </small>
-          </div>
-        )}
-        <details>
-          <summary>この選手の特徴と生活</summary>
-          <p>{profile?.challenge}</p>
-          <p>
-            {profile?.experience}。{profile?.environment}
-          </p>
-          <p>
-            月収 {yen(a.life.income)} / 固定費 {yen(a.life.fixed)} / 仕事{" "}
-            {a.life.work}h・通勤 {a.life.commute}h/週
-          </p>
-          <p>各パターンは独立した1/6の抽選です。目標はいつでも変更できます。</p>
-        </details>
-      </section>
+      <AthleteSummary c={c} part={part} setPart={setPart} />
       <section className="strategy-column">
         <div className="section-heading">
           <div>
@@ -261,7 +129,20 @@ export function Today({
         )}
         <article className="strategy-card">
           <span className="card-number">01 / TRAIN</span>
-          <h3>今日の練習</h3>
+          <h3>
+            練習{" "}
+            <span className="plan-status">
+              {eventRest
+                ? "大会休養"
+                : injuryRest
+                  ? "回復期間"
+                  : d.focus === "rest"
+                    ? "休養日"
+                    : draft
+                      ? "おすすめ"
+                      : "設定済み"}
+            </span>
+          </h3>
           <strong>
             {eventRest
               ? "大会・遠征に合わせた休養"
@@ -286,9 +167,12 @@ export function Today({
             disabled={busy || draft || retired}
             onClick={() => onEdit("training")}
           >
-            {eventRest || injuryRest
-              ? "今週の練習を変える"
-              : "練習内容を変える"}
+            <span className="desktop-label">
+              {eventRest || injuryRest
+                ? "今週の練習を変える"
+                : "練習内容を変える"}
+            </span>
+            <span className="mobile-label">練習を変更</span>
           </button>
           {issues.map((i) => (
             <div className="inline-advice" key={i}>
@@ -304,7 +188,12 @@ export function Today({
         </article>
         <article className="strategy-card">
           <span className="card-number">02 / EAT</span>
-          <h3>今日の食事</h3>
+          <h3>
+            食事{" "}
+            <span className="plan-status">
+              {draft ? "おすすめ" : "設定済み"}
+            </span>
+          </h3>
           <strong>
             {c.progress?.mealMode === "foods"
               ? "食品と量から作る食事"
@@ -318,7 +207,8 @@ export function Today({
             disabled={busy || draft || retired}
             onClick={() => onEdit("food")}
           >
-            食事を選ぶ
+            <span className="desktop-label">食事を選ぶ</span>
+            <span className="mobile-label">食事を変更</span>
           </button>
           {a.life.money < n.cost * 7 && (
             <p className="inline-advice">
@@ -328,7 +218,12 @@ export function Today({
         </article>
         <article className="strategy-card">
           <span className="card-number">03 / RECOVER</span>
-          <h3>今日の休養</h3>
+          <h3>
+            休養{" "}
+            <span className="plan-status">
+              {draft ? "おすすめ" : "設定済み"}
+            </span>
+          </h3>
           <strong>睡眠 {c.plan.sleep}時間</strong>
           <p>
             ポージング {c.progress?.posingMinutes ?? 0}分 · 有酸素{" "}
@@ -338,14 +233,15 @@ export function Today({
             disabled={busy || draft || retired}
             onClick={() => onEdit("rest")}
           >
-            休み方を決める
+            <span className="desktop-label">休み方を決める</span>
+            <span className="mobile-label">休養を変更</span>
           </button>
-          <small>
+          <small className="rest-note">
             前夜の実睡眠 {a.previousSleep.toFixed(1)}
             時間。今夜の睡眠は翌日の回復に使われます。
           </small>
         </article>
-        <div className="daily-action">
+        <div className="daily-action" aria-label="今日の実行">
           <p>
             {a.day === 0
               ? "最初は全身の動作と、続けられる生活を確かめましょう。"
@@ -363,7 +259,7 @@ export function Today({
             disabled={busy || draft || retired || !!c.pendingEvent}
             onClick={onStep}
           >
-            {busy ? "今日を処理・保存中…" : "この内容で今日を過ごす →"}
+            {busy ? "今日を処理・保存中…" : "この内容で今日を過ごす"}
           </button>
           <small>練習・食事・休養を実行して、翌日の結果を表示します。</small>
           {draft && (
@@ -373,85 +269,88 @@ export function Today({
         </div>
       </section>
       <aside className="goals-column">
-        <section className="paper">
-          <span className="eyebrow">YOUR DIRECTION</span>
-          <h3>現在の目標</h3>
-          <label>
-            育成のテーマ
-            <select
-              disabled={busy || draft || retired}
-              value={c.objective ?? "contest"}
-              onChange={(e) =>
-                onChange({
-                  ...c,
-                  objective: e.target.value as Career["objective"],
-                })
-              }
-            >
-              {Object.entries(OBJECTIVES).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
+        <details className="home-agenda" open={!mobile}>
+          <summary>目標・大会・今週の予定</summary>
+          <section className="paper">
+            <span className="eyebrow">YOUR DIRECTION</span>
+            <h3>現在の目標</h3>
+            <label>
+              育成のテーマ
+              <select
+                disabled={busy || draft || retired}
+                value={c.objective ?? "contest"}
+                onChange={(e) =>
+                  onChange({
+                    ...c,
+                    objective: e.target.value as Career["objective"],
+                  })
+                }
+              >
+                {Object.entries(OBJECTIVES).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <small>進路や大会は固定されません。</small>
+          </section>
+          <section className="paper">
+            <h3>次のステージ</h3>
+            {next ? (
+              <>
+                <b>{LOCAL_DEFS[next.series].name}</b>
+                <p>
+                  {dayDate(next.showDay)} · あと{next.showDay - a.day}日
+                </p>
+                <small>{LOCAL_DEFS[next.series].place}</small>
+                <button disabled={draft} onClick={() => onTab("career")}>
+                  大会と条件を見る
+                </button>
+              </>
+            ) : (
+              <>
+                <p>小さな大会から自分の現在地を確かめられます。</p>
+                <button disabled={draft} onClick={() => onTab("career")}>
+                  キャリアを開く
+                </button>
+              </>
+            )}
+          </section>
+          <section className="paper">
+            <h3>今週の予定</h3>
+            <div className="mini-week">
+              {c.plan.days.map((x, i) => (
+                <span key={i} className={i === a.day % 7 ? "current" : ""}>
+                  <b>{["月", "火", "水", "木", "金", "土", "日"][i]}</b>
+                  {FOCUS_LABELS[x.focus]}
+                </span>
               ))}
-            </select>
-          </label>
-          <small>進路や大会は固定されません。</small>
-        </section>
-        <section className="paper">
-          <h3>次のステージ</h3>
-          {next ? (
-            <>
-              <b>{LOCAL_DEFS[next.series].name}</b>
-              <p>
-                {dayDate(next.showDay)} · あと{next.showDay - a.day}日
-              </p>
-              <small>{LOCAL_DEFS[next.series].place}</small>
-              <button disabled={draft} onClick={() => onTab("career")}>
-                大会と条件を見る
-              </button>
-            </>
-          ) : (
-            <>
-              <p>小さな大会から自分の現在地を確かめられます。</p>
-              <button disabled={draft} onClick={() => onTab("career")}>
-                キャリアを開く
-              </button>
-            </>
-          )}
-        </section>
-        <section className="paper">
-          <h3>今週の予定</h3>
-          <div className="mini-week">
-            {c.plan.days.map((x, i) => (
-              <span key={i} className={i === a.day % 7 ? "current" : ""}>
-                <b>{["月", "火", "水", "木", "金", "土", "日"][i]}</b>
-                {FOCUS_LABELS[x.focus]}
-              </span>
-            ))}
-          </div>
-          <button disabled={draft} onClick={() => onTab("plan")}>
-            週間計画を見直す
-          </button>
-        </section>
-        <section className="paper">
-          <h3>最近の記録</h3>
-          {c.lastSummary ? (
-            <>
-              <p>
-                {dayDate(c.lastSummary.day)} ·{" "}
-                {FOCUS_LABELS[c.lastSummary.training.focus]}
-              </p>
-              <p>
-                実施 {c.lastSummary.training.completedSets}/
-                {c.lastSummary.training.plannedSets} · 筋質量{" "}
-                {signed(c.lastSummary.muscleDelta)}kg
-              </p>
-              <button onClick={() => onTab("records")}>実績を振り返る</button>
-            </>
-          ) : (
-            <p>最初の1日を過ごすと、ここに実績が残ります。</p>
-          )}
-        </section>
+            </div>
+            <button disabled={draft} onClick={() => onTab("plan")}>
+              週間計画を見直す
+            </button>
+          </section>
+          <section className="paper">
+            <h3>最近の記録</h3>
+            {c.lastSummary ? (
+              <>
+                <p>
+                  {dayDate(c.lastSummary.day)} ·{" "}
+                  {FOCUS_LABELS[c.lastSummary.training.focus]}
+                </p>
+                <p>
+                  実施 {c.lastSummary.training.completedSets}/
+                  {c.lastSummary.training.plannedSets} · 筋質量{" "}
+                  {signed(c.lastSummary.muscleDelta)}kg
+                </p>
+                <button onClick={() => onTab("records")}>実績を振り返る</button>
+              </>
+            ) : (
+              <p>最初の1日を過ごすと、ここに実績が残ります。</p>
+            )}
+          </section>
+        </details>
       </aside>
     </div>
   );
@@ -591,7 +490,7 @@ export function DayResult({
         </p>
       </details>
       <button className="primary" onClick={onNext}>
-        翌日の作戦を決める →
+        翌日の作戦を決める
       </button>
     </section>
   );
@@ -722,7 +621,7 @@ export function LocalResultView({
       </small>
       {onNext && (
         <button className="primary" onClick={onNext}>
-          結果を踏まえて今日の作戦へ →
+          結果を踏まえて今日の作戦へ
         </button>
       )}
     </section>

@@ -1,7 +1,7 @@
 import { PARTS, type Part } from "../core/model";
 // Region authoring uses Blender X/right, Y/back, Z/up. Exported bind vertices
 // use glTF X/right, Y/up, Z/front, even when posed by the skeleton.
-import v2Mapping from "../../public/assets/regions-v2.json";
+import v2Regions from "./regionFields-v2.json";
 const regions: Record<Part, number[]> = {
   upperChest: [0.09, -0.1, 1.4, 0.09, 0.08, 0.045],
   chest: [0.095, -0.1, 1.34, 0.1, 0.08, 0.065],
@@ -25,7 +25,7 @@ export function influence(
   p: Part,
   model = "athlete-v1",
 ) {
-  const volumes = model === "athlete-v2" ? v2Mapping.regions[p] : [regions[p]];
+  const volumes = model === "athlete-v2" ? v2Regions[p] : [regions[p]];
   return Math.max(
     ...volumes.map(([x, y, z, rx, ry, rz]) =>
       Math.exp(

@@ -75,12 +75,14 @@ function Controls({
   angle,
   revision,
   capture,
+  interactive,
 }: {
   angle: number;
   revision: number;
   capture: React.MutableRefObject<(() => string) | null>;
+  interactive: boolean;
 }) {
-  const { camera, gl, scene } = useThree();
+  const { camera, gl, scene, invalidate } = useThree();
   const controls = useMemo(
     () => new OrbitControls(camera, gl.domElement),
     [camera, gl],
@@ -93,15 +95,22 @@ function Controls({
     controls.minPolarAngle = 0.5;
     controls.maxPolarAngle = 1.9;
     controls.enableDamping = true;
+    const changed = () => invalidate();
+    controls.addEventListener("change", changed);
     capture.current = () => {
       gl.render(scene, camera);
       return gl.domElement.toDataURL("image/png");
     };
     return () => {
       controls.dispose();
+      controls.removeEventListener("change", changed);
       capture.current = null;
     };
-  }, [controls, gl, scene, camera, capture]);
+  }, [controls, gl, scene, camera, capture, invalidate]);
+  useEffect(() => {
+    controls.enabled = interactive;
+    gl.domElement.style.touchAction = interactive ? "none" : "pan-y";
+  }, [interactive, controls, gl]);
   useEffect(() => {
     controls.enableDamping = false;
     camera.position.set(Math.sin(angle) * 3.35, 1.25, Math.cos(angle) * 3.35);
@@ -110,6 +119,23 @@ function Controls({
     controls.enableDamping = true;
   }, [angle, revision, controls, camera]);
   useFrame(() => controls.update());
+  return null;
+}
+function FrameClock({
+  active,
+  playing,
+  mobile,
+}: {
+  active: boolean;
+  playing: boolean;
+  mobile: boolean;
+}) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    if (!active || !playing) return;
+    const timer = setInterval(invalidate, mobile ? 1000 / 30 : 1000 / 60);
+    return () => clearInterval(timer);
+  }, [active, playing, mobile, invalidate]);
   return null;
 }
 function Athlete({
@@ -141,6 +167,7 @@ function Athlete({
       ? "/assets/athlete-v2.glb?revision=v2-anatomy-3b4ff1ed"
       : BODY_ASSET_URL,
   );
+  const invalidate = useThree((s) => s.invalidate);
   const dumbbell = useLoader(GLTFLoader, "/assets/dumbbell-v1.glb");
   const root = useMemo(() => {
     const r = clone(gltf.scene);
@@ -185,10 +212,12 @@ function Athlete({
     if (!found) return;
     const action = mixer.clipAction(found);
     action.reset().play();
+    mixer.update(0);
+    invalidate();
     return () => {
       action.stop();
     };
-  }, [mixer, gltf, clip]);
+  }, [mixer, gltf, clip, invalidate]);
   useEffect(
     () => () => {
       mixer.uncacheRoot(root);
@@ -272,7 +301,8 @@ function Athlete({
     if (playing) mixer.update(Math.min(delta, 0.05));
   });
   const click = (e: ThreeEvent<MouseEvent>) => {
-    if (!onSelect || !e.face || !(e.object instanceof Mesh)) return;
+    if (!onSelect || e.delta > 8 || !e.face || !(e.object instanceof Mesh))
+      return;
     const mesh = e.object;
     if (
       ![
@@ -376,6 +406,7 @@ export function BodyView({
   defaultClip = "Breathing",
   title = "身体の記録",
   model = "athlete-v1",
+  preview = false,
 }: {
   body: BodyState;
   selected: Part;
@@ -386,14 +417,47 @@ export function BodyView({
   defaultClip?: string;
   title?: string;
   model?: string;
+  preview?: boolean;
 }) {
+  const studio = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true),
+    [foreground, setForeground] = useState(!document.hidden);
+  const [mobile, setMobile] = useState(
+    () => matchMedia("(max-width:800px)").matches,
+  );
+  const [touchRotation, setTouchRotation] = useState(false);
+  const active = visible && foreground;
+  const interactive = !preview && (!mobile || touchRotation);
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) =>
+      setVisible(entries[0]?.isIntersecting ?? false),
+    );
+    if (studio.current) observer.observe(studio.current);
+    const visibility = () => setForeground(!document.hidden);
+    const query = matchMedia("(max-width:800px)");
+    const resize = () => setMobile(query.matches);
+    document.addEventListener("visibilitychange", visibility);
+    query.addEventListener("change", resize);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", visibility);
+      query.removeEventListener("change", resize);
+    };
+  }, []);
   const [loadedModel, setLoadedModel] = useState<string | null>(null);
   const loaded = loadedModel === model;
   const [view, setView] = useState({ angle: 0, revision: 0 }),
-    [playing, setPlaying] = useState(true),
-    [quality, setQuality] = useState(
-      () => !window.matchMedia("(max-width:800px)").matches,
+    [playing, setPlaying] = useState(
+      () => !preview && !matchMedia("(prefers-reduced-motion: reduce)").matches,
     ),
+    [quality, setQuality] = useState(() => {
+      try {
+        const saved = localStorage.getItem("bulk-life-quality");
+        if (saved === "standard" || saved === "light")
+          return saved === "standard";
+      } catch {}
+      return !window.matchMedia("(max-width:800px)").matches;
+    }),
     [clip, setClip] = useState(defaultClip),
     [mode, setMode] = useState<Mode>("normal");
   const capture = useRef<(() => string) | null>(null);
@@ -435,7 +499,12 @@ export function BodyView({
     img.src = data;
   };
   return (
-    <div className="body-studio">
+    <div
+      ref={studio}
+      className={`body-studio${preview ? " studio-preview" : ""}`}
+      data-rendering={active ? "visible" : "paused"}
+      data-rotation={interactive ? "free" : "locked"}
+    >
       <div className="body-view">
         {!loaded && (
           <div className="model-loading" role="status">
@@ -444,13 +513,14 @@ export function BodyView({
         )}
         <ViewError key={model} onError={() => setLoadedModel(model)}>
           <Canvas
-            shadows={quality}
-            dpr={quality ? [1, 1.5] : 1}
+            shadows={quality && !preview}
+            dpr={quality && !preview ? [1, 1.5] : 1}
+            frameloop={active ? "demand" : "never"}
             camera={{ position: [0, 1.25, 3.35], fov: 38 }}
             gl={{
               antialias: true,
               outputColorSpace: SRGBColorSpace,
-              preserveDrawingBuffer: true,
+              preserveDrawingBuffer: !preview,
             }}
           >
             <color attach="background" args={["#283530"]} />
@@ -459,7 +529,7 @@ export function BodyView({
             <directionalLight
               position={[-2, 4, 3]}
               intensity={2.6}
-              castShadow={quality}
+              castShadow={quality && !preview}
               shadow-mapSize={[1024, 1024]}
               shadow-normalBias={0.02}
               shadow-bias={-0.0002}
@@ -478,7 +548,7 @@ export function BodyView({
                 selected={selected}
                 hair={hair}
                 clip={clip}
-                playing={playing}
+                playing={playing && active}
                 mode={mode}
                 onSelect={onSelectPart}
                 onReady={onReady}
@@ -489,74 +559,112 @@ export function BodyView({
               angle={view.angle}
               revision={view.revision}
               capture={capture}
+              interactive={interactive}
+            />
+            <FrameClock
+              active={active}
+              playing={playing}
+              mobile={mobile || preview}
             />
           </Canvas>
         </ViewError>
-        <div className="scene-label">
-          <span>{stage ? "COMPETITION STAGE" : "BODY STUDIO"}</span>
-          <small>
-            {onSelectPart
-              ? "ドラッグで回転・クリックで部位選択"
-              : "ドラッグで回転・スクロールで拡大"}
-          </small>
-        </div>
-        <div className="view-controls">
-          <div>
-            {[
-              ["正面", 0],
-              ["側面", Math.PI / 2],
-              ["背面", Math.PI],
-            ].map(([label, n]) => (
-              <button
-                key={label}
-                onClick={() =>
-                  setView((v) => ({
-                    angle: n as number,
-                    revision: v.revision + 1,
-                  }))
-                }
-              >
-                {label}
+        {!preview && (
+          <div className="scene-label">
+            <span>{stage ? "COMPETITION STAGE" : "BODY STUDIO"}</span>
+            <small>
+              {mobile
+                ? interactive
+                  ? "指で回転。スクロールする時は操作をロック。"
+                  : "タップで部位選択。上下スワイプでページ移動。"
+                : onSelectPart
+                  ? "ドラッグで回転・クリックで部位選択"
+                  : "ドラッグで回転・スクロールで拡大"}
+            </small>
+          </div>
+        )}
+        {!preview && (
+          <div className="view-controls">
+            <div>
+              {[
+                ["正面", 0],
+                ["側面", Math.PI / 2],
+                ["背面", Math.PI],
+              ].map(([label, n]) => (
+                <button
+                  key={label}
+                  onClick={() =>
+                    setView((v) => ({
+                      angle: n as number,
+                      revision: v.revision + 1,
+                    }))
+                  }
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div>
+              <button onClick={() => setPlaying(!playing)}>
+                {playing ? "動作：ON" : "動作：OFF"}
               </button>
-            ))}
+              <button
+                onClick={() => {
+                  const next = !quality;
+                  setQuality(next);
+                  try {
+                    localStorage.setItem(
+                      "bulk-life-quality",
+                      next ? "standard" : "light",
+                    );
+                  } catch {}
+                }}
+              >
+                {quality ? "標準画質" : "軽量画質"}
+              </button>
+            </div>
           </div>
-          <div>
-            <button onClick={() => setPlaying(!playing)}>
-              {playing ? "動作：ON" : "動作：OFF"}
-            </button>
-            <button onClick={() => setQuality(!quality)}>
-              {quality ? "標準画質" : "軽量画質"}
-            </button>
-          </div>
+        )}
+      </div>
+      {!preview && mobile && (
+        <button
+          className="touch-rotation"
+          aria-pressed={touchRotation}
+          onClick={() => setTouchRotation(!touchRotation)}
+        >
+          {touchRotation
+            ? "回転操作をロックしてスクロール"
+            : "回転操作を有効にする"}
+        </button>
+      )}
+      {!preview && (
+        <div className="body-options">
+          <label>
+            ポーズ・動作
+            <select value={clip} onChange={(e) => setClip(e.target.value)}>
+              {Object.entries(CLIPS).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            身体の表示
+            <select
+              value={mode}
+              onChange={(e) => setMode(e.target.value as Mode)}
+            >
+              {Object.entries(MODES).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button onClick={download}>身体カードを保存</button>
         </div>
-      </div>
-      <div className="body-options">
-        <label>
-          ポーズ・動作
-          <select value={clip} onChange={(e) => setClip(e.target.value)}>
-            {Object.entries(CLIPS).map(([id, name]) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          身体の表示
-          <select
-            value={mode}
-            onChange={(e) => setMode(e.target.value as Mode)}
-          >
-            {Object.entries(MODES).map(([id, name]) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button onClick={download}>身体カードを保存</button>
-      </div>
-      {mode !== "normal" && (
+      )}
+      {!preview && mode !== "normal" && (
         <p className="heat-legend">
           {MODES[mode]}：青は低い値、赤は高い値。
           {mode === "recovery"

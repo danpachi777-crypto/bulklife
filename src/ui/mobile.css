@@ -1,0 +1,959 @@
+/* Shared controls and layers. This stylesheet follows the legacy screens. */
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Yu Gothic UI",
+    "Noto Sans JP",
+    sans-serif;
+  --forest: #173b2c;
+  --lime: #d6f47b;
+  --mobile-nav: calc(64px + env(safe-area-inset-bottom, 0px));
+}
+.mobile-label {
+  display: none;
+}
+.mobile-settings {
+  display: none;
+}
+.body-studio[data-rotation="locked"] .body-view,
+.body-studio[data-rotation="locked"] .body-view canvas {
+  touch-action: pan-y;
+}
+.body-studio[data-rotation="free"] .body-view,
+.body-studio[data-rotation="free"] .body-view canvas {
+  touch-action: none;
+}
+.home-agenda {
+  display: contents;
+}
+.home-agenda > summary {
+  display: none;
+}
+.weekly-day {
+  display: contents;
+}
+.weekly-day > summary {
+  display: none;
+}
+.plan-status {
+  display: inline-block;
+  margin-left: 6px;
+  color: #496446;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.pwa-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: #e8efdf;
+  border: 1px solid #c5d5b8;
+  font-size: 0.875rem;
+}
+button.primary,
+.experience-app button.primary {
+  background: var(--lime);
+  color: #173421;
+  border-color: #bcda6c;
+  font-weight: 700;
+}
+button.primary:hover,
+.experience-app button.primary:hover {
+  background: #c6e969;
+}
+.panel-scrim {
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+  z-index: 80;
+}
+.edit-panel {
+  position: relative;
+  inset: auto;
+  height: 100dvh;
+  min-height: 0;
+}
+.edit-panel > header,
+.panel-actions {
+  flex: none;
+}
+.panel-content {
+  min-height: 0;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.panel-content :is(section, article, fieldset, div) {
+  min-width: 0;
+}
+.panel-content .paper {
+  padding: 18px;
+}
+.edit-panel header button {
+  flex-shrink: 0;
+  min-height: 44px;
+  font-size: 0.875rem;
+}
+.body-detail-panel {
+  width: min(690px, 100vw);
+}
+.body-detail-panel .athlete-column {
+  width: 100%;
+}
+.body-detail-panel .athlete-column .body-view {
+  height: 410px;
+}
+.body-detail-panel .athlete-heading {
+  display: none;
+}
+.body-detail-panel .view-controls button {
+  min-height: 44px;
+  min-width: 44px;
+}
+.touch-rotation {
+  width: 100%;
+  min-height: 44px;
+  color: #e9f3e3;
+  background: #314f3c;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.875rem;
+}
+.touch-rotation:hover {
+  background: #40644b;
+}
+.touch-rotation[aria-pressed="true"] {
+  color: #173b2c;
+  background: #d6f47b;
+}
+.studio-preview {
+  height: 100%;
+}
+.studio-preview .body-view {
+  height: 100%;
+}
+.studio-preview .model-loading {
+  font-size: 0.75rem;
+  padding: 8px;
+  text-align: center;
+}
+.studio-preview .fallback {
+  padding: 12px;
+  font-size: 0.75rem;
+}
+.studio-preview .fallback svg,
+.studio-preview .fallback button {
+  display: none;
+}
+.studio-preview canvas {
+  pointer-events: none;
+}
+
+@media (max-width: 800px) {
+  :root {
+    font-size: 16px;
+    background: #f2f5f1;
+  }
+  body {
+    min-width: 320px;
+  }
+  button,
+  input,
+  select {
+    min-height: 44px;
+  }
+  button {
+    touch-action: manipulation;
+  }
+  button,
+  summary,
+  a {
+    -webkit-tap-highlight-color: #47764c33;
+  }
+  input,
+  select {
+    font-size: 16px !important;
+    padding: 10px;
+    max-width: 100%;
+  }
+  label {
+    font-size: 0.875rem;
+  }
+  summary {
+    min-height: 44px;
+    padding-block: 10px;
+    cursor: pointer;
+  }
+  .desktop-label {
+    display: none;
+  }
+  .mobile-label {
+    display: inline;
+  }
+  .experience-main {
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 14px
+      calc(var(--mobile-nav) + 28px);
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  .experience-main:has(.daily-action) {
+    padding-bottom: calc(var(--mobile-nav) + 160px);
+  }
+  .experience-main
+    :is(section, article, aside, fieldset, .fields, .two-col, .roster) {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .experience-main h2 {
+    font-size: 1.125rem;
+  }
+  .experience-main h3 {
+    font-size: 1rem;
+  }
+  .career-header {
+    position: relative;
+    padding: 0 0 12px;
+    margin-bottom: 12px;
+    gap: 8px;
+    border-color: #d6e1d5;
+  }
+  .career-header > div:first-child {
+    padding-right: 85px;
+  }
+  .career-header .eyebrow {
+    display: none;
+  }
+  .career-header h1 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .career-header h1 .mobile-label {
+    display: block;
+    overflow-wrap: anywhere;
+  }
+  .career-header h1 small {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #526d59;
+  }
+  .career-header p {
+    margin: 8px 0 0;
+    font-size: 0.8125rem;
+    color: #49604d;
+    line-height: 1.5;
+  }
+  .header-resources {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px 10px;
+    font-size: 0.8125rem;
+  }
+  .header-resources b {
+    font-size: 0.9375rem;
+  }
+  .header-resources span {
+    font-size: 0.8125rem;
+    color: #536550;
+  }
+  .main-nav {
+    height: var(--mobile-nav);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid #365b45;
+    z-index: 30;
+  }
+  .main-nav nav {
+    height: 64px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .main-nav nav button {
+    font-size: 0.875rem;
+    gap: 2px;
+    min-width: 44px;
+    min-height: 64px;
+    border: 0;
+    color: #dce6dc;
+  }
+  .main-nav nav button span {
+    display: none;
+  }
+  .main-nav nav button::before {
+    content: "";
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: transparent;
+    margin-bottom: 4px;
+  }
+  .main-nav nav button.active {
+    color: #e5ffa8;
+    background: #244c36;
+    font-weight: 700;
+  }
+  .main-nav nav button.active::before {
+    background: #d6f47b;
+  }
+  .main-nav > button:not(.wordmark) {
+    display: none;
+    right: max(14px, env(safe-area-inset-right, 0px));
+    top: calc(10px + env(safe-area-inset-top, 0px));
+    min-height: 44px;
+    min-width: 76px;
+    padding: 8px;
+    font-size: 0.8125rem;
+    background: #fff;
+    border-radius: 7px;
+  }
+  .career-header .mobile-settings {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-width: 76px;
+    min-height: 44px;
+    padding: 8px;
+    font-size: 0.8125rem;
+  }
+  .today-layout {
+    gap: 14px;
+  }
+  .mobile-athlete {
+    order: 0;
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(115px, 0.9fr) minmax(0, 1.3fr);
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #d7e1d6;
+    border-radius: 10px;
+  }
+  .mobile-athlete-preview {
+    height: 154px;
+    background: #283530;
+    grid-row: 1/3;
+  }
+  .mobile-athlete-preview .studio-placeholder {
+    min-height: 154px;
+    height: 154px;
+    border-radius: 0;
+    padding: 10px;
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .mobile-athlete-preview .studio-placeholder p {
+    margin: 0;
+  }
+  .mobile-athlete-preview .studio-placeholder button {
+    display: none;
+  }
+  .mobile-athlete-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
+    padding: 12px 12px 4px;
+    gap: 5px 10px;
+  }
+  .mobile-athlete-stats > span {
+    font-size: 0.75rem;
+    color: #586e59;
+    line-height: 1.35;
+  }
+  .mobile-athlete-stats b {
+    display: block;
+    color: #1d432c;
+    font-size: 1.125rem;
+    font-weight: 650;
+  }
+  .mobile-athlete-stats b small {
+    font-size: 0.6875rem;
+    font-weight: 400;
+  }
+  .mobile-athlete-stats .athlete-condition {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    font-size: 0.75rem;
+  }
+  .athlete-detail-link {
+    grid-column: 2;
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 0.8125rem;
+    border: 0;
+    border-top: 1px solid #e4e9e1;
+    border-radius: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .athlete-detail-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .athlete-detail-link span {
+    color: #5a7850;
+    font-size: 1rem;
+  }
+  .strategy-column {
+    order: 1;
+  }
+  .strategy-column > .section-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 8px;
+    gap: 8px;
+  }
+  .strategy-column > .section-heading h2 {
+    font-size: 1.0625rem;
+  }
+  .strategy-column .eyebrow {
+    display: none;
+  }
+  .status-pill {
+    font-size: 0.75rem;
+  }
+  .strategy-card {
+    padding: 10px 12px;
+    margin: 0;
+    border: 1px solid #d7e1d6;
+    border-bottom: 0;
+    border-radius: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 86px;
+    gap: 3px 8px;
+    background: #fff;
+  }
+  .strategy-card:has(+ .strategy-card) {
+    border-bottom: 0;
+  }
+  .strategy-card:nth-of-type(1) {
+    border-radius: 9px 9px 0 0;
+  }
+  .strategy-card:nth-of-type(3) {
+    border-radius: 0 0 9px 9px;
+    border-bottom: 1px solid #d7e1d6;
+  }
+  .strategy-card .card-number {
+    display: none;
+  }
+  .strategy-card h3 {
+    grid-column: 1;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .plan-status {
+    margin-left: 4px;
+    font-size: 0.6875rem;
+    color: #5b7353;
+  }
+  .strategy-card strong {
+    grid-column: 1;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+  .strategy-card > p {
+    grid-column: 1;
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #526851;
+  }
+  .strategy-card > button {
+    grid-row: 1/4;
+    grid-column: 2;
+    align-self: center;
+    min-height: 44px;
+    padding: 8px 5px;
+    font-size: 0.875rem;
+    max-width: none;
+    background: #f3f7ed;
+    color: #24482e;
+    border-color: #bdcfb0;
+  }
+  .strategy-card .inline-advice {
+    grid-column: 1/-1;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+  .strategy-card .rest-note {
+    display: none;
+  }
+  .first-guide {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 76px;
+    gap: 6px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 0.8125rem;
+    border: 0;
+    border-left: 3px solid #96b763;
+    border-radius: 0;
+  }
+  .first-guide b {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    align-self: center;
+  }
+  .first-guide p,
+  .first-guide ol {
+    display: none;
+  }
+  .first-guide button {
+    font-size: 0.6875rem;
+    padding: 5px;
+    line-height: 1.45;
+  }
+  .daily-action {
+    position: fixed;
+    bottom: var(--mobile-nav);
+    left: 0;
+    right: 0;
+    z-index: 29;
+    background: #f9fcf6;
+    border: 0;
+    border-top: 1px solid #d4dfcc;
+    border-radius: 0;
+    padding: 10px max(14px, calc((100% - 690px) / 2));
+    margin: 0;
+    box-shadow: 0 -5px 20px #173b2c0d;
+  }
+  .daily-action > p:not(.warning) {
+    display: none;
+  }
+  .daily-action .daily-button {
+    width: 100%;
+    min-height: 50px;
+    font-size: 0.9375rem;
+    padding: 10px 6px;
+  }
+  .daily-action > small {
+    display: block;
+    text-align: center;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    margin-top: 5px;
+    color: #4f654c;
+  }
+  .daily-action .warning {
+    margin: 0 0 6px;
+    font-size: 0.8125rem;
+  }
+  .goals-column {
+    order: 2;
+    display: block;
+  }
+  .home-agenda {
+    display: block;
+    margin-top: 0 !important;
+    border-block: 1px solid #d6e1d5;
+  }
+  .home-agenda > summary {
+    display: list-item;
+    padding: 12px 4px;
+    font-size: 0.875rem;
+    color: #35573d;
+    font-weight: 600;
+  }
+  .home-agenda .paper {
+    border: 0;
+    border-top: 1px solid #dce4d8;
+    border-radius: 0;
+    margin: 0;
+    padding: 16px 8px;
+    background: transparent;
+  }
+  .paper {
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+  }
+  .paper p,
+  .paper ul,
+  .paper dl,
+  .panel-content p {
+    font-size: 0.875rem;
+  }
+  .paper small {
+    font-size: 0.75rem;
+  }
+  .experience-main .fields,
+  .panel-content .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 10px;
+  }
+  .week-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .experience-main .weekly-day {
+    display: block;
+    margin: 0;
+    border: 1px solid #d7e1d6;
+    border-radius: 8px;
+    background: #fff;
+  }
+  .weekly-day > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px;
+    min-height: 56px;
+  }
+  .weekly-day > summary b {
+    font-size: 0.875rem;
+  }
+  .weekly-day > summary small {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #526d59;
+  }
+  .weekly-disclosure {
+    font-size: 0.8125rem;
+    color: #365b40;
+  }
+  .weekly-day[open] .weekly-disclosure {
+    font-size: 0;
+  }
+  .weekly-day[open] .weekly-disclosure::after {
+    content: "閉じる";
+    font-size: 0.8125rem;
+  }
+  .weekly-day > .day-card {
+    border: 0;
+    border-top: 1px solid #dce4d8;
+    border-radius: 0 0 8px 8px;
+  }
+  .weekly-day > .day-card > b {
+    display: none;
+  }
+  .day-card {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 10px;
+    padding: 12px;
+  }
+  .day-card > b,
+  .day-card > small {
+    grid-column: 1/-1;
+    min-height: 0;
+    margin: 0;
+  }
+  .day-card label {
+    margin-top: 0;
+    font-size: 0.8125rem;
+  }
+  .day-card :is(input, select) {
+    font-size: 16px;
+  }
+  .day-card .warning {
+    grid-column: 1/-1;
+  }
+  .weekly-run {
+    display: block;
+  }
+  .weekly-run button,
+  .day-result > button {
+    width: 100%;
+    min-height: 50px;
+  }
+  .section-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+  .section-tabs button {
+    min-height: 44px;
+    font-size: 0.8125rem;
+    padding: 8px 4px;
+  }
+  .result-grid {
+    gap: 0;
+  }
+  .result-grid > article {
+    border: 0;
+    border-bottom: 1px solid #dce4d8;
+    border-radius: 0;
+    padding: 12px 0;
+    background: transparent;
+  }
+  .result-grid > article h3 {
+    margin: 0 0 5px;
+    font-size: 0.875rem;
+  }
+  .result-grid > article p {
+    margin: 4px 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  .day-result .result-explanation {
+    margin-block: 14px;
+    font-size: 0.8125rem;
+  }
+  .day-result > button {
+    position: fixed;
+    z-index: 29;
+    bottom: calc(var(--mobile-nav) + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 28px);
+    max-width: 690px;
+    min-height: 50px;
+    margin: 0;
+    box-shadow: 0 0 0 12px #f2f5f1;
+  }
+  .experience-main:has(.day-result) {
+    padding-bottom: calc(var(--mobile-nav) + 100px);
+  }
+  .daily-log {
+    gap: 6px;
+    font-size: 0.8125rem;
+  }
+  .credentials {
+    grid-template-columns: 1fr;
+  }
+  .competition-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .roster {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .table-scroll {
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .table-scroll table {
+    font-size: 0.8125rem;
+  }
+  .table-scroll caption {
+    text-align: left;
+  }
+  .body-detail-panel .athlete-column .body-view {
+    height: clamp(280px, 43dvh, 390px);
+  }
+  .body-detail-panel .athlete-column .scene-label {
+    top: 8px;
+    left: 10px;
+  }
+  .body-detail-panel .athlete-column .scene-label small {
+    display: block;
+    font-size: 0.6875rem;
+    max-width: 290px;
+    line-height: 1.4;
+  }
+  .body-detail-panel .athlete-column .view-controls {
+    position: static;
+    padding: 8px;
+    background: #2c4436;
+    gap: 6px;
+  }
+  .body-detail-panel .body-view {
+    display: flex;
+    flex-direction: column;
+  }
+  .body-detail-panel .body-view > div:has(> canvas) {
+    min-height: 0;
+    flex: 1;
+  }
+  .body-detail-panel .view-controls > div {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 5px;
+  }
+  .body-detail-panel .athlete-column .view-controls button {
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 0.75rem;
+    padding: 6px 8px;
+  }
+  .body-detail-panel .athlete-column .body-options {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+  .body-detail-panel .body-options select {
+    font-size: 16px;
+  }
+  .body-detail-panel .athlete-column > .button-row {
+    grid-template-columns: 1fr;
+  }
+  .athlete-metrics {
+    gap: 6px;
+    margin-block: 14px;
+  }
+  .athlete-metrics b {
+    font-size: 1.25rem;
+  }
+  .athlete-metrics > span {
+    font-size: 0.8125rem;
+  }
+  .panel-scrim {
+    top: var(--visual-top, 0);
+    bottom: auto;
+    height: var(--visual-height, 100dvh);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .edit-panel {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    background: #f2f5f1;
+  }
+  .edit-panel > header {
+    padding: 10px 14px;
+    gap: 12px;
+    align-items: center;
+  }
+  .edit-panel > header h2 {
+    font-size: 1.0625rem;
+    line-height: 1.4;
+  }
+  .edit-panel > header button {
+    font-size: 0.8125rem;
+    padding: 8px 10px;
+    max-width: none;
+  }
+  .panel-content {
+    padding: 12px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  }
+  .panel-actions {
+    display: block;
+    padding: 9px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .panel-actions p {
+    margin: 0 0 5px;
+    font-size: 0.75rem;
+  }
+  .panel-actions button {
+    margin: 0;
+    min-height: 48px;
+    width: 100%;
+  }
+  .panel-content .button-row {
+    gap: 8px;
+  }
+  .panel-content .button-row button {
+    font-size: 0.8125rem;
+    min-width: 44px;
+  }
+  .panel-content .training-days {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .panel-content .training-days button {
+    min-height: 44px;
+  }
+  .panel-content .exercise-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .panel-content .meal-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 48px;
+    gap: 8px;
+  }
+  .panel-content .meal-row > div {
+    grid-column: 1/-1;
+  }
+  .panel-content .exercise-row {
+    grid-template-columns: 1fr;
+  }
+  .panel-content .exercise-row .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .panel-content .two-col {
+    grid-template-columns: 1fr;
+  }
+  .panel-content .body-view {
+    height: 300px;
+  }
+  .draft-banner {
+    padding: 14px;
+  }
+  .draft-banner > div {
+    width: 100%;
+  }
+  .draft-banner .button-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .draft-banner button.primary {
+    grid-column: 1/-1;
+    min-height: 50px;
+  }
+  .draft-banner label {
+    max-width: 100%;
+    margin-top: 8px;
+  }
+  .draft-banner span {
+    font-size: 0.8125rem;
+  }
+  .pwa-notice {
+    font-size: 0.8125rem;
+    padding: 10px 12px;
+  }
+  .experience-main .event {
+    padding: 14px;
+  }
+  .experience-main .event button {
+    margin: 8px 0 0;
+    width: 100%;
+    font-size: 0.875rem;
+  }
+  [data-keyboard] .main-nav,
+  [data-keyboard] .daily-action {
+    display: none;
+  }
+  [data-keyboard] input {
+    scroll-margin-block: 80px;
+  }
+  .experience-main footer {
+    padding-block: 14px;
+    margin-top: 20px;
+  }
+}
+@media (max-width: 374px) {
+  .experience-main {
+    padding-inline: 10px;
+  }
+  .mobile-athlete-stats {
+    gap: 5px 6px;
+    padding-inline: 9px;
+  }
+  .mobile-athlete-stats b {
+    font-size: 1.0625rem;
+  }
+  .strategy-card {
+    grid-template-columns: minmax(0, 1fr) 78px;
+    padding-inline: 10px;
+  }
+  .career-header > div:first-child {
+    padding-right: 80px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
