@@ -1,0 +1,362 @@
+/* Plan state, goal adequacy and primary actions have separate visual roles. */
+.mobile-save-state {
+  display: block;
+  font-size: 14px;
+  color: #365842;
+}
+.goal-steps a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid #9cb8a4;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.goal-steps small {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+}
+.hero-view-tools [aria-pressed="true"] {
+  background: #d4ee8b;
+  color: #153a2a;
+}
+.plan-manager {
+  display: block;
+  font-size: 14px;
+  color: #466457;
+  margin: 3px 0 8px;
+}
+.nutrition-status {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #edf4e9;
+  border-left: 3px solid #54845b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.nutrition-status.insufficient {
+  background: #fff4df;
+  border-color: #ad6d19;
+}
+.nutrition-status p {
+  margin: 3px 0;
+}
+.menu-summary {
+  font-size: 14px !important;
+  line-height: 1.7;
+}
+.action-warning {
+  font-size: 14px !important;
+  color: #75450a !important;
+  border-left: 3px solid #ad6d19;
+  padding-left: 10px;
+}
+.save-summary {
+  font-size: 14px !important;
+  line-height: 1.5;
+}
+.scope-choice {
+  display: grid;
+  gap: 8px;
+  font-size: 16px;
+  margin: 18px 0;
+}
+.scope-choice select {
+  min-height: 48px;
+  font-size: 16px;
+  max-width: 100%;
+}
+.proposal-section {
+  border-bottom: 1px solid #c2d1bb;
+  padding-bottom: 18px;
+}
+.proposal-section h4 {
+  font-size: 17px;
+}
+.period-day {
+  display: block;
+  width: 100%;
+  text-align: left;
+  min-height: 48px;
+  margin: 8px 0;
+  font-size: 15px;
+}
+.daily-money {
+  margin: 20px 0;
+  padding: 16px;
+  background: #edf4e9;
+}
+.daily-money p {
+  font-size: 15px;
+}
+.period-result small {
+  display: block;
+  line-height: 1.6;
+}
+.panel-actions p {
+  max-width: 100%;
+  flex-basis: 100%;
+  margin: 0 0 6px;
+}
+.panel-actions {
+  gap: 8px;
+}
+.body-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.body-compare .body-view {
+  height: 400px !important;
+}
+.body-compare h3 {
+  font-size: 16px;
+}
+.body-compare .studio-caption,
+.body-compare .body-options,
+.body-compare .studio-more {
+  display: none;
+}
+.body-compare .body-studio {
+  min-width: 0;
+  height: auto;
+}
+.body-compare p {
+  font-size: 14px;
+}
+.plan-scope-field {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  background: #edf4e9;
+}
+.plan-scope-field select {
+  font-size: 16px;
+  min-height: 48px;
+}
+.unsaved-note {
+  color: #81520c;
+  font-size: 14px;
+}
+.local-checkin {
+  border: 1px solid #aac1ae;
+  background: #f0f5ed;
+  padding: 18px;
+  margin: 16px 0;
+}
+.local-checkin button {
+  min-height: 48px;
+}
+.studio-competition .body-view {
+  height: clamp(340px, 50svh, 480px);
+}
+.score-explanation p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.score-explanation li {
+  margin: 12px 0;
+}
+.history-chart svg text {
+  font-size: 17px;
+  fill: #314e3c;
+}
+.history-chart svg {
+  height: auto;
+  min-height: 180px;
+}
+.history-chart .chart-events {
+  font-size: 14px;
+}
+.record-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.record-filter button {
+  min-height: 44px;
+}
+.record-filter [aria-pressed="true"] {
+  background: #214c38;
+  color: white;
+}
+.record-stats.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 16px 0;
+}
+.record-stats.stats p {
+  margin: 0;
+  font-size: 14px;
+}
+.athlete-hero .hero-inspect,
+.athlete-hero .touch-rotation {
+  font-size: 14px;
+}
+@media (min-width: 1150px) {
+  .athlete-first .today-layout {
+    grid-template-columns: minmax(320px, 38fr) minmax(340px, 40fr) minmax(
+        200px,
+        22fr
+      );
+    gap: 24px;
+  }
+  .athlete-first .goals-column {
+    grid-column: auto;
+  }
+  .athlete-first .strategy-column {
+    display: block;
+  }
+  .athlete-first .athlete-hero {
+    align-self: start;
+    position: sticky;
+    top: 18px;
+  }
+  .athlete-first .home-agenda {
+    font-size: 14px;
+  }
+}
+@media (max-width: 800px) {
+  .body-detail-panel .athlete-column .scene-label small {
+    display: none;
+  }
+  .experience-main:has(.daily-action) {
+    padding-bottom: calc(var(--mobile-nav) + 24px);
+  }
+  .athlete-first .strategy-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .athlete-first .coach-today {
+    order: 0;
+  }
+  .athlete-first .daily-action {
+    order: 1;
+    position: static;
+    margin: 0;
+    padding: 14px;
+  }
+  .athlete-first .daily-action > p:not(.action-warning):not(.warning) {
+    display: none;
+  }
+  .athlete-first .daily-action > small {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .athlete-first .strategy-card {
+    order: 2;
+    display: block;
+    width: 100%;
+    padding: 16px;
+    margin: 0;
+    border-radius: 8px;
+    min-height: 0;
+  }
+  .athlete-first .strategy-card h3 {
+    font-size: 18px;
+  }
+  .athlete-first .strategy-card .plan-status {
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 8px;
+  }
+  .athlete-first .strategy-card > strong,
+  .athlete-first .strategy-card:nth-of-type(2) > strong {
+    display: block;
+    font-size: 16px;
+  }
+  .athlete-first .strategy-card p,
+  .athlete-first .strategy-card:nth-of-type(2) > p,
+  .athlete-first .strategy-card.coached-food > p {
+    display: block;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 8px 0;
+  }
+  .athlete-first .strategy-card .nutrition-status p {
+    display: block;
+  }
+  .athlete-first .strategy-card button {
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 12px;
+    min-height: 48px;
+  }
+  .athlete-first .strategy-card .rest-note {
+    display: block;
+    font-size: 14px;
+  }
+  .athlete-first .first-guide {
+    order: 3;
+    display: block;
+    font-size: 15px;
+    padding: 14px;
+  }
+  .athlete-first .first-guide b,
+  .athlete-first .first-guide button {
+    font-size: 14px;
+  }
+  .athlete-first .first-guide p {
+    display: block;
+    font-size: 14px;
+  }
+  .athlete-first .first-guide ol {
+    display: none;
+  }
+  .athlete-hero .body-view {
+    height: clamp(220px, 31svh, 320px);
+  }
+  .coach-today p {
+    font-size: 14px;
+  }
+  .coach-today h2 {
+    font-size: 17px;
+  }
+  .coach-meal-choices strong {
+    font-size: 14px;
+  }
+  .coach-consult .section-tabs button {
+    min-width: 72px;
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .coach-consult .coach-life {
+    grid-template-columns: 1fr;
+  }
+  .body-compare .body-view {
+    height: 330px !important;
+  }
+  .body-compare p {
+    font-size: 13px;
+  }
+  .body-compare h3 {
+    font-size: 14px;
+  }
+  .panel-actions {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .panel-actions .primary {
+    min-height: 48px;
+  }
+  .experience-main {
+    overflow-x: clip;
+  }
+  .history-chart svg {
+    min-height: 150px;
+  }
+  .body-history svg text {
+    font-size: 32px;
+  }
+  .nutrition-status b {
+    font-size: 15px;
+  }
+  .athlete-first .action-warning {
+    display: block !important;
+  }
+}

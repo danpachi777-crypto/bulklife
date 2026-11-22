@@ -48,18 +48,48 @@ export function AthleteSummary({
         </h2>
         <p>{a.profileTitle}</p>
       </div>
-      <BodyView
-        body={displayedBody}
-        baseline={c.initial.body}
-        selected={part}
-        onSelectPart={(p) => {
-          setPart(p);
-          setInspect(true);
-        }}
-        hair={a.appearance.hair}
-        model={c.versions.model}
-        title={`${a.name} / ${old ? dayDate(old.day) : "現在"}`}
-      />
+      {old ? (
+        <>
+          <div className="body-compare">
+            {[
+              { name: `${dayDate(old.day)}の身体`, body: old.body },
+              { name: "現在の身体", body: b },
+            ].map((v) => (
+              <div key={v.name}>
+                <h3>{v.name}</h3>
+                <BodyView
+                  body={v.body}
+                  selected={part}
+                  model={c.versions.model}
+                  defaultClip="GymIdle"
+                  preview
+                  comparison
+                />
+                <p>
+                  体重 {weight(v.body).toFixed(2)}kg / 筋質量
+                  {muscleMass(v.body).toFixed(2)}kg
+                </p>
+              </div>
+            ))}
+          </div>
+          <p>
+            同じカメラ・照明・静止ポーズで並べています。回転して調べる場合は「現在の身体」へ戻してください。
+          </p>
+        </>
+      ) : (
+        <BodyView
+          body={displayedBody}
+          baseline={c.initial.body}
+          selected={part}
+          onSelectPart={(p) => {
+            setPart(p);
+            setInspect(true);
+          }}
+          hair={a.appearance.hair}
+          model={c.versions.model}
+          title={`${a.name} / 現在`}
+        />
+      )}
       <small className="comparison-date">
         {old ? `${dayDate(old.day)}時点の身体値` : "現在の身体値"}
       </small>
@@ -131,8 +161,11 @@ export function AthleteSummary({
             <dd>{displayedBody.muscle[part].toFixed(3)}kg</dd>
             <dt>初日との差</dt>
             <dd>
-              {signed(displayedBody.muscle[part] - c.initial.body.muscle[part])}
-              kg
+              {signed(
+                displayedBody.muscle[part] - c.initial.body.muscle[part],
+                3,
+                "kg",
+              )}
             </dd>
             <dt>局所回復</dt>
             <dd>{Math.round((1 - displayedBody.fatigue[part]) * 100)}/100</dd>

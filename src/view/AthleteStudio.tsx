@@ -27,7 +27,9 @@ import {
   DoubleSide,
 } from "three";
 import { GymRoom, ContactShade } from "./GymRoom";
-import {coveredSkinIndex} from './clothingCoverage';
+import { LocalStage } from "./LocalStage";
+import { shoulderRaiseAmount } from "./poseCorrection";
+import { coveredSkinIndex } from "./clothingCoverage";
 import {
   useReducedMotion,
   PRESENTATION_EVENT,
@@ -89,6 +91,7 @@ function Controls({
   interactive,
   presentation,
   framing,
+  competition,
 }: {
   angle: number;
   revision: number;
@@ -96,6 +99,7 @@ function Controls({
   interactive: boolean;
   presentation: string;
   framing: "full" | "face" | "upper";
+  competition: boolean;
 }) {
   const { camera, gl, scene, invalidate, size } = useThree();
   const controls = useMemo(
@@ -134,8 +138,22 @@ function Controls({
     const distance =
       framing === "face"
         ? 0.82
-        : framing==='upper'?1.45:Math.max(seated?2.65:2.85, 1.05 / (size.width / size.height));
-    const target = framing === "face" ? 1.63 : framing==='upper'?1.25:seated ? 0.76 : 0.91;
+        : framing === "upper"
+          ? 1.45
+          : Math.max(
+              competition ? 3.6 : seated ? 2.65 : 2.85,
+              (competition ? 1.25 : 1.05) / (size.width / size.height),
+            );
+    const target =
+      framing === "face"
+        ? 1.63
+        : framing === "upper"
+          ? 1.25
+          : competition
+            ? 1.1
+            : seated
+              ? 0.76
+              : 0.91;
     camera.position.set(
       Math.sin(angle) * distance,
       target + (framing === "face" ? 0.015 : 0.18),
@@ -152,6 +170,7 @@ function Controls({
     camera,
     presentation,
     framing,
+    competition,
     size.width,
     size.height,
     invalidate,
@@ -213,10 +232,15 @@ function Athlete({
     const r = clone(gltf.scene);
     r.traverse((o) => {
       if (o instanceof Mesh) {
+        o.userData.athleteOwnsGeometry = true;
         o.geometry = o.geometry.clone();
-        if(o instanceof SkinnedMesh&&o.name==='BL_V2_AthleteBody'&&r.getObjectByName('BL_V4_TrainingShorts')){
-          o.userData.fullSkinIndex=o.geometry.index;
-          o.userData.clothedSkinIndex=coveredSkinIndex(o);
+        if (
+          o instanceof SkinnedMesh &&
+          o.name === "BL_V2_AthleteBody" &&
+          r.getObjectByName("BL_V4_TrainingShorts")
+        ) {
+          o.userData.fullSkinIndex = o.geometry.index;
+          o.userData.clothedSkinIndex = coveredSkinIndex(o);
         }
         const colorAttribute = o.geometry.getAttribute("color");
         if (colorAttribute) {
@@ -227,13 +251,14 @@ function Athlete({
           : o.material.clone();
         o.castShadow = true;
         o.receiveShadow = true;
-        if (o.name === "BL_V3_NaturalHair" || o.name === 'BL_V4_Hair') {
+        if (o.name === "BL_V3_NaturalHair" || o.name === "BL_V4_Hair") {
           for (const mat of Array.isArray(o.material)
             ? o.material
             : [o.material]) {
             if ("color" in mat) {
-              if(o.name==='BL_V4_Hair')(mat.color as Color).setRGB(0.45,0.35,0.27);
-              else (mat.color as Color).setRGB(0.38,0.34,0.3);
+              if (o.name === "BL_V4_Hair")
+                (mat.color as Color).setRGB(0.45, 0.35, 0.27);
+              else (mat.color as Color).setRGB(0.38, 0.34, 0.3);
             }
             mat.alphaTest = 0.4;
             mat.alphaToCoverage = true;
@@ -252,7 +277,9 @@ function Athlete({
   useEffect(() => {
     const bones = ["handL", "handR"];
     equipment.forEach((prop, i) => {
-      const bone = root.getObjectByName(bones[i]) ?? root.getObjectByName(i===0?'hand.L':'hand.R');
+      const bone =
+        root.getObjectByName(bones[i]) ??
+        root.getObjectByName(i === 0 ? "hand.L" : "hand.R");
       if (bone) {
         bone.add(prop);
         prop.position.set(0, 0.04, 0);
@@ -266,8 +293,21 @@ function Athlete({
     });
   }, [equipment, clip]);
   const mixer = useMemo(() => new AnimationMixer(root), [root]);
-  const expressionTime=useRef(0);
-  const faceParts=useMemo(()=>{const blink:Mesh[]=[],cloth:Mesh[]=[],eyes:{mesh:Mesh;origin:Vector3}[]=[];root.traverse(o=>{if(o instanceof Mesh){if(o.morphTargetDictionary?.blink!==undefined)blink.push(o);if(o.morphTargetDictionary?.seatedCloth!==undefined)cloth.push(o);if(/Iris|Pupil/.test(o.name))eyes.push({mesh:o,origin:o.position.clone()});}});return {blink,cloth,eyes};},[root]);
+  const expressionTime = useRef(0);
+  const faceParts = useMemo(() => {
+    const blink: Mesh[] = [],
+      cloth: Mesh[] = [],
+      eyes: { mesh: Mesh; origin: Vector3 }[] = [];
+    root.traverse((o) => {
+      if (o instanceof Mesh) {
+        if (o.morphTargetDictionary?.blink !== undefined) blink.push(o);
+        if (o.morphTargetDictionary?.seatedCloth !== undefined) cloth.push(o);
+        if (/Iris|Pupil/.test(o.name))
+          eyes.push({ mesh: o, origin: o.position.clone() });
+      }
+    });
+    return { blink, cloth, eyes };
+  }, [root]);
   useEffect(() => {
     const found =
       gltf.animations.find((a) => a.name === clip) ??
@@ -300,7 +340,8 @@ function Athlete({
     () => () => {
       mixer.uncacheRoot(root);
       root.traverse((o) => {
-        if (o instanceof Mesh) {
+        if (o instanceof SkinnedMesh) o.skeleton.dispose();
+        if (o instanceof Mesh && o.userData.athleteOwnsGeometry) {
           o.geometry.dispose();
           if (Array.isArray(o.material)) o.material.forEach((m) => m.dispose());
           else o.material.dispose();
@@ -313,7 +354,7 @@ function Athlete({
     const values = morphValues(body),
       v = new Vector3();
     root.traverse((o) => {
-      if(o.name==='BL_V3_Trainers')o.visible=wear;
+      if (o.name === "BL_V3_Trainers") o.visible = wear;
       if (!(o instanceof Mesh)) return;
       if (o.morphTargetDictionary && o.morphTargetInfluences)
         for (const [name, index] of Object.entries(o.morphTargetDictionary))
@@ -324,11 +365,23 @@ function Athlete({
       if (o.name === "BL_V2_Hair" || o.name === "BL_V3_HairFlow")
         o.visible = hair === 1;
       if (o.name === "BL_V3_NaturalHair") o.visible = hair === 0;
-      if (o.name === "BL_V3_TrainingTank" || o.name === "BL_V3_Trainers" || o.name === 'BL_V4_TrainingTank' || o.name === 'BL_V4_TrainingShorts')
+      if (
+        o.name === "BL_V3_TrainingTank" ||
+        o.name === "BL_V3_Trainers" ||
+        o.name === "BL_V4_TrainingTank" ||
+        o.name === "BL_V4_TrainingShorts"
+      )
         o.visible = wear;
-      if(o.name==='BL_V2_Shorts'&&root.getObjectByName('BL_V4_TrainingShorts'))o.visible=!wear;
+      if (
+        o.name === "BL_V2_Shorts" &&
+        root.getObjectByName("BL_V4_TrainingShorts")
+      )
+        o.visible = !wear;
       if (!["BL_AthleteBody", "BL_V2_AthleteBody"].includes(o.name)) return;
-      if(o.userData.fullSkinIndex)o.geometry.setIndex(wear?o.userData.clothedSkinIndex:o.userData.fullSkinIndex);
+      if (o.userData.fullSkinIndex)
+        o.geometry.setIndex(
+          wear ? o.userData.clothedSkinIndex : o.userData.fullSkinIndex,
+        );
       const positions = o.geometry.attributes.position,
         colors = new Float32Array(positions.count * 3),
         color = new Color();
@@ -400,14 +453,39 @@ function Athlete({
     onSelect,
   ]);
   useFrame((_, delta) => {
-    if(playing)expressionTime.current+=Math.min(delta,.05);
-    const time=expressionTime.current;let cycle=time%27.9,blink=0;
-    for(const interval of [3.8,6.2,4.9,7.4,5.6]){if(cycle<interval){const t=(cycle-(interval-.18))/.18;if(t>=0&&t<=1)blink=Math.sin(t*Math.PI)**2;break;}cycle-=interval;}
-    for(const m of faceParts.blink)m.morphTargetInfluences![m.morphTargetDictionary!.blink]=playing?blink:0;
-    for(const {mesh,origin} of faceParts.eyes){mesh.position.copy(origin);if(playing){mesh.position.x+=.0008*Math.sin(time*.37);mesh.position.y+=.0003*Math.sin(time*.21+.7);}}
-    const actionData=gltf.animations.find(a=>a.name===clip),actionTime=actionData?mixer.clipAction(actionData).time:0;
-    const seated=clip==='SeatedPrepare'?1:clip==='StandUp'&&actionData?1-Math.min(1,actionTime/actionData.duration):0;
-    for(const m of faceParts.cloth)m.morphTargetInfluences![m.morphTargetDictionary!.seatedCloth]=seated;
+    if (playing) expressionTime.current += Math.min(delta, 0.05);
+    const time = expressionTime.current;
+    let cycle = time % 27.9,
+      blink = 0;
+    for (const interval of [3.8, 6.2, 4.9, 7.4, 5.6]) {
+      if (cycle < interval) {
+        const t = (cycle - (interval - 0.18)) / 0.18;
+        if (t >= 0 && t <= 1) blink = Math.sin(t * Math.PI) ** 2;
+        break;
+      }
+      cycle -= interval;
+    }
+    for (const m of faceParts.blink)
+      m.morphTargetInfluences![m.morphTargetDictionary!.blink] = playing
+        ? blink
+        : 0;
+    for (const { mesh, origin } of faceParts.eyes) {
+      mesh.position.copy(origin);
+      if (playing) {
+        mesh.position.x += 0.0008 * Math.sin(time * 0.37);
+        mesh.position.y += 0.0003 * Math.sin(time * 0.21 + 0.7);
+      }
+    }
+    const actionData = gltf.animations.find((a) => a.name === clip),
+      actionTime = actionData ? mixer.clipAction(actionData).time : 0;
+    const seated =
+      clip === "SeatedPrepare"
+        ? 1
+        : clip === "StandUp" && actionData
+          ? 1 - Math.min(1, actionTime / actionData.duration)
+          : 0;
+    for (const m of faceParts.cloth)
+      m.morphTargetInfluences![m.morphTargetDictionary!.seatedCloth] = seated;
     if (playing) {
       const action = gltf.animations.find((a) => a.name === clip);
       if (clip === "SeatedPrepare" && action) {
@@ -419,6 +497,20 @@ function Athlete({
         ((presentation === "title" ? -0.48 : 0) - root.position.z) *
         Math.min(1, delta * 4);
     } else root.position.z = presentation === "title" ? -0.48 : 0;
+    const shoulderMeshes: Mesh[] = [];
+    root.traverse((o) => {
+      if (
+        o instanceof Mesh &&
+        o.morphTargetDictionary?.shoulderRaise !== undefined
+      )
+        shoulderMeshes.push(o);
+    });
+    if (shoulderMeshes.length) {
+      const amount = shoulderRaiseAmount(root);
+      for (const mesh of shoulderMeshes)
+        mesh.morphTargetInfluences![mesh.morphTargetDictionary!.shoulderRaise] =
+          amount;
+    }
   });
   const click = (e: ThreeEvent<MouseEvent>) => {
     if (!onSelect || e.delta > 8 || !e.face || !(e.object instanceof Mesh))
@@ -528,6 +620,7 @@ export function BodyView({
   model = "athlete-v1",
   preview = false,
   presentation = "inspection",
+  comparison = false,
 }: {
   body: BodyState;
   selected: Part;
@@ -540,6 +633,7 @@ export function BodyView({
   model?: string;
   preview?: boolean;
   presentation?: "inspection" | "home" | "title" | "creation";
+  comparison?: boolean;
 }) {
   const studio = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -552,8 +646,10 @@ export function BodyView({
   const [touchRotation, setTouchRotation] = useState(false);
   const active = visible && foreground && !covered;
   const opening = presentation === "title" || presentation === "creation";
-  const immersive = presentation !== "inspection";
-  const interactive = !preview && !opening && (!mobile || touchRotation);
+  const competition = !!stage;
+  const immersive = presentation !== "inspection" || competition;
+  const interactive =
+    !preview && !opening && !competition && (!mobile || touchRotation);
   useEffect(() => {
     const observer = new IntersectionObserver((entries) =>
       setVisible(entries[0]?.isIntersecting ?? false),
@@ -592,7 +688,7 @@ export function BodyView({
     [clip, setClip] = useState(defaultClip),
     [mode, setMode] = useState<Mode>("normal"),
     [framing, setFraming] = useState<"full" | "face" | "upper">("full"),
-    [wear, setWear] = useState(immersive);
+    [wear, setWear] = useState(immersive && !competition);
   const capture = useRef<(() => string) | null>(null);
   useEffect(() => setPlaying(!preview && !reduced), [reduced, preview]);
   useEffect(() => {
@@ -646,7 +742,7 @@ export function BodyView({
   return (
     <div
       ref={studio}
-      className={`body-studio presentation-${presentation}${preview ? " studio-preview" : ""}`}
+      className={`body-studio presentation-${presentation}${preview ? " studio-preview" : ""}${competition ? " studio-competition" : ""}`}
       data-rendering={active ? "visible" : "paused"}
       data-rotation={interactive ? "free" : "locked"}
     >
@@ -690,7 +786,15 @@ export function BodyView({
             />
             <directionalLight position={[2, 2, 2.5]} intensity={0.65} />
             <Suspense fallback={null}>
-              {stage ? <Environment stage={stage} /> : <GymRoom />}
+              {comparison ? (
+                <Studio />
+              ) : stage?.startsWith("local-") ? (
+                <LocalStage kind={stage} />
+              ) : stage ? (
+                <Environment stage={stage} />
+              ) : (
+                <GymRoom />
+              )}
               <ContactShade />
               <Athlete
                 body={body}
@@ -716,6 +820,7 @@ export function BodyView({
               interactive={interactive}
               presentation={presentation}
               framing={framing}
+              competition={competition}
             />
             <FrameClock
               active={active}
@@ -781,9 +886,10 @@ export function BodyView({
           </div>
         )}
       </div>
-      {!preview && !opening && (
+      {!preview && !opening && !competition && (
         <div className="hero-view-tools" aria-label="人物の見方">
           <button
+            aria-pressed={framing === "full"}
             onClick={() => {
               setFraming("full");
               setView((v) => ({ angle: 0, revision: v.revision + 1 }));
@@ -791,8 +897,17 @@ export function BodyView({
           >
             全身・正面
           </button>
-          <button onClick={()=>{setFraming('upper');setView(v=>({angle:0,revision:v.revision+1}));}}>上半身</button>
           <button
+            aria-pressed={framing === "upper"}
+            onClick={() => {
+              setFraming("upper");
+              setView((v) => ({ angle: 0, revision: v.revision + 1 }));
+            }}
+          >
+            上半身
+          </button>
+          <button
+            aria-pressed={framing === "face"}
             onClick={() => {
               setFraming((v) => (v === "face" ? "full" : "face"));
               setView((v) => ({ angle: 0, revision: v.revision + 1 }));
@@ -805,7 +920,7 @@ export function BodyView({
           </button>
         </div>
       )}
-      {!preview && mobile && !opening && (
+      {!preview && mobile && !opening && !competition && (
         <button
           className="touch-rotation"
           aria-pressed={touchRotation}
@@ -817,32 +932,35 @@ export function BodyView({
         </button>
       )}
       {!preview && !immersive && (
-        <details className="studio-more"><summary>ポーズ・表示・画像保存</summary><div className="body-options">
-          <label>
-            ポーズ・動作
-            <select value={clip} onChange={(e) => setClip(e.target.value)}>
-              {Object.entries(CLIPS).map(([id, name]) => (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            身体の表示
-            <select
-              value={mode}
-              onChange={(e) => setMode(e.target.value as Mode)}
-            >
-              {Object.entries(MODES).map(([id, name]) => (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button onClick={download}>身体カードを保存</button>
-        </div></details>
+        <details className="studio-more">
+          <summary>ポーズ・表示・画像保存</summary>
+          <div className="body-options">
+            <label>
+              ポーズ・動作
+              <select value={clip} onChange={(e) => setClip(e.target.value)}>
+                {Object.entries(CLIPS).map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              身体の表示
+              <select
+                value={mode}
+                onChange={(e) => setMode(e.target.value as Mode)}
+              >
+                {Object.entries(MODES).map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button onClick={download}>身体カードを保存</button>
+          </div>
+        </details>
       )}
       {!preview && !immersive && mode !== "normal" && (
         <p className="heat-legend">

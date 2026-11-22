@@ -1,0 +1,267 @@
+{
+  "notes": "Controlled new careers; the exact historical save behind 828 kcal was not supplied. Growth is not forced positive.",
+  "foodCases": [
+    {
+      "profile": "P1",
+      "budget": 500,
+      "energy": 779,
+      "energyTarget": 2225,
+      "protein": 55,
+      "proteinTarget": 106,
+      "proteinCoverage": 0.5183333333333333,
+      "cost": 499,
+      "status": "目標に不足",
+      "actualEnergy": 778.94,
+      "muscleDelta": -0.0038805393728331694,
+      "actualGrowthProteinFactor": 0.5183333333333333,
+      "actualGrowthEnergyFactor": 0.25,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は52%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P1",
+      "budget": 1200,
+      "energy": 1875,
+      "energyTarget": 2225,
+      "protein": 131,
+      "proteinTarget": 106,
+      "proteinCoverage": 1,
+      "cost": 1200,
+      "status": "目標に不足",
+      "actualEnergy": 1875.3300000000004,
+      "muscleDelta": 0.02157766562089236,
+      "actualGrowthProteinFactor": 1,
+      "actualGrowthEnergyFactor": 0.7007388888888891,
+      "resultExplanation": {
+        "what": "予定した練習を積み重ねました",
+        "meaning": "12セット、睡眠8.0時間を記録しました。短期の小さな体重差は成長の評価に使いません。",
+        "next": "翌日の身体と疲労を見て、次の計画を確認しましょう。"
+      }
+    },
+    {
+      "profile": "P2",
+      "budget": 500,
+      "energy": 837,
+      "energyTarget": 2550,
+      "protein": 53,
+      "proteinTarget": 123,
+      "proteinCoverage": 0.4270211038961038,
+      "cost": 499,
+      "status": "目標に不足",
+      "actualEnergy": 836.6600000000001,
+      "muscleDelta": -0.005535603858923821,
+      "actualGrowthProteinFactor": 0.4270211038961038,
+      "actualGrowthEnergyFactor": 0.25,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は43%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P2",
+      "budget": 1200,
+      "energy": 2005,
+      "energyTarget": 2550,
+      "protein": 127,
+      "proteinTarget": 123,
+      "proteinCoverage": 1,
+      "cost": 1199,
+      "status": "目標に不足",
+      "actualEnergy": 2005.3600000000001,
+      "muscleDelta": 0.022773924117647226,
+      "actualGrowthProteinFactor": 1,
+      "actualGrowthEnergyFactor": 0.5957555555555557,
+      "resultExplanation": {
+        "what": "予定した練習を積み重ねました",
+        "meaning": "12セット、睡眠8.0時間を記録しました。短期の小さな体重差は成長の評価に使いません。",
+        "next": "翌日の身体と疲労を見て、次の計画を確認しましょう。"
+      }
+    },
+    {
+      "profile": "P3",
+      "budget": 500,
+      "energy": 811,
+      "energyTarget": 2400,
+      "protein": 54,
+      "proteinTarget": 115,
+      "proteinCoverage": 0.46574652777777775,
+      "cost": 500,
+      "status": "目標に不足",
+      "actualEnergy": 811.19,
+      "muscleDelta": -0.004632129511861649,
+      "actualGrowthProteinFactor": 0.46574652777777775,
+      "actualGrowthEnergyFactor": 0.25,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は47%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P3",
+      "budget": 1200,
+      "energy": 1954,
+      "energyTarget": 2400,
+      "protein": 129,
+      "proteinTarget": 115,
+      "proteinCoverage": 1,
+      "cost": 1200,
+      "status": "目標に不足",
+      "actualEnergy": 1954.41,
+      "muscleDelta": 0.021236679606666087,
+      "actualGrowthProteinFactor": 1,
+      "actualGrowthEnergyFactor": 0.6480055555555556,
+      "resultExplanation": {
+        "what": "予定した練習を積み重ねました",
+        "meaning": "12セット、睡眠8.0時間を記録しました。短期の小さな体重差は成長の評価に使いません。",
+        "next": "翌日の身体と疲労を見て、次の計画を確認しましょう。"
+      }
+    },
+    {
+      "profile": "P4",
+      "budget": 500,
+      "energy": 771,
+      "energyTarget": 2175,
+      "protein": 55,
+      "proteinTarget": 102,
+      "proteinCoverage": 0.53859375,
+      "cost": 500,
+      "status": "目標に不足",
+      "actualEnergy": 770.7199999999999,
+      "muscleDelta": -0.0037458353543016187,
+      "actualGrowthProteinFactor": 0.53859375,
+      "actualGrowthEnergyFactor": 0.25,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は54%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P4",
+      "budget": 1200,
+      "energy": 1849,
+      "energyTarget": 2175,
+      "protein": 132,
+      "proteinTarget": 102,
+      "proteinCoverage": 1,
+      "cost": 1199,
+      "status": "目標に不足",
+      "actualEnergy": 1849.1100000000001,
+      "muscleDelta": 0.022235580311676273,
+      "actualGrowthProteinFactor": 1,
+      "actualGrowthEnergyFactor": 0.7183944444444446,
+      "resultExplanation": {
+        "what": "予定した練習を積み重ねました",
+        "meaning": "12セット、睡眠8.0時間を記録しました。短期の小さな体重差は成長の評価に使いません。",
+        "next": "翌日の身体と疲労を見て、次の計画を確認しましょう。"
+      }
+    },
+    {
+      "profile": "P5",
+      "budget": 500,
+      "energy": 892,
+      "energyTarget": 2900,
+      "protein": 51,
+      "proteinTarget": 142,
+      "proteinCoverage": 0.3570786516853932,
+      "cost": 500,
+      "status": "目標に不足",
+      "actualEnergy": 891.6200000000001,
+      "muscleDelta": -0.006771139124367664,
+      "actualGrowthProteinFactor": 0.3570786516853932,
+      "actualGrowthEnergyFactor": 0.25,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は36%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P5",
+      "budget": 1200,
+      "energy": 2128,
+      "energyTarget": 2900,
+      "protein": 122,
+      "proteinTarget": 142,
+      "proteinCoverage": 0.8591151685393257,
+      "cost": 1199,
+      "status": "目標に不足",
+      "actualEnergy": 2127.73,
+      "muscleDelta": 0.014924112317309834,
+      "actualGrowthProteinFactor": 0.8591151685393257,
+      "actualGrowthEnergyFactor": 0.47040555555555563,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は86%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P6",
+      "budget": 500,
+      "energy": 819,
+      "energyTarget": 2450,
+      "protein": 53,
+      "proteinTarget": 118,
+      "proteinCoverage": 0.450304054054054,
+      "cost": 500,
+      "status": "目標に不足",
+      "actualEnergy": 819.0699999999999,
+      "muscleDelta": -0.005232168595281195,
+      "actualGrowthProteinFactor": 0.450304054054054,
+      "actualGrowthEnergyFactor": 0.25,
+      "resultExplanation": {
+        "what": "食事の実績は栄養の目標に不足しています",
+        "meaning": "ゲーム内のたんぱく質充足は45%。予定を賄えた割合と、身体に必要な目標の充足は別です。エネルギー条件も成長を抑える値でした。",
+        "next": "次は食事の相談で、目標量・食費上限・自炊と手軽な案を比べられます。筋質量の変化を食事だけの原因とは断定しません。"
+      }
+    },
+    {
+      "profile": "P6",
+      "budget": 1200,
+      "energy": 1963,
+      "energyTarget": 2450,
+      "protein": 128,
+      "proteinTarget": 118,
+      "proteinCoverage": 1,
+      "cost": 1198,
+      "status": "目標に不足",
+      "actualEnergy": 1962.67,
+      "muscleDelta": 0.0219377238099554,
+      "actualGrowthProteinFactor": 1,
+      "actualGrowthEnergyFactor": 0.6203722222222223,
+      "resultExplanation": {
+        "what": "予定した練習を積み重ねました",
+        "meaning": "12セット、睡眠8.0時間を記録しました。短期の小さな体重差は成長の評価に使いません。",
+        "next": "翌日の身体と疲労を見て、次の計画を確認しましょう。"
+      }
+    }
+  ],
+  "week": {
+    "count": 7,
+    "requested": 7,
+    "first": 0,
+    "last": 6,
+    "weight": 0.08684823194583657,
+    "muscle": 0.08162209375013774,
+    "fat": 0.04905674378964342,
+    "sets": 48,
+    "plannedSets": 48,
+    "minutes": 160,
+    "trainingDays": 4,
+    "energy": 2050.26,
+    "proteinCoverage": 0.9345225030659939,
+    "sleep": 8,
+    "income": 36129.032258064515,
+    "food": 5880,
+    "fixed": 15806.451612903227,
+    "balance": 14442.580645161244,
+    "other": -4.3655745685100555e-11,
+    "stopped": null
+  }
+}

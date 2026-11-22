@@ -1,0 +1,20 @@
+{
+  "cameraLensFull": 65,
+  "cameraLensFace": 70,
+  "fullEye": [
+    0,
+    -4.3,
+    1.2
+  ],
+  "faceEye": [
+    0,
+    -0.92,
+    1.63
+  ],
+  "resolution": [
+    640,
+    900
+  ],
+  "lighting": "QA neutral key 480 / fill 300 / rim 420; unchanged before and after",
+  "notes": "Neutral Blender evidence; browser screenshots are separate."
+}

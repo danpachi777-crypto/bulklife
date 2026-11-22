@@ -1,0 +1,69 @@
+{
+  "revision": "portrait-v5",
+  "compatibleSaveModel": "athlete-v2",
+  "body": "BL_V2_AthleteBody",
+  "rig": "BL_V2_Rig",
+  "clips": [
+    "Breathing",
+    "Idle",
+    "FrontDoubleBiceps",
+    "FrontLatSpread",
+    "SideChest",
+    "BackDoubleBiceps",
+    "BackLatSpread",
+    "SideTriceps",
+    "AbdominalsThigh",
+    "MostMuscular",
+    "TrainingPress",
+    "TrainingRow",
+    "TrainingSquat",
+    "StageEntry",
+    "ResultCelebrate",
+    "ResultReflect",
+    "GymIdle",
+    "SeatedPrepare",
+    "StandUp"
+  ],
+  "morphs": [
+    "upperChest",
+    "chest",
+    "frontDelts",
+    "sideDelts",
+    "rearDelts",
+    "lats",
+    "upperBack",
+    "erectors",
+    "biceps",
+    "triceps",
+    "forearms",
+    "quads",
+    "hamstrings",
+    "glutes",
+    "calves",
+    "abs",
+    "bodyFat",
+    "pump"
+  ],
+  "bones": 50,
+  "garments": [
+    "BL_V2_Shorts",
+    "BL_V4_TrainingTank",
+    "BL_V4_TrainingShorts"
+  ],
+  "glbBytes": 7993880,
+  "sha256": "dd0df7623f409cbcce0374cc8d8c9df27ec7d760861a320ad36ad576a5386ea9",
+  "triangles": 48788,
+  "expressionMorphs": [
+    "blink"
+  ],
+  "clothMorphs": [
+    "seatedCloth"
+  ],
+  "sources": [
+    "assets/sources/makehuman-system-v3/provenance.json",
+    "assets/sources/makehuman-clothing-v4/provenance.json"
+  ],
+  "poseMorphs": [
+    "shoulderRaise"
+  ]
+}

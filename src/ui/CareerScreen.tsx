@@ -1,34 +1,746 @@
-import {useEffect,useState} from 'react';
-import type {Career} from '../core/model';
-import {fatPercent,muscleMass} from '../core/model';
-import {edition,editions,SERIES_NAMES,CIRCUIT_NAMES,eligibility,register,requestApproval,enter,travel,checkIn,runCompetition,withdraw,retire,scoreBody,hasCredential,acknowledgeDecision,requestOlympiaInvitation,hasOlympiaQualification} from '../core/competitions';
-import {enableCareer} from '../core/progress';
-import {isoDay,seasonOf,yearEnd} from '../core/calendar';
-import type {Circuit,Series,Membership,Result} from '../core/careerTypes';
-import {BodyView} from '../view/BodyView';
-import {useMealTemplate} from '../core/nutrition';
-const money=(n:number)=>Math.round(n).toLocaleString('ja-JP')+'円';
-export function CareerScreen({career,onChange,onAdvance,onNew,busy}:{career:Career;onChange:(c:Career|(()=>Career))=>void;onAdvance:(days:number)=>void;onNew:()=>void;busy:boolean}){
- const [circuit,setCircuit]=useState<Circuit>('jbbf'),[confirmRetire,setConfirmRetire]=useState(false),[chosen,setChosen]=useState<string|null>(null);
- useEffect(()=>{setChosen(career.progress?.results.at(-1)?.id??null);if(career.progress?.results.length)window.scrollTo({top:0,behavior:'smooth'});},[career.progress?.results.length]);
- const c=career,p=c.progress,year=seasonOf(c.athlete.day);
- if(!p)return <section className="paper"><h2>競技キャリアを追加する</h2><p>既存の身体・計画・日次記録を保ったまま、大会・資格・ライバル・引退のデータを追加します。追加後は参照規則版を固定します。</p><button className="primary" disabled={busy} onClick={()=>onChange(enableCareer(c))}>この選手の競技キャリアを開始</button></section>;
- const apply=(fn:()=>Career)=>{onChange(fn);};
- const active=p.entries.filter(e=>['entered','travelled','checkedIn'].includes(e.status));
- const latest=p.results.find(r=>r.id===chosen)??p.results[p.results.length-1];
- const list=editions(c).filter(e=>e.circuit===circuit&&e.showDay>=c.athlete.day-14&&e.showDay<c.athlete.day+390);
- if(p.retirement)return <><section className="paper ending"><span className="eyebrow">A LIFE, REMEMBERED</span><h2>{c.athlete.name}の競技人生</h2><p className="ending-date">{isoDay(0)} — {isoDay(p.retirement.day)}</p>{p.retirement.text.map((t,i)=><p key={i}>{t}</p>)}<div className="record-stats stats"><div><b>{p.retirement.years.toFixed(1)}</b><span>年の歩み</span></div><div><b>{p.results.length}</b><span>大会出場</span></div><div><b>{p.titles.length}</b><span>残ったタイトル</span></div></div><div className="button-row"><button className="primary" disabled={busy} onClick={onNew}>別の選手で新しい人生を始める</button></div><p className="muted">引退した選手の身体、記録、大会成績は保存されています。新しい抽選へ能力を持ち越しません。</p></section>{p.results.length>0&&<label>保存した大会<select value={latest?.id??''} onChange={e=>setChosen(e.target.value)}>{p.results.slice().reverse().map(r=><option key={r.id} value={r.id}>{r.season} {SERIES_NAMES[r.series]} {r.classId} {r.classRank}位</option>)}</select></label>}{latest&&<ResultDetail key={latest.id} result={latest} playerId={c.athlete.id} model={c.versions.model}/>}</>;
- return <><section className="paper"><div className="section-heading"><div><span className="eyebrow">THE NEXT CHAPTER</span><h2>身体づくりを、ステージへ。</h2></div><b>{year}シーズン</b></div><p>実在大会を参考にした独立制作のシミュレーションです。選手・結果・開催日・会場・費用はゲーム設定。JBBFとProfessional Leagueの資格は相互変換しません。</p><div className="fields"><label>今季の目標<select value={p.goal??''} disabled={busy} onChange={e=>onChange({...c,progress:{...p,goal:(e.target.value||null) as Series|null}})}><option value="">身体づくりを優先</option>{Object.entries(SERIES_NAMES).map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label><div className="career-phase"><span>現在の時期</span><b>{c.athlete.day<p.recoveryUntil?'大会後の回復':active.length?'大会への準備':'身体づくり'}</b><small>{c.athlete.day<p.recoveryUntil?`${isoDay(p.recoveryUntil)}まで回復期`:p.finalSeason!==null?'最後のシーズンを宣言済み':'期限を決めずに継続できます'}</small></div></div><div className="button-row"><button disabled={busy||!!c.pendingEvent} onClick={()=>onAdvance(28)}>この計画で4週間を実行</button><button disabled={busy||!!c.pendingEvent} onClick={()=>{const next=active.map(e=>e.status==='entered'?e.travelDay:e.showDay).filter(d=>d>c.athlete.day).sort((a,b)=>a-b)[0];onAdvance(Math.max(1,Math.min(next?next-c.athlete.day:84,365)));}}>次の節目まで進める</button></div><p className="muted">まとめ送りも同じ日次計算です。申込・移動・大会当日は停止し、あなたの選択を待ちます。</p></section>
- {latest&&latest.day===c.athlete.day&&<section className='paper important'><span className='eyebrow'>YOUR COMPETITION RESULT</span><h2>ステージで得た、今回の結果。</h2><ResultDetail key={latest.id} result={latest} playerId={c.athlete.id} model={c.versions.model}/><button disabled={busy} onClick={()=>onChange(()=>useMealTemplate(acknowledgeDecision(c),'recover'))}>結果を振り返り、回復用の食事案を適用</button><p className='muted'>最初の7日、その後14日は練習時間に回復期の上限を設けます。予定と実績の差を記録します。</p></section>}
- {p.decision&&<section className="paper important"><h2>{p.decision.text}</h2>{!['travel','show'].includes(p.decision.kind)&&<button disabled={busy} onClick={()=>apply(()=>acknowledgeDecision(c))}>今季は見送って続ける</button>}</section>}
- {active.length>0&&<section className="paper"><h2>出場予定と当日の手続き</h2>{active.map(entry=>{const e=edition(entry.series,entry.season);return <article className="entry-row" key={entry.id}><h3>{e.name} / {isoDay(entry.showDay)}</h3><p>申込料 {money(entry.entryFee)}は支払済み。移動・宿泊 {money(entry.travelFee)} {entry.travelPaid?'支払済み':'未払い'}。</p><div className="button-row">{entry.status==='entered'&&<button disabled={busy||c.athlete.day<entry.travelDay} onClick={()=>apply(()=>travel(c,entry.id))}>移動を実行</button>}{entry.status==='travelled'&&<button disabled={busy||c.athlete.day!==entry.showDay} onClick={()=>apply(()=>checkIn(c,entry.id))}>計量・チェックイン</button>}{entry.status==='checkedIn'&&<button className="primary" disabled={busy||c.athlete.day!==entry.showDay} onClick={()=>apply(()=>runCompetition(c,entry.id))}>ステージに立ち、審査を受ける</button>}<button disabled={busy} onClick={()=>apply(()=>withdraw(c,entry.id))}>欠場する</button></div>{entry.classId&&<p>計量：{entry.checkInWeight?.toFixed(2)}kg / {entry.classId}</p>}<p className="muted">欠場してもキャリアは終わりません。支払済み費用は返金しないゲーム設定です。</p></article>;})}</section>}
- <section className="paper"><h2>登録・講習・資格</h2><div className="credentials">{([['jbbfRegistration','JBBF年度登録',8000],['antiDopingCourse','当年AD講習',3000],['npcMembership','NPC年度会員',10000],['passport','旅券の準備',16000],['internationalCard','IFBB国際カード',7000],['proActive','Professional League Active登録',25000]] as [Membership|'passport'|'internationalCard',string,number][]).map(([kind,label,cost])=><div key={kind}><b>{label}</b><span>{hasCredential(c,kind)?'有効':kind==='proActive'&&!hasCredential(c,'proCard')?'プロカード取得後':'未取得'}</span><button disabled={busy||hasCredential(c,kind)||(kind==='proActive'&&!hasCredential(c,'proCard'))} onClick={()=>apply(()=>register(c,kind))}>{hasCredential(c,kind)?'取得済み':`手続き ${money(cost)}`}</button></div>)}</div><p className="muted">現実の登録や講習を受ける操作ではありません。ゲーム内の手続き・費用です。年度資格は年をまたぐと更新が必要です。</p>{p.credentials.length>0&&<details><summary>取得した資格と有効期限</summary><ul>{p.credentials.map(q=><li key={q.id}>{q.kind} / {q.expiresDay>=200000?'無期限':isoDay(q.expiresDay)}まで / {q.rulesVersion}</li>)}</ul></details>}</section>
- <section className="paper"><div className="button-row"><button className={circuit==='jbbf'?'selected':''} onClick={()=>setCircuit('jbbf')}>JBBF / IFBB国際連盟</button><button className={circuit==='npc'?'selected':''} onClick={()=>setCircuit('npc')}>NPC / Professional League</button></div><h2 className="spaced">{CIRCUIT_NAMES[circuit]}の大会</h2><div className="competition-grid">{list.map(e=>{const q=eligibility(c,e),entered=p.entries.some(x=>x.editionId===e.id);return <article className="competition-card" key={e.id}><span className="eyebrow">{e.season} / 男子Bodybuilding / シニア</span><h3>{e.name}</h3><p>大会 {isoDay(e.showDay)}<br/>申込締切 {isoDay(e.deadlineDay)}<br/>申込 {money(e.fee)} ＋ 移動 {money(e.travel)}</p>{q.gameSupplement&&<p className="warning">個別要項が未確認のため、明記したゲーム内要項を使用します。現実の出場資格の判定には使えません。</p>}<details><summary>{q.allowed?'申込条件を満たしています':`${q.missing.length}件の未充足条件`}</summary><ul>{q.met.map(t=><li key={t}>満たす：{t}</li>)}{q.missing.map(t=><li key={t}>不足：{t}</li>)}</ul>{q.basis.map(t=><p key={t}>{t}</p>)}</details><div className="button-row">{e.series==='olympia'&&!hasOlympiaQualification(c,e.season)&&p.results.some(r=>r.series==='olympia'&&r.classRank===1)&&<button disabled={busy} onClick={()=>apply(()=>requestOlympiaInvitation(c,e.season))}>特別出場承認を申請</button>}{e.circuit==='jbbf'&&e.series==='ifbbWorld'&&!hasCredential(c,`dispatch:${e.id}`)&&<button disabled={busy||entered} onClick={()=>apply(()=>requestApproval(c,e,'dispatch'))}>国内派遣を申請</button>}{(e.circuit==='jbbf'||['newYorkPro','olympia'].includes(e.series))&&!hasCredential(c,`approval:${e.id}`)&&<button disabled={busy||entered} onClick={()=>apply(()=>requestApproval(c,e))}>{e.circuit==='jbbf'?'正式出場承認を申請':'大会契約を申請'}</button>}<button className="primary" disabled={busy||entered||!q.allowed} onClick={()=>apply(()=>enter(c,e))}>{entered?'申込・記録あり':'この大会へ申し込む'}</button></div><details><summary>規則・階級・出典</summary><p>参照年度 {e.referenceYear} / {e.rulesVersion}</p><p>体重階級：{e.classes.length===1?'オーバーオール':e.classes.map((v,i)=>Number.isFinite(v)?`${v}kg以下`:`${e.classes[i-1]}kg超`).join('、')}</p>{e.notes.map(t=><p key={t}>{t}</p>)}{e.sourceUrls.map(url=><p key={url}><a href={url} target="_blank" rel="noreferrer">公式参照資料</a></p>)}</details></article>;})}</div></section>
- <section className="paper"><span className="eyebrow">WHAT YOU HAVE EARNED</span><h2>実績と、その先。</h2>{p.titles.length>0?<div className="titles">{p.titles.map(t=><article key={t.id}><b>{t.kind==='worldClass'?'IFBBシニア男子・階級別世界一':t.kind==='worldOverall'?'IFBBシニア男子・オーバーオール世界一':'Mr. Olympia 男子Open世界一'}</b><p>{t.classId} / {isoDay(t.day)} / {t.editionId}</p></article>)}</div>:<p>世界タイトルはまだありません。目標と勝利の保証は別です。現在の身体・技術・当日の状態と相手の比較で順位が決まります。</p>}{p.results.length>0&&<><label>過去の大会<select value={latest?.id??''} onChange={e=>setChosen(e.target.value)}>{p.results.slice().reverse().map(r=><option key={r.id} value={r.id}>{r.season} {SERIES_NAMES[r.series]} {r.classId} {r.classRank}位</option>)}</select></label>{latest&&latest.day!==c.athlete.day&&<ResultDetail key={latest.id} result={latest} playerId={c.athlete.id} model={c.versions.model}/>}</>}
- <h3 className="spaced">引退を考える</h3><p>世界未優勝でも引退できます。実際に達成した内容だけで振り返りを作り、身体と記録は残します。</p><div className="button-row"><button disabled={busy} onClick={()=>onChange({...c,progress:{...p,finalSeason:p.finalSeason===null?year:null}})}>{p.finalSeason===null?'今年を最後のシーズンにする':'最終シーズン宣言を取り消す'}</button><button disabled={busy} onClick={()=>setConfirmRetire(true)}>すぐ引退する内容を確認</button></div>{confirmRetire&&<div className="retirement-confirm" role="dialog" aria-label="引退の確認"><h3>{c.athlete.name}の育成を終了します</h3><p>{c.athlete.day}日間、{p.results.length}大会、タイトル{p.titles.length}件。引退後は競技育成を進められません。選手と記録は削除されません。</p><button className="primary" disabled={busy} onClick={()=>{apply(()=>retire(c));setConfirmRetire(false);}}>この内容で引退する</button><button onClick={()=>setConfirmRetire(false)}>育成を続ける</button></div>}</section></>;
+import { useEffect, useState } from "react";
+import type { Career } from "../core/model";
+import { fatPercent, muscleMass } from "../core/model";
+import {
+  edition,
+  editions,
+  SERIES_NAMES,
+  CIRCUIT_NAMES,
+  eligibility,
+  register,
+  requestApproval,
+  enter,
+  travel,
+  checkIn,
+  runCompetition,
+  withdraw,
+  retire,
+  scoreBody,
+  hasCredential,
+  acknowledgeDecision,
+  requestOlympiaInvitation,
+  hasOlympiaQualification,
+} from "../core/competitions";
+import { enableCareer } from "../core/progress";
+import { isoDay, seasonOf, yearEnd } from "../core/calendar";
+import type { Circuit, Series, Membership, Result } from "../core/careerTypes";
+import { GoalSteps } from "./GoalSteps";
+import { BodyView } from "../view/BodyView";
+import { useMealTemplate } from "../core/nutrition";
+const money = (n: number) => Math.round(n).toLocaleString("ja-JP") + "円";
+export function CareerScreen({
+  career,
+  onChange,
+  onAdvance,
+  onNew,
+  busy,
+  retirementOnly = false,
+}: {
+  retirementOnly?: boolean;
+  career: Career;
+  onChange: (c: Career | (() => Career)) => void;
+  onAdvance: (days: number) => void;
+  onNew: () => void;
+  busy: boolean;
+}) {
+  const [circuit, setCircuit] = useState<Circuit>("jbbf"),
+    [confirmRetire, setConfirmRetire] = useState(false),
+    [chosen, setChosen] = useState<string | null>(null);
+  useEffect(() => {
+    setChosen(career.progress?.results.at(-1)?.id ?? null);
+    if (career.progress?.results.length)
+      window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [career.progress?.results.length]);
+  const c = career,
+    p = c.progress,
+    year = seasonOf(c.athlete.day);
+  if (!p)
+    return (
+      <section className="paper">
+        <h2>競技キャリアを追加する</h2>
+        <p>
+          既存の身体・計画・日次記録を保ったまま、大会・資格・ライバル・引退のデータを追加します。追加後は参照規則版を固定します。
+        </p>
+        <button
+          className="primary"
+          disabled={busy}
+          onClick={() => onChange(enableCareer(c))}
+        >
+          この選手の競技キャリアを開始
+        </button>
+      </section>
+    );
+  const apply = (fn: () => Career) => {
+    onChange(fn);
+  };
+  if (retirementOnly && !p.retirement)
+    return (
+      <section className="paper">
+        <h2>キャリアの区切り</h2> <h3 className="spaced">引退を考える</h3>
+        <p>
+          世界未優勝でも引退できます。実際に達成した内容だけで振り返りを作り、身体と記録は残します。
+        </p>
+        <div className="button-row">
+          <button
+            disabled={busy}
+            onClick={() =>
+              onChange({
+                ...c,
+                progress: {
+                  ...p,
+                  finalSeason: p.finalSeason === null ? year : null,
+                },
+              })
+            }
+          >
+            {p.finalSeason === null
+              ? "今年を最後のシーズンにする"
+              : "最終シーズン宣言を取り消す"}
+          </button>
+          <button disabled={busy} onClick={() => setConfirmRetire(true)}>
+            すぐ引退する内容を確認
+          </button>
+        </div>
+        {confirmRetire && (
+          <div
+            className="retirement-confirm"
+            role="dialog"
+            aria-label="引退の確認"
+          >
+            <h3>{c.athlete.name}の育成を終了します</h3>
+            <p>
+              {c.athlete.day}日間、{p.results.length}大会、タイトル
+              {p.titles.length}
+              件。引退後は競技育成を進められません。選手と記録は削除されません。
+            </p>
+            <button
+              className="primary"
+              disabled={busy}
+              onClick={() => {
+                apply(() => retire(c));
+                setConfirmRetire(false);
+              }}
+            >
+              この内容で引退する
+            </button>
+            <button onClick={() => setConfirmRetire(false)}>
+              育成を続ける
+            </button>
+          </div>
+        )}
+      </section>
+    );
+  const active = p.entries.filter((e) =>
+    ["entered", "travelled", "checkedIn"].includes(e.status),
+  );
+  const latest =
+    p.results.find((r) => r.id === chosen) ?? p.results[p.results.length - 1];
+  const list = editions(c).filter(
+    (e) =>
+      e.circuit === circuit &&
+      e.showDay >= c.athlete.day - 14 &&
+      e.showDay < c.athlete.day + 390,
+  );
+  if (p.retirement)
+    return (
+      <>
+        <section className="paper ending">
+          <span className="eyebrow">A LIFE, REMEMBERED</span>
+          <h2>{c.athlete.name}の競技人生</h2>
+          <p className="ending-date">
+            {isoDay(0)} — {isoDay(p.retirement.day)}
+          </p>
+          {p.retirement.text.map((t, i) => (
+            <p key={i}>{t}</p>
+          ))}
+          <div className="record-stats stats">
+            <div>
+              <b>{p.retirement.years.toFixed(1)}</b>
+              <span>年の歩み</span>
+            </div>
+            <div>
+              <b>{p.results.length}</b>
+              <span>大会出場</span>
+            </div>
+            <div>
+              <b>{p.titles.length}</b>
+              <span>残ったタイトル</span>
+            </div>
+          </div>
+          <div className="button-row">
+            <button className="primary" disabled={busy} onClick={onNew}>
+              別の選手で新しい人生を始める
+            </button>
+          </div>
+          <p className="muted">
+            引退した選手の身体、記録、大会成績は保存されています。新しい抽選へ能力を持ち越しません。
+          </p>
+        </section>
+        {p.results.length > 0 && (
+          <label>
+            保存した大会
+            <select
+              value={latest?.id ?? ""}
+              onChange={(e) => setChosen(e.target.value)}
+            >
+              {p.results
+                .slice()
+                .reverse()
+                .map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.season} {SERIES_NAMES[r.series]} {r.classId}{" "}
+                    {r.classRank}位
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
+        {latest && (
+          <ResultDetail
+            key={latest.id}
+            result={latest}
+            playerId={c.athlete.id}
+            model={c.versions.model}
+          />
+        )}
+      </>
+    );
+  return (
+    <>
+      <section className="paper">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">THE NEXT CHAPTER</span>
+            <h2>身体づくりを、ステージへ。</h2>
+          </div>
+          <b>{year}シーズン</b>
+        </div>
+        <p>
+          実在大会を参考にした独立制作のシミュレーションです。選手・結果・開催日・会場・費用はゲーム設定。JBBFとProfessional
+          Leagueの資格は相互変換しません。
+        </p>
+        <div className="fields">
+          <label>
+            今季の目標
+            <select
+              value={p.goal ?? ""}
+              disabled={busy}
+              onChange={(e) =>
+                onChange({
+                  ...c,
+                  progress: {
+                    ...p,
+                    goal: (e.target.value || null) as Series | null,
+                  },
+                })
+              }
+            >
+              <option value="">身体づくりを優先</option>
+              {Object.entries(SERIES_NAMES).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="career-phase">
+            <span>現在の時期</span>
+            <b>
+              {c.athlete.day < p.recoveryUntil
+                ? "大会後の回復"
+                : active.length
+                  ? "大会への準備"
+                  : "身体づくり"}
+            </b>
+            <small>
+              {c.athlete.day < p.recoveryUntil
+                ? `${isoDay(p.recoveryUntil)}まで回復期`
+                : p.finalSeason !== null
+                  ? "最後のシーズンを宣言済み"
+                  : "期限を決めずに継続できます"}
+            </small>
+          </div>
+        </div>
+        <div className="button-row">
+          <button
+            disabled={busy || !!c.pendingEvent}
+            onClick={() => onAdvance(28)}
+          >
+            この計画で4週間を実行
+          </button>
+          <button
+            disabled={busy || !!c.pendingEvent}
+            onClick={() => {
+              const next = active
+                .map((e) => (e.status === "entered" ? e.travelDay : e.showDay))
+                .filter((d) => d > c.athlete.day)
+                .sort((a, b) => a - b)[0];
+              onAdvance(
+                Math.max(1, Math.min(next ? next - c.athlete.day : 84, 365)),
+              );
+            }}
+          >
+            次の節目まで進める
+          </button>
+        </div>
+        <p className="muted">
+          まとめ送りも同じ日次計算です。申込・移動・大会当日は停止し、あなたの選択を待ちます。
+        </p>
+      </section>
+      <GoalSteps c={c} />
+      {latest && latest.day === c.athlete.day && (
+        <section className="paper important">
+          <span className="eyebrow">YOUR COMPETITION RESULT</span>
+          <h2>ステージで得た、今回の結果。</h2>
+          <ResultDetail
+            key={latest.id}
+            result={latest}
+            playerId={c.athlete.id}
+            model={c.versions.model}
+          />
+          <button
+            disabled={busy}
+            onClick={() =>
+              onChange(() => useMealTemplate(acknowledgeDecision(c), "recover"))
+            }
+          >
+            結果を振り返り、回復用の食事案を適用
+          </button>
+          <p className="muted">
+            最初の7日、その後14日は練習時間に回復期の上限を設けます。予定と実績の差を記録します。
+          </p>
+        </section>
+      )}
+      {p.decision && (
+        <section className="paper important">
+          <h2>{p.decision.text}</h2>
+          {!["travel", "show"].includes(p.decision.kind) && (
+            <button
+              disabled={busy}
+              onClick={() => apply(() => acknowledgeDecision(c))}
+            >
+              今季は見送って続ける
+            </button>
+          )}
+        </section>
+      )}
+      {active.length > 0 && (
+        <section id="official-entries" className="paper">
+          <h2>出場予定と当日の手続き</h2>
+          {active.map((entry) => {
+            const e = edition(entry.series, entry.season);
+            return (
+              <article className="entry-row" key={entry.id}>
+                <h3>
+                  {e.name} / {isoDay(entry.showDay)}
+                </h3>
+                <p>
+                  申込料 {money(entry.entryFee)}は支払済み。移動・宿泊{" "}
+                  {money(entry.travelFee)}{" "}
+                  {entry.travelPaid ? "支払済み" : "未払い"}。
+                </p>
+                <div className="button-row">
+                  {entry.status === "entered" && (
+                    <button
+                      disabled={busy || c.athlete.day < entry.travelDay}
+                      onClick={() => apply(() => travel(c, entry.id))}
+                    >
+                      移動を実行
+                    </button>
+                  )}
+                  {entry.status === "travelled" && (
+                    <button
+                      disabled={busy || c.athlete.day !== entry.showDay}
+                      onClick={() => apply(() => checkIn(c, entry.id))}
+                    >
+                      計量・チェックイン
+                    </button>
+                  )}
+                  {entry.status === "checkedIn" && (
+                    <button
+                      className="primary"
+                      disabled={busy || c.athlete.day !== entry.showDay}
+                      onClick={() => apply(() => runCompetition(c, entry.id))}
+                    >
+                      ステージに立ち、審査を受ける
+                    </button>
+                  )}
+                  <button
+                    disabled={busy}
+                    onClick={() => apply(() => withdraw(c, entry.id))}
+                  >
+                    欠場する
+                  </button>
+                </div>
+                {entry.classId && (
+                  <p>
+                    計量：{entry.checkInWeight?.toFixed(2)}kg / {entry.classId}
+                  </p>
+                )}
+                <p className="muted">
+                  欠場してもキャリアは終わりません。支払済み費用は返金しないゲーム設定です。
+                </p>
+              </article>
+            );
+          })}
+        </section>
+      )}
+      <section id="official-registration" className="paper">
+        <h2>登録・講習・資格</h2>
+        <div className="credentials">
+          {(
+            [
+              ["jbbfRegistration", "JBBF年度登録", 8000],
+              ["antiDopingCourse", "当年AD講習", 3000],
+              ["npcMembership", "NPC年度会員", 10000],
+              ["passport", "旅券の準備", 16000],
+              ["internationalCard", "IFBB国際カード", 7000],
+              ["proActive", "Professional League Active登録", 25000],
+            ] as [
+              Membership | "passport" | "internationalCard",
+              string,
+              number,
+            ][]
+          ).map(([kind, label, cost]) => (
+            <div key={kind}>
+              <b>{label}</b>
+              <span>
+                {hasCredential(c, kind)
+                  ? "有効"
+                  : kind === "proActive" && !hasCredential(c, "proCard")
+                    ? "プロカード取得後"
+                    : "未取得"}
+              </span>
+              <button
+                disabled={
+                  busy ||
+                  hasCredential(c, kind) ||
+                  (kind === "proActive" && !hasCredential(c, "proCard"))
+                }
+                onClick={() => apply(() => register(c, kind))}
+              >
+                {hasCredential(c, kind) ? "取得済み" : `手続き ${money(cost)}`}
+              </button>
+            </div>
+          ))}
+        </div>
+        <p className="muted">
+          現実の登録や講習を受ける操作ではありません。ゲーム内の手続き・費用です。年度資格は年をまたぐと更新が必要です。
+        </p>
+        {p.credentials.length > 0 && (
+          <details>
+            <summary>取得した資格と有効期限</summary>
+            <ul>
+              {p.credentials.map((q) => (
+                <li key={q.id}>
+                  {q.kind} /{" "}
+                  {q.expiresDay >= 200000 ? "無期限" : isoDay(q.expiresDay)}まで
+                  / {q.rulesVersion}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </section>
+      <section className="paper">
+        <div className="button-row">
+          <button
+            className={circuit === "jbbf" ? "selected" : ""}
+            onClick={() => setCircuit("jbbf")}
+          >
+            JBBF / IFBB国際連盟
+          </button>
+          <button
+            className={circuit === "npc" ? "selected" : ""}
+            onClick={() => setCircuit("npc")}
+          >
+            NPC / Professional League
+          </button>
+        </div>
+        <h2 className="spaced">{CIRCUIT_NAMES[circuit]}の大会</h2>
+        <div className="competition-grid">
+          {list.map((e) => {
+            const q = eligibility(c, e),
+              entered = p.entries.some((x) => x.editionId === e.id);
+            return (
+              <article className="competition-card" key={e.id}>
+                <span className="eyebrow">
+                  {e.season} / 男子Bodybuilding / シニア
+                </span>
+                <h3>{e.name}</h3>
+                <p>
+                  大会 {isoDay(e.showDay)}
+                  <br />
+                  申込締切 {isoDay(e.deadlineDay)}
+                  <br />
+                  申込 {money(e.fee)} ＋ 移動 {money(e.travel)}
+                </p>
+                {q.gameSupplement && (
+                  <p className="warning">
+                    個別要項が未確認のため、明記したゲーム内要項を使用します。現実の出場資格の判定には使えません。
+                  </p>
+                )}
+                <details>
+                  <summary>
+                    {q.allowed
+                      ? "申込条件を満たしています"
+                      : `${q.missing.length}件の未充足条件`}
+                  </summary>
+                  <ul>
+                    {q.met.map((t) => (
+                      <li key={t}>満たす：{t}</li>
+                    ))}
+                    {q.missing.map((t) => (
+                      <li key={t}>不足：{t}</li>
+                    ))}
+                  </ul>
+                  {q.basis.map((t) => (
+                    <p key={t}>{t}</p>
+                  ))}
+                </details>
+                <div className="button-row">
+                  {e.series === "olympia" &&
+                    !hasOlympiaQualification(c, e.season) &&
+                    p.results.some(
+                      (r) => r.series === "olympia" && r.classRank === 1,
+                    ) && (
+                      <button
+                        disabled={busy}
+                        onClick={() =>
+                          apply(() => requestOlympiaInvitation(c, e.season))
+                        }
+                      >
+                        特別出場承認を申請
+                      </button>
+                    )}
+                  {e.circuit === "jbbf" &&
+                    e.series === "ifbbWorld" &&
+                    !hasCredential(c, `dispatch:${e.id}`) && (
+                      <button
+                        disabled={busy || entered}
+                        onClick={() =>
+                          apply(() => requestApproval(c, e, "dispatch"))
+                        }
+                      >
+                        国内派遣を申請
+                      </button>
+                    )}
+                  {(e.circuit === "jbbf" ||
+                    ["newYorkPro", "olympia"].includes(e.series)) &&
+                    !hasCredential(c, `approval:${e.id}`) && (
+                      <button
+                        disabled={busy || entered}
+                        onClick={() => apply(() => requestApproval(c, e))}
+                      >
+                        {e.circuit === "jbbf"
+                          ? "正式出場承認を申請"
+                          : "大会契約を申請"}
+                      </button>
+                    )}
+                  <button
+                    className="primary"
+                    disabled={busy || entered || !q.allowed}
+                    onClick={() => apply(() => enter(c, e))}
+                  >
+                    {entered ? "申込・記録あり" : "この大会へ申し込む"}
+                  </button>
+                </div>
+                <details>
+                  <summary>規則・階級・出典</summary>
+                  <p>
+                    参照年度 {e.referenceYear} / {e.rulesVersion}
+                  </p>
+                  <p>
+                    体重階級：
+                    {e.classes.length === 1
+                      ? "オーバーオール"
+                      : e.classes
+                          .map((v, i) =>
+                            Number.isFinite(v)
+                              ? `${v}kg以下`
+                              : `${e.classes[i - 1]}kg超`,
+                          )
+                          .join("、")}
+                  </p>
+                  {e.notes.map((t) => (
+                    <p key={t}>{t}</p>
+                  ))}
+                  {e.sourceUrls.map((url) => (
+                    <p key={url}>
+                      <a href={url} target="_blank" rel="noreferrer">
+                        公式参照資料
+                      </a>
+                    </p>
+                  ))}
+                </details>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+      <section className="paper">
+        <span className="eyebrow">WHAT YOU HAVE EARNED</span>
+        <h2>実績と、その先。</h2>
+        {p.titles.length > 0 ? (
+          <div className="titles">
+            {p.titles.map((t) => (
+              <article key={t.id}>
+                <b>
+                  {t.kind === "worldClass"
+                    ? "IFBBシニア男子・階級別世界一"
+                    : t.kind === "worldOverall"
+                      ? "IFBBシニア男子・オーバーオール世界一"
+                      : "Mr. Olympia 男子Open世界一"}
+                </b>
+                <p>
+                  {t.classId} / {isoDay(t.day)} / {t.editionId}
+                </p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p>
+            世界タイトルはまだありません。目標と勝利の保証は別です。現在の身体・技術・当日の状態と相手の比較で順位が決まります。
+          </p>
+        )}
+        {p.results.length > 0 && (
+          <>
+            <label>
+              過去の大会
+              <select
+                value={latest?.id ?? ""}
+                onChange={(e) => setChosen(e.target.value)}
+              >
+                {p.results
+                  .slice()
+                  .reverse()
+                  .map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.season} {SERIES_NAMES[r.series]} {r.classId}{" "}
+                      {r.classRank}位
+                    </option>
+                  ))}
+              </select>
+            </label>
+            {latest && latest.day !== c.athlete.day && (
+              <ResultDetail
+                key={latest.id}
+                result={latest}
+                playerId={c.athlete.id}
+                model={c.versions.model}
+              />
+            )}
+          </>
+        )}
+      </section>
+    </>
+  );
 }
-const stageIds:Record<Series,string>={tokyo:'tokyo',japanClasses:'japan-class',japan:'japan-men',ifbbWorld:'ifbb-world',regional:'mid-japan',amateurOlympia:'amateur-olympia',newYorkPro:'new-york-pro',olympia:'olympia'};
-export function ResultDetail({result:r,playerId,model='athlete-v1'}:{result:Result;playerId:string;model?:string}){
- const [person,setPerson]=useState('player');const selected=r.podium.find(p=>p.id===person);const body=selected?.body??r.body;
- return <section className="result-detail"><div className="result-heading"><h3>{r.season} {SERIES_NAMES[r.series]}</h3><b>{r.classId} {r.classRank} / {r.classCount}位</b></div><p>{r.overallRank!==null?`オーバーオール ${r.overallRank} / ${r.overallCount}位。`:''}部門参加 {r.categoryCount}人。参照規則 {r.rulesVersion}</p><div className="two-col"><BodyView model={model} body={body} selected="chest" hair={selected?0:r.appearance?.hair??0} stage={stageIds[r.series]} defaultClip={r.classRank===1?'ResultCelebrate':'FrontDoubleBiceps'}/><div><h3>比較審査と講評</h3><p>{r.score.condition<60?'仕上がりに改善の余地があります。減量期間と回復を振り返りましょう。':r.score.posing<65?'ポージングの練習が身体の見せ方につながります。':'筋量と部位バランスを保ち、次のシーズンへ。'}</p><dl>{Object.entries({筋量:r.score.mass,バランス:r.score.balance,対称性:r.score.symmetry,仕上がり:r.score.condition,ポージング:r.score.posing}).map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v.toFixed(1)} / 100</dd></div>)}</dl><h3>ラウンド記録</h3>{r.rounds.map(round=><p key={round.name}>{round.name} {round.rank} / {round.count}位・最終配分 {(round.weight*100).toFixed(0)}%</p>)}<label>ステージで比較<select value={person} onChange={e=>setPerson(e.target.value)}><option value="player">自分の当日の身体</option>{r.podium.filter(p=>p.id!==playerId).map(p=><option key={p.id} value={p.id}>{p.rank}位 {p.name}</option>)}</select></label><details><summary>全順位と計算の説明</summary>{r.rivalResults.map(x=><p key={x.id}>{x.rank}位 {x.name} / 指標 {x.score.toFixed(2)}</p>)}{r.notes.map((n,i)=><p key={i}>{n}</p>)}</details></div></div></section>;
+const stageIds: Record<Series, string> = {
+  tokyo: "tokyo",
+  japanClasses: "japan-class",
+  japan: "japan-men",
+  ifbbWorld: "ifbb-world",
+  regional: "mid-japan",
+  amateurOlympia: "amateur-olympia",
+  newYorkPro: "new-york-pro",
+  olympia: "olympia",
+};
+export function ResultDetail({
+  result: r,
+  playerId,
+  model = "athlete-v1",
+}: {
+  result: Result;
+  playerId: string;
+  model?: string;
+}) {
+  const [person, setPerson] = useState("player");
+  const selected = r.podium.find((p) => p.id === person);
+  const body = selected?.body ?? r.body;
+  return (
+    <section className="result-detail">
+      <div className="result-heading">
+        <h3>
+          {r.season} {SERIES_NAMES[r.series]}
+        </h3>
+        <b>
+          {r.classId} {r.classRank} / {r.classCount}位
+        </b>
+      </div>
+      <p>
+        {r.overallRank !== null
+          ? `オーバーオール ${r.overallRank} / ${r.overallCount}位。`
+          : ""}
+        部門参加 {r.categoryCount}人。参照規則 {r.rulesVersion}
+      </p>
+      <div className="two-col">
+        <BodyView
+          model={model}
+          body={body}
+          selected="chest"
+          hair={selected ? 0 : (r.appearance?.hair ?? 0)}
+          stage={stageIds[r.series]}
+          defaultClip={
+            r.classRank === 1 ? "ResultCelebrate" : "FrontDoubleBiceps"
+          }
+        />
+        <div>
+          <h3>比較審査と講評</h3>
+          <p>
+            {r.score.condition < 60
+              ? "仕上がりに改善の余地があります。減量期間と回復を振り返りましょう。"
+              : r.score.posing < 65
+                ? "ポージングの練習が身体の見せ方につながります。"
+                : "筋量と部位バランスを保ち、次のシーズンへ。"}
+          </p>
+          <dl>
+            {Object.entries({
+              筋量: r.score.mass,
+              バランス: r.score.balance,
+              対称性: r.score.symmetry,
+              仕上がり: r.score.condition,
+              ポージング: r.score.posing,
+            }).map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v.toFixed(1)} / 100</dd>
+              </div>
+            ))}
+          </dl>
+          <h3>ラウンド記録</h3>
+          {r.rounds.map((round) => (
+            <p key={round.name}>
+              {round.name} {round.rank} / {round.count}位・最終配分{" "}
+              {(round.weight * 100).toFixed(0)}%
+            </p>
+          ))}
+          <label>
+            ステージで比較
+            <select value={person} onChange={(e) => setPerson(e.target.value)}>
+              <option value="player">自分の当日の身体</option>
+              {r.podium
+                .filter((p) => p.id !== playerId)
+                .map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.rank}位 {p.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <details>
+            <summary>全順位と計算の説明</summary>
+            {r.rivalResults.map((x) => (
+              <p key={x.id}>
+                {x.rank}位 {x.name} / 指標 {x.score.toFixed(2)}
+              </p>
+            ))}
+            {r.notes.map((n, i) => (
+              <p key={i}>{n}</p>
+            ))}
+          </details>
+        </div>
+      </div>
+    </section>
+  );
 }

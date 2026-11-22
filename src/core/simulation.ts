@@ -10,6 +10,8 @@ import { nutritionPlan } from "./nutrition";
 import { executeExercises } from "./training";
 import { sessionMinutes } from "./exercises";
 import { recordCoachDay } from "./coachHistory";
+import { restoreOneDayPlan } from "./planScope";
+import { energyExpenditure } from "./planning";
 import { gameDate } from "./calendar";
 export { gameDate } from "./calendar";
 import {
@@ -389,7 +391,7 @@ export function simulateDay(
         reason: onTrip ? "大会遠征のため休養" : "違和感の回復期間のため休養",
       }));
   }
-  const expenditure = weight(b) * 29 + duration * 210 + cardioMinutes * 4;
+  const expenditure = energyExpenditure(b, duration * 60, cardioMinutes);
   const hunger = clamp((expenditure - calories) / expenditure + 0.3, 0, 1);
   const energyFactor = clamp(0.8 + (calories - expenditure) / 1800, 0.25, 1.1),
     proteinCoverage = clamp(protein / (weight(b) * 1.6), 0, 1);
@@ -592,7 +594,7 @@ export function simulateDay(
       posing: after.progress?.posing ?? 0,
     },
   };
-  return { career: recordCoachDay(after, summary), summary };
+  return { career: restoreOneDayPlan(recordCoachDay(after, summary)), summary };
 }
 export function advance(
   input: Career,

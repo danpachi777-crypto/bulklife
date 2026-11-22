@@ -1,0 +1,40 @@
+{
+  "images": [
+    {
+      "name": "BL_V2_skin-roughness",
+      "packed": true,
+      "bytes": 988957
+    },
+    {
+      "name": "GymV4_EveningOutside",
+      "packed": true,
+      "bytes": 2871
+    },
+    {
+      "name": "GymV4_RubberGrain",
+      "packed": true,
+      "bytes": 83138
+    },
+    {
+      "name": "short02_diffuse.png",
+      "packed": true,
+      "bytes": 1027756
+    },
+    {
+      "name": "skin-albedo.jpg",
+      "packed": true,
+      "bytes": 448494
+    },
+    {
+      "name": "skin-normal.png",
+      "packed": true,
+      "bytes": 441485
+    },
+    {
+      "name": "skin-roughness.png",
+      "packed": true,
+      "bytes": 209093
+    }
+  ],
+  "source": "v5 working duplicate only"
+}

@@ -16,8 +16,18 @@ import { planIssues, gameDate } from "../core/simulation";
 import { BodyView } from "../view/BodyView";
 import { AthleteSummary } from "./AthleteSummary";
 import { useMobileLayout } from "./useMobileLayout";
-import {CoachToday,CoachReview,CoachWeek} from './Coach';
-import {explainCoachResult,FOOD_STYLES} from '../core/coach';
+import {
+  CoachToday,
+  CoachReview,
+  CoachWeek,
+  managerName,
+  menuSummary,
+} from "./Coach";
+import { explainCoachResult, FOOD_STYLES, resolvedGoal } from "../core/coach";
+import { assessFood, formatDelta } from "../core/planning";
+import { isTodayOnly } from "../core/planScope";
+import { localEvaluation } from "../core/localEvaluation";
+import { ModalSheet } from "./ModalSheet";
 import {
   LOCAL_DEFS,
   localEditions,
@@ -33,7 +43,13 @@ import {
   type LocalScore,
 } from "../core/localCompetitions";
 export const yen = (n: number) => Math.round(n).toLocaleString("ja-JP") + "円";
-export const signed = (n: number, d = 3) => (n >= 0 ? "+" : "") + n.toFixed(d);
+export const signed = formatDelta;
+export const trainingResultLabel = (s: DailySummary) =>
+  s.detail?.actual.contestHours || s.training.reason.startsWith("大会遠征")
+    ? "大会・遠征のため休養"
+    : s.training.reason.startsWith("違和感の回復期間")
+      ? "違和感の回復期間"
+      : FOCUS_LABELS[s.training.focus];
 export const dayDate = (n: number) =>
   gameDate(n).toLocaleDateString("ja-JP", {
     timeZone: "UTC",
@@ -68,8 +84,8 @@ export function Today({
   onStep: () => void;
   onTab: (s: "plan" | "career" | "records") => void;
   onChange: (c: Career) => void;
-  onConsult:()=>void;
-  onCoachChange:(c:Career)=>void;
+  onConsult: () => void;
+  onCoachChange: (c: Career) => void;
 }) {
   const a = c.athlete,
     b = a.body,
@@ -82,6 +98,7 @@ export function Today({
           ? sessionMinutes(d.exercises)
           : (0.3 + d.sets * 0.18) * 60;
   const mobile = useMobileLayout();
+  const food = assessFood(c, resolvedGoal(c));
   const next =
       c.local?.entries.find((e) => e.status === "entered") ??
       localEditions(c).find((e) => e.deadlineDay >= a.day),
@@ -101,7 +118,7 @@ export function Today({
     <div className="today-layout">
       <AthleteSummary c={c} part={part} setPart={setPart} />
       <section className="strategy-column">
-        <CoachToday c={c} busy={busy} onConsult={onConsult}/>
+        <CoachToday c={c} busy={busy} onConsult={onConsult} />
         <div className="section-heading">
           <div>
             <span className="eyebrow">TODAY'S STRATEGY</span>
@@ -111,7 +128,7 @@ export function Today({
             {["月", "火", "水", "木", "金", "土", "日"][a.day % 7]}曜日
           </span>
         </div>
-        {!c.tutorialHidden && !c.coachingGuide && (
+        {!c.tutorialHidden && (
           <div className="first-guide">
             <b>
               {a.day === 0
@@ -150,6 +167,10 @@ export function Today({
                       : "設定済み"}
             </span>
           </h3>
+          <small className="plan-manager">
+            {managerName(c, "training")}
+            {isTodayOnly(c, "training") ? " / 今日だけ変更" : ""}
+          </small>
           <strong>
             {eventRest
               ? "大会・遠征に合わせた休養"
@@ -168,7 +189,7 @@ export function Today({
                 ? "回復期間中は筋力練習を休み、予定と実績の違いを記録します。"
                 : d.focus === "rest"
                   ? "筋力練習は行わず、回復に時間を使います。"
-                  : `${d.start}時開始 · ${d.exercises ? d.exercises.reduce((s, e) => s + e.sets, 0) + "セット（種目別）" : d.sets + "セット単位（簡単計画）"} · ${c.coachingGuide?.ownership.training==='coach'?(d.rir>=5?'軽め':d.rir>=3?'標準':'しっかり'):`余力 RIR ${d.rir}`}`}
+                  : `${d.start}時開始 · ${d.exercises ? d.exercises.reduce((s, e) => s + e.sets, 0) + "セット（種目別）" : d.sets + "セット単位（簡単計画）"} · ${c.coachingGuide?.ownership.training === "coach" ? (d.rir >= 5 ? "軽め" : d.rir >= 3 ? "標準" : "しっかり") : `余力 RIR ${d.rir}`}`}
           </p>
           <button
             disabled={busy || draft || retired}
@@ -193,22 +214,43 @@ export function Today({
             </p>
           )}
         </article>
-        <article className={`strategy-card${c.coachingGuide?.ownership.food==='coach'?' coached-food':''}`}>
+        <article
+          className={`strategy-card${c.coachingGuide?.ownership.food === "coach" ? " coached-food" : ""}`}
+        >
           <span className="card-number">02 / EAT</span>
           <h3>
-            食事{" "}
-            <span className="plan-status">
-              {draft ? "おすすめ" : "設定済み"}
-            </span>
+            食事 <span className="plan-status">{food.status}</span>
           </h3>
+          <small className="plan-manager">
+            {managerName(c, "food")}
+            {isTodayOnly(c, "food") ? " / 今日だけ変更" : ""}
+          </small>
           <strong>
-            {c.coachingGuide?.ownership.food==='coach'?FOOD_STYLES[c.coachingGuide.foodStyle]:c.progress?.mealMode === "foods"
-              ? "食品と量から作る食事"
-              : "エネルギーとタンパク質の簡単設定"}
+            {c.coachingGuide?.ownership.food === "coach"
+              ? FOOD_STYLES[c.coachingGuide.foodStyle]
+              : c.progress?.mealMode === "foods"
+                ? "食品と量から作る食事"
+                : "エネルギーとタンパク質の簡単設定"}
           </strong>
           <p>
-            {c.coachingGuide?.ownership.food==='coach'?`${yen(n.cost)} / 準備${Math.round(n.prep*60)}分`:`${Math.round(n.calories)} kcal · P ${Math.round(n.protein)}g · ${yen(n.cost)}/日`}
+            {c.coachingGuide?.ownership.food === "coach"
+              ? `${yen(n.cost)} / 準備${Math.round(n.prep * 60)}分`
+              : `${Math.round(n.calories)} kcal · P ${Math.round(n.protein)}g · ${yen(n.cost)}/日`}
           </p>
+          <div
+            className={`nutrition-status${food.insufficient ? " insufficient" : ""}`}
+          >
+            <b>
+              {Math.round(n.calories)} / 目標{food.target.energy}kcal
+            </b>
+            <span>
+              たんぱく質 {Math.round(n.protein)} / 目標
+              {Math.round(food.target.protein)}g（
+              {Math.round(food.proteinRatio * 100)}%）
+            </span>
+            {food.insufficient && <p>{food.reason}</p>}
+          </div>
+          <p className="menu-summary">献立：{menuSummary(c)}</p>
           <button
             disabled={busy || draft || retired}
             onClick={() => onEdit("food")}
@@ -230,6 +272,10 @@ export function Today({
               {draft ? "おすすめ" : "設定済み"}
             </span>
           </h3>
+          <small className="plan-manager">
+            {managerName(c, "rest")}
+            {isTodayOnly(c, "rest") ? " / 今日だけ変更" : ""}
+          </small>
           <strong>睡眠 {c.plan.sleep}時間</strong>
           <p>
             ポージング {c.progress?.posingMinutes ?? 0}分 · 有酸素{" "}
@@ -265,9 +311,20 @@ export function Today({
             disabled={busy || draft || retired || !!c.pendingEvent}
             onClick={onStep}
           >
-            {busy ? "今日を処理・保存中…" : "この計画で進める"}
+            {busy ? "今日を処理・保存中…" : "この内容で今日を過ごす"}
           </button>
-          <small>予定：{eventRest||injuryRest||d.focus==='rest'?'練習休み':`${FOCUS_LABELS[d.focus]}${Math.round(minutes)}分`}・食費{yen(n.cost)}・睡眠{c.plan.sleep}時間。実行後、翌日の結果へ。</small>
+          <small>
+            予定：
+            {eventRest || injuryRest || d.focus === "rest"
+              ? "練習休み"
+              : `${FOCUS_LABELS[d.focus]}${Math.round(minutes)}分`}
+            ・食費{yen(n.cost)}・睡眠{c.plan.sleep}時間。実行後、翌日の結果へ。
+          </small>
+          {food.insufficient && (
+            <p className="action-warning">
+              栄養の目標に不足があります。食事カードから見直せます。実行するかは自分で選べます。
+            </p>
+          )}
           {draft && (
             <small>先に「この選手で始める」を押すと実行できます。</small>
           )}
@@ -275,8 +332,10 @@ export function Today({
         </div>
       </section>
       <aside className="goals-column">
-        <CoachReview c={c} busy={busy} onChange={onCoachChange}/>
-        {c.coachingGuide&&c.athlete.day%7===0&&<CoachWeek c={c} onRecords={()=>onTab('records')}/>}
+        <CoachReview c={c} busy={busy} onChange={onCoachChange} />
+        {c.coachingGuide && c.athlete.day % 7 === 0 && (
+          <CoachWeek c={c} onRecords={() => onTab("records")} />
+        )}
         <details className="home-agenda" open={!mobile}>
           <summary>目標・大会・今週の予定</summary>
           <section className="paper">
@@ -345,12 +404,12 @@ export function Today({
               <>
                 <p>
                   {dayDate(c.lastSummary.day)} ·{" "}
-                  {FOCUS_LABELS[c.lastSummary.training.focus]}
+                  {trainingResultLabel(c.lastSummary)}
                 </p>
                 <p>
                   実施 {c.lastSummary.training.completedSets}/
                   {c.lastSummary.training.plannedSets} · 筋質量{" "}
-                  {signed(c.lastSummary.muscleDelta)}kg
+                  {signed(c.lastSummary.muscleDelta, 3, "kg")}
                 </p>
                 <button onClick={() => onTab("records")}>実績を振り返る</button>
               </>
@@ -368,11 +427,15 @@ export function DayResult({
   onNext,
   career,
   onRecords,
+  onImprove,
+  nextLabel,
 }: {
   summary: DailySummary;
   onNext: () => void;
-  career?:Career;
-  onRecords?:()=>void;
+  career?: Career;
+  onRecords?: () => void;
+  onImprove?: (kind: "training" | "food" | "rest") => void;
+  nextLabel?: string;
 }) {
   // The result action occupies the same mobile position as the day action.
   // A second tap from the previous screen must not dismiss the new result.
@@ -383,7 +446,7 @@ export function DayResult({
     return () => window.clearTimeout(timer);
   }, [s.day]);
   const d = s.detail;
-  const explanation=explainCoachResult(s);
+  const explanation = explainCoachResult(s);
   const skill = d
     ? (PARTS.reduce((v, p) => v + d.after.ability[p] - d.before.ability[p], 0) /
         16) *
@@ -393,14 +456,20 @@ export function DayResult({
     <section className="day-result paper">
       <span className="eyebrow">A DAY IN YOUR CAREER</span>
       <h2>{dayDate(s.day)}の結果</h2>
-      <p>小さな変化も、今日の実績として残りました。</p>
-      <div className="coach-result"><h3>{explanation.what}</h3><p>{explanation.meaning}</p><p>{explanation.next}</p></div>
-      {career&&onRecords&&career.athlete.day%7===0&&<CoachWeek c={career} onRecords={onRecords}/>}
+      <p>予定と実績を記録しました。身体値はゲーム内の推定です。</p>
+      <div className="coach-result">
+        <h3>{explanation.what}</h3>
+        <p>{explanation.meaning}</p>
+        <p>{explanation.next}</p>
+      </div>
+      {career && onRecords && career.athlete.day % 7 === 0 && (
+        <CoachWeek c={career} onRecords={onRecords} />
+      )}
       <div className="result-grid">
         <article>
           <h3>練習</h3>
           <b>
-            {FOCUS_LABELS[s.training.focus]} · {s.training.completedSets}/
+            {trainingResultLabel(s)} · {s.training.completedSets}/
             {s.training.plannedSets}{" "}
             {s.training.exercises ? "セット" : "セット単位"}
           </b>
@@ -449,22 +518,34 @@ export function DayResult({
         <article>
           <h3>積み重ね</h3>
           <b>
-            筋質量 {signed(s.muscleDelta)}kg / 脂肪 {signed(s.fatDelta)}kg
+            筋質量 {signed(s.muscleDelta, 3, "kg")} / 脂肪{" "}
+            {signed(s.fatDelta, 3, "kg")}
           </b>
           <p>
             {skill !== null
-              ? `動作習熟の全身平均 ${signed(skill, 3)}ポイント`
+              ? `動作習熟の全身平均 ${signed(skill, 3, "ポイント")}`
               : "動作習熟の前後値は、この記録の版では未記録です。"}
           </p>
           {d && (
             <p>
               ポージング {d.actual.posingMinutes.toFixed(0)}分 · 技術{" "}
-              {signed((d.after.posing - d.before.posing) * 100, 3)}ポイント /
-              有酸素 {d.actual.cardioMinutes.toFixed(0)}分
+              {signed((d.after.posing - d.before.posing) * 100, 3, "ポイント")}{" "}
+              / 有酸素 {d.actual.cardioMinutes.toFixed(0)}分
             </p>
           )}
         </article>
       </div>
+      <article className="daily-money">
+        <h3>今日のお金</h3>
+        <p>
+          収入 {yen(s.income)} / 食費 {yen(s.meal.cost)} / 生活・ジム・コーチ費{" "}
+          {yen(s.fixed + s.gym)}
+        </p>
+        <b>
+          日次収支 {signed(s.income - s.meal.cost - s.fixed - s.gym, 0, "円")}
+        </b>
+        <p>大会申込費などは申込時に支払い、キャリアの支払済欄へ残ります。</p>
+      </article>
       <p className="result-explanation">
         筋質量の計算には刺激・前夜の回復・食事・成長余地が使われています。今日の見た目の変化だけで長期成長は判断できません。数週間の記録と比べ、疲労と実施量を次の日に活かしましょう。
       </p>
@@ -500,7 +581,7 @@ export function DayResult({
                   <td>{LABELS[t.part]}</td>
                   <td>{t.stimulus.toFixed(2)}</td>
                   <td>{t.recovery.toFixed(2)}</td>
-                  <td>{signed(t.muscleDelta, 5)}kg</td>
+                  <td>{signed(t.muscleDelta, 5, "kg")}</td>
                 </tr>
               ))}
             </tbody>
@@ -513,8 +594,18 @@ export function DayResult({
         </p>
       </details>
       <button className="primary" disabled={!canContinue} onClick={onNext}>
-        翌日の作戦を決める
+        {nextLabel ??
+          `${dayDate(career?.athlete.day ?? s.day + 1)}の作戦を決める`}
       </button>
+      {onImprove && (
+        <div className="button-row">
+          <button onClick={() => onImprove("food")}>食事を相談する</button>
+          <button onClick={() => onImprove("training")}>練習を相談する</button>
+          <button onClick={() => onImprove("rest")}>
+            休養・補助練習を見直す
+          </button>
+        </div>
+      )}
     </section>
   );
 }
@@ -531,15 +622,18 @@ export function LocalResultView({
   previous,
   model = "athlete-v2",
   onNext,
+  onImprove,
 }: {
   result: LocalResult;
   previous?: LocalResult;
   model?: string;
   onNext?: () => void;
+  onImprove?: (kind: "training" | "food" | "rest") => void;
 }) {
   const [person, setPerson] = useState("player");
   useEffect(() => setPerson("player"), [r.id]);
   const displayed = r.podium.find((p) => p.id === person);
+  const evaluation = localEvaluation(r);
   const axes = [
     ...(["mass", "balance", "condition", "posing", "readiness"] as const),
   ].sort((a, b) => r.score[b] - r.score[a]);
@@ -572,6 +666,13 @@ export function LocalResultView({
           body={displayed?.body ?? r.body}
           selected="chest"
           defaultClip="FrontDoubleBiceps"
+          stage={
+            r.series === "gymMeet"
+              ? "local-gym"
+              : r.series === "rookieMeet"
+                ? "local-rookie"
+                : "local-open"
+          }
           title={`${LOCAL_DEFS[r.series].name} / ${dayDate(r.day)}`}
         />
         <div className="score-bars" aria-label="自分の評価内訳">
@@ -589,6 +690,51 @@ export function LocalResultView({
         」が最も高い評価でした。改善の候補：「{SCORE_NAMES[axes.at(-1)!]}
         」を次の計画で見直せます。
       </p>
+      <details className="score-explanation" open>
+        <summary>点数と順位の意味を確認</summary>
+        <p>{evaluation.condition}</p>
+        <ul>
+          {evaluation.contributions.map((a) => (
+            <li key={a.key}>
+              {a.name} {a.score.toFixed(1)}点 × {Math.round(a.weight * 100)}% =
+              総合へ{a.points.toFixed(2)}点。
+              {a.key === "mass"
+                ? "身長に対する筋質量のゲーム指標です。"
+                : a.key === "balance"
+                  ? "部位ごとの比率と左右差から計算します。"
+                  : a.key === "posing"
+                    ? "日々のポージング習熟から計算します。"
+                    : a.key === "readiness"
+                      ? "局所疲労・全身疲労・前夜の睡眠から計算します。"
+                      : ""}
+            </li>
+          ))}
+        </ul>
+        {evaluation.above && (
+          <p>
+            ひとつ上の順位の{evaluation.above.name}との差は
+            {(evaluation.above.score.total - r.score.total).toFixed(2)}
+            点。配点込みで差が大きい項目は「{evaluation.rankFactors[0].name}」（
+            {signed(evaluation.rankFactors[0].gap, 2)}点）でした。
+          </p>
+        )}
+        <p>
+          次の改善候補：{evaluation.weakest.name}
+          。相手にも同じ式を使い、敗北に合わせてCPUを強化・弱体化しません。
+        </p>
+      </details>
+      <p className="status-pill">
+        記念：この大会への{previous ? "再挑戦" : "初出場"}を記録しました
+      </p>
+      {onImprove && (
+        <div className="button-row">
+          <button onClick={() => onImprove("training")}>練習を見直す</button>
+          <button onClick={() => onImprove("food")}>食事を見直す</button>
+          <button onClick={() => onImprove("rest")}>
+            ポージング・回復を見直す
+          </button>
+        </div>
+      )}
       {previous ? (
         <p>
           前回の同大会：{previous.rank}/{previous.count}位、総合{" "}
@@ -655,13 +801,19 @@ export function LocalCareer({
   busy,
   onChange,
   onNext,
+  onImprove,
 }: {
   c: Career;
   busy: boolean;
   onChange: (c: Career | (() => Career)) => void;
   onNext: () => void;
+  onImprove?: (kind: "training" | "food" | "rest") => void;
 }) {
   const [chosen, setChosen] = useState<string | null>(null);
+  const [application, setApplication] = useState<
+      ReturnType<typeof localEditions>[number] | null
+    >(null),
+    [stageStep, setStageStep] = useState<0 | 1 | 2>(0);
   const resultCount = useRef(c.local?.results.length ?? 0);
   useEffect(() => {
     const count = c.local?.results.length ?? 0;
@@ -718,9 +870,9 @@ export function LocalCareer({
               <button
                 className="primary"
                 disabled={busy || !!c.progress?.decision}
-                onClick={() => onChange(() => runLocal(c, active.id))}
+                onClick={() => setStageStep(1)}
               >
-                計量して大会の審査へ進む
+                受付・計量を確認する
               </button>
             )}
             <button
@@ -776,10 +928,15 @@ export function LocalCareer({
                     {Math.min(...scores).toFixed(1)}〜
                     {Math.max(...scores).toFixed(1)}（当日まで各自成長）
                   </p>
+                  <p>
+                    自分の現在の参考評価{" "}
+                    {scoreLocal(localPerson(c)).total.toFixed(1)}
+                    点。準備と当日の状態で変わり、順位を保証しません。
+                  </p>
                   <button
                     className="primary"
                     disabled={busy || reasons.length > 0}
-                    onClick={() => onChange(() => enterLocal(c, e))}
+                    onClick={() => setApplication(e)}
                   >
                     この大会に申し込む
                   </button>
@@ -798,6 +955,19 @@ export function LocalCareer({
                       <p key={p.id}>
                         {p.name} / {weight(p.body).toFixed(1)}kg /{" "}
                         {scoreLocal(p).total.toFixed(1)}点
+                        {" / 得意：" +
+                          SCORE_NAMES[
+                            (Object.keys(SCORE_NAMES) as (keyof LocalScore)[])
+                              .filter((k) => k !== "total")
+                              .sort(
+                                (a, b) => scoreLocal(p)[b] - scoreLocal(p)[a],
+                              )[0]
+                          ]}
+                        {" / 過去の対戦 " +
+                          l.results.filter((r) =>
+                            r.standings.some((s) => s.id === p.id),
+                          ).length +
+                          "回"}
                       </p>
                     ))}
                   </details>
@@ -829,11 +999,117 @@ export function LocalCareer({
             model={c.versions.model}
             result={latest}
             onNext={onNext}
+            onImprove={onImprove}
             previous={l.results
               .filter((r) => r.series === latest.series && r.day < latest.day)
               .at(-1)}
           />
         </>
+      )}
+      {application && (
+        <ModalSheet
+          title="大会申込みの確認"
+          busy={busy}
+          onClose={() => setApplication(null)}
+          actions={
+            <button
+              className="primary"
+              disabled={busy || localEligibility(c, application).length > 0}
+              onClick={() => {
+                onChange(() => enterLocal(c, application));
+                setApplication(null);
+              }}
+            >
+              この日程と費用で申し込む
+            </button>
+          }
+        >
+          <div className="local-checkin">
+            <h3>{LOCAL_DEFS[application.series].name}</h3>
+            <p>
+              開催 {dayDate(application.showDay)} / 締切{" "}
+              {dayDate(application.deadlineDay)}
+            </p>
+            <p>
+              今支払う金額{" "}
+              {yen(
+                LOCAL_DEFS[application.series].fee +
+                  LOCAL_DEFS[application.series].travel,
+              )}
+              （参加費・移動費）
+            </p>
+            <p>
+              当日は仕事と筋力練習を休み、大会に
+              {LOCAL_DEFS[application.series].hours}
+              時間を使います。月収は既存のゲーム内の日割り計算です。開催日は自動で停止して出場を確認します。
+            </p>
+            <p>同時申込みは1件。欠場時の返金はありません。</p>
+          </div>
+        </ModalSheet>
+      )}
+      {active && stageStep > 0 && (
+        <ModalSheet
+          title={stageStep === 1 ? "大会受付・計量" : "ステージへ"}
+          busy={busy}
+          onClose={() => setStageStep(0)}
+          actions={
+            <button
+              className="primary"
+              disabled={busy}
+              onClick={() => {
+                if (stageStep === 1) setStageStep(2);
+                else {
+                  onChange(() => runLocal(c, active.id));
+                  setStageStep(0);
+                }
+              }}
+            >
+              {stageStep === 1
+                ? "確認してステージへ"
+                : "出場して審査結果を見る"}
+            </button>
+          }
+        >
+          <div className="local-checkin">
+            <h3>{LOCAL_DEFS[active.series].name}</h3>
+            <p>
+              {dayDate(active.showDay)} / 体重
+              {weight(c.athlete.body).toFixed(2)}kg / 支払済{yen(active.paid)}
+            </p>
+            <p>
+              出場番号 01 /
+              自分の選手。階級は当日の体重で判定し、3人未満なら統合します。
+            </p>
+            {stageStep === 2 ? (
+              <BodyView
+                model={c.versions.model}
+                body={c.athlete.body}
+                selected="chest"
+                stage={
+                  active.series === "gymMeet"
+                    ? "local-gym"
+                    : active.series === "rookieMeet"
+                      ? "local-rookie"
+                      : "local-open"
+                }
+                defaultClip="FrontDoubleBiceps"
+              />
+            ) : (
+              <p>
+                計量は現在の身体値を確認する操作です。能力の加算や、追加の料金はありません。
+              </p>
+            )}
+            <button
+              onClick={() => {
+                onChange(() => runLocal(c, active.id));
+                setStageStep(0);
+              }}
+              disabled={busy}
+            >
+              演出を省略して出場・結果へ
+            </button>
+          </div>
+        </ModalSheet>
       )}
     </>
   );

@@ -45,6 +45,7 @@ import {
   yen,
   dayDate,
   signed,
+  trainingResultLabel,
 } from "./Experience";
 import { createLocal, LOCAL_DEFS } from "../core/localCompetitions";
 import { draftAutosave } from "../core/draftAutosave";
@@ -55,9 +56,18 @@ import { PwaSettings, PwaNotice } from "../pwa/PwaControls";
 import { usePwa } from "../pwa/usePwa";
 import "./experience.css";
 import { Opening } from "./Opening";
-import {CoachSetup,CoachConsult} from './Coach';
-import {setupCoach,prepareCoachDay,markManual,markChangedManual} from '../core/coach';
-import type {CoachSection} from '../core/coachTypes';
+import { CoachSetup, CoachConsult } from "./Coach";
+import { PeriodResult, type PeriodReport } from "./PeriodResult";
+import { applyPlanScope, type PlanScope } from "../core/planScope";
+import { BodyHistory } from "./BodyHistory";
+import { weeklyTrainingNotes } from "../core/weeklyPlanning";
+import {
+  setupCoach,
+  prepareCoachDay,
+  markManual,
+  markChangedManual,
+} from "../core/coach";
+import type { CoachSection } from "../core/coachTypes";
 type Tab = "today" | "plan" | "career" | "records" | "settings";
 type Panel = { kind: "training" | "food" | "rest"; value: Career } | null;
 const seed = () => crypto.getRandomValues(new Uint32Array(1))[0] || 1;
@@ -72,8 +82,8 @@ export function App() {
   useVisualViewport();
   const pwa = usePwa();
   const [screen, setScreen] = useState<"title" | "create" | "game">("title");
-  const [coachOpen,setCoachOpen]=useState(false);
-  const [coachSection,setCoachSection]=useState<CoachSection|undefined>();
+  const [coachOpen, setCoachOpen] = useState(false);
+  const [coachSection, setCoachSection] = useState<CoachSection | undefined>();
   const [lib, setLib] = useState<Library | null>(null),
     [career, setCareer] = useState<Career | null>(null),
     [tab, setTab] = useState<Tab>("today"),
@@ -85,12 +95,14 @@ export function App() {
     [roster, setRoster] = useState<Career[]>([]),
     [panel, setPanel] = useState<Panel>(null),
     [result, setResult] = useState<DailySummary | null>(null),
-    [careerArea, setCareerArea] = useState<"local" | "official" | "roster">(
-      "local",
-    );
+    [careerArea, setCareerArea] = useState<
+      "local" | "official" | "roster" | "retirement"
+    >("local");
   const lock = useRef(false),
     draftQueue = useRef<ReturnType<typeof draftAutosave<Library>> | null>(null),
     file = useRef<HTMLInputElement>(null);
+  const [period, setPeriod] = useState<PeriodReport | null>(null);
+  const [panelScope, setPanelScope] = useState<PlanScope>("ongoing");
   if (!draftQueue.current)
     draftQueue.current = draftAutosave(
       (l) => save(l),
@@ -131,7 +143,8 @@ export function App() {
   }, [lib]);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, [tab, career?.athlete.id, result?.day]);
+  }, [tab, career?.athlete.id, result?.day, period?.after.athlete.day]);
+  useEffect(() => setPeriod(null), [tab, career?.athlete.id]);
   useEffect(() => {
     if (!lib) return;
     if (tab === "career" && careerArea === "roster")
@@ -152,8 +165,8 @@ export function App() {
   const changeCareer = (value: Career | (() => Career)) => {
     if (career?.athlete.status === "retired") return;
     void run(async () => {
-      const next=typeof value === "function" ? value() : value;
-      await commit(career?markChangedManual(career,next):next);
+      const next = typeof value === "function" ? value() : value;
+      await commit(career ? markChangedManual(career, next) : next);
     });
   };
   const step = (days: number) => {
@@ -161,6 +174,16 @@ export function App() {
     void run(async () => {
       const next = advance(career, days);
       await commit(prepareCoachDay(next.career), next.logs);
+      setPeriod(
+        days > 1
+          ? {
+              before: career,
+              after: next.career,
+              logs: next.logs,
+              requested: days,
+            }
+          : null,
+      );
       setResult(next.logs.at(-1) ?? null);
       setNotice(
         `${next.logs.length}日分の実績を保存しました${next.career.pendingEvent ? "。重要な判断で停止しました" : ""}`,
@@ -190,7 +213,7 @@ export function App() {
       const compatible = draft.local
         ? draft
         : { ...draft, local: createLocal(draft) };
-      const started=setupCoach(compatible);
+      const started = setupCoach(compatible);
       await save(next, started);
       setLib(next);
       setCareer(started);
@@ -278,7 +301,10 @@ export function App() {
         </label>
         <span>外見で得意分野や生活条件は変わりません。</span>
       </div>
-      <CoachSetup c={draft} onChange={value=>setLib({...lib,draft:value})}/>
+      <CoachSetup
+        c={draft}
+        onChange={(value) => setLib({ ...lib, draft: value })}
+      />
       <div className="button-row">
         <button disabled={busy} onClick={reroll}>
           もう一度抽選
@@ -436,6 +462,9 @@ export function App() {
             </p>
           </div>
           <div className="header-resources">
+            <small className="mobile-save-state" role="status">
+              {busy ? "処理・保存中…" : notice || "このブラウザに保存"}
+            </small>
             <b>{yen(a.life.money)}</b>
             <span>
               {gameDate(a.day).toLocaleDateString("ja-JP", { timeZone: "UTC" })}{" "}
@@ -475,7 +504,11 @@ export function App() {
             {!shown.local?.decision && !shown.progress?.decision && (
               <button
                 disabled={busy}
-                onClick={() => changeCareer(() => acknowledgeDecision(shown))}
+                onClick={() =>
+                  void run(() =>
+                    commit(prepareCoachDay(acknowledgeDecision(shown))),
+                  )
+                }
               >
                 内容を確認して再開を許可
               </button>
@@ -495,11 +528,38 @@ export function App() {
             </button>
           </section>
         )}
-        {result && !draft ? (
+        {period && !draft ? (
+          <PeriodResult
+            report={period}
+            onNext={() => {
+              setPeriod(null);
+              setResult(null);
+              setTab("today");
+            }}
+            onRecords={() => {
+              setPeriod(null);
+              setResult(null);
+              setTab("records");
+            }}
+          />
+        ) : result && !draft ? (
           <DayResult
             summary={result}
             career={shown}
-            onRecords={()=>{setResult(null);setTab('records');}}
+            onImprove={(kind) => {
+              setPeriod(null);
+              setResult(null);
+              setTab("today");
+              if (kind === "rest") openPanel("rest");
+              else {
+                setCoachSection(kind);
+                setCoachOpen(true);
+              }
+            }}
+            onRecords={() => {
+              setResult(null);
+              setTab("records");
+            }}
             onNext={() => {
               setResult(null);
               setTab("today");
@@ -513,19 +573,26 @@ export function App() {
               busy={busy}
               part={part}
               setPart={setPart}
-              onEdit={kind=>{
-                if(kind!=='rest'&&career?.coachingGuide?.ownership[kind]==='coach'){setCoachSection(kind);setCoachOpen(true);}
-                else openPanel(kind);
+              onEdit={(kind) => {
+                setCoachSection(kind);
+                setCoachOpen(true);
               }}
-              onConsult={()=>{setCoachSection(undefined);setCoachOpen(true);}}
-              onCoachChange={value=>void run(async()=>{await commit(value);})}
+              onConsult={() => {
+                setCoachSection(undefined);
+                setCoachOpen(true);
+              }}
+              onCoachChange={(value) =>
+                void run(async () => {
+                  await commit(value);
+                })
+              }
               onStep={() => step(1)}
               onTab={setTab}
               onChange={changeCareer}
             />
           )
         )}
-        {!draft && !result && tab === "settings" && (
+        {!draft && !result && !period && tab === "settings" && (
           <button
             className="title-return"
             disabled={busy}
@@ -534,7 +601,7 @@ export function App() {
             タイトルへ戻る
           </button>
         )}
-        {!draft && !result && tab === "plan" && (
+        {!draft && !result && !period && tab === "plan" && (
           <Weekly
             c={shown}
             busy={busy}
@@ -543,13 +610,14 @@ export function App() {
             onStep={() => step(7)}
           />
         )}
-        {!draft && !result && tab === "career" && (
+        {!draft && !result && !period && tab === "career" && (
           <>
             <div className="section-tabs">
               {(
                 [
                   ["local", "小さな大会"],
-                  ["official", "全国・国際の挑戦 / 引退"],
+                  ["official", "全国・国際の挑戦"],
+                  ["retirement", "引退・キャリアの区切り"],
                   ["roster", "選手一覧"],
                 ] as const
               ).map(([key, name]) => (
@@ -568,10 +636,19 @@ export function App() {
                 busy={busy}
                 onChange={changeCareer}
                 onNext={() => setTab("today")}
+                onImprove={(kind) => {
+                  setTab("today");
+                  if (kind === "rest") openPanel("rest");
+                  else {
+                    setCoachSection(kind);
+                    setCoachOpen(true);
+                  }
+                }}
               />
             )}
-            {careerArea === "official" && (
+            {(careerArea === "official" || careerArea === "retirement") && (
               <CareerScreen
+                retirementOnly={careerArea === "retirement"}
                 career={shown}
                 onChange={changeCareer}
                 onAdvance={step}
@@ -622,7 +699,7 @@ export function App() {
             )}
           </>
         )}
-        {!draft && !result && tab === "records" && (
+        {!draft && !result && !period && tab === "records" && (
           <Records
             c={shown}
             logs={logs}
@@ -631,7 +708,7 @@ export function App() {
             onSelect={setResult}
           />
         )}
-        {!draft && !result && tab === "settings" && (
+        {!draft && !result && !period && tab === "settings" && (
           <>
             <PwaSettings state={pwa} />
             <section className="paper">
@@ -724,10 +801,27 @@ export function App() {
         />
         <footer>
           BULK LIFE <span>その選択が、身体になる。</span>
-          <small>LOCAL SAVE / 0.5.0</small>
+          <small>LOCAL SAVE / 0.6.0</small>
         </footer>
       </main>
-      {coachOpen&&career&&<CoachConsult c={career} initialSection={coachSection} busy={busy} onClose={()=>setCoachOpen(false)} onAdopt={value=>void run(async()=>{await commit(value);setCoachOpen(false);})} onDetailed={(section:CoachSection)=>{setCoachOpen(false);openPanel(section);}}/>}
+      {coachOpen && career && (
+        <CoachConsult
+          c={career}
+          initialSection={coachSection}
+          busy={busy}
+          onClose={() => setCoachOpen(false)}
+          onAdopt={(value) =>
+            void run(async () => {
+              await commit(value);
+              setCoachOpen(false);
+            })
+          }
+          onDetailed={(section: CoachSection) => {
+            setCoachOpen(false);
+            openPanel(section);
+          }}
+        />
+      )}
       {panel && (
         <ModalSheet
           title={
@@ -741,13 +835,30 @@ export function App() {
           onClose={() => setPanel(null)}
           actions={
             <>
-              <p>保存すると今日の設定に反映します。</p>
+              <p className="unsaved-note">
+                {career &&
+                JSON.stringify(career) !== JSON.stringify(panel.value)
+                  ? "未保存の変更があります。"
+                  : "まだ変更していません。"}{" "}
+                保存すると{panelScope === "today" ? "今日だけ" : "今後の設定"}
+                へ反映します。
+              </p>
               <button
                 className="primary"
                 disabled={busy}
                 onClick={() =>
                   void run(async () => {
-                    await commit(markManual(career?markChangedManual(career,panel.value):panel.value,[panel.kind]));
+                    const next = markManual(
+                      career
+                        ? markChangedManual(career, panel.value)
+                        : panel.value,
+                      [panel.kind],
+                    );
+                    await commit(
+                      career
+                        ? applyPlanScope(career, next, panelScope, [panel.kind])
+                        : next,
+                    );
                     setPanel(null);
                   })
                 }
@@ -757,6 +868,19 @@ export function App() {
             </>
           }
         >
+          <label className="plan-scope-field">
+            変更する期間
+            <select
+              value={panelScope}
+              onChange={(e) => setPanelScope(e.target.value as PlanScope)}
+            >
+              <option value="ongoing">今後も継続・毎週の曜日設定</option>
+              <option value="today">今日だけ・翌日は元の設定へ</option>
+            </select>
+          </label>
+          <p className="plan-scope-field">
+            この詳細画面で保存した項目は手動設定になります。コーチは黙って上書きしません。
+          </p>
           {error && (
             <p className="error" role="alert">
               {error}
@@ -765,6 +889,13 @@ export function App() {
           {panel.kind === "training" ? (
             <TrainingScreen
               career={panel.value}
+              todayOnly={panelScope === "today"}
+              onAuxiliary={
+                JSON.stringify(panel.value.plan.days) ===
+                JSON.stringify(career?.plan.days)
+                  ? () => setPanel({ ...panel, kind: "rest" })
+                  : undefined
+              }
               onChange={panelChange}
               busy={busy}
             />
@@ -1093,6 +1224,21 @@ function Weekly({
             </details>
           ))}
         </div>
+        <details>
+          <summary>週間の負担・部位の重なりを確認</summary>
+          {weeklyTrainingNotes(c).length ? (
+            weeklyTrainingNotes(c).map((s) => <p key={s}>{s}</p>)
+          ) : (
+            <p>
+              隣り合う曜日で主な対象部位が重なる予定はありません。実行前には当日の疲労も確認しましょう。
+            </p>
+          )}
+        </details>
+        {!c.savedPlan && (
+          <p>
+            テンプレートはまだ保存していません。「週間の簡単設定を保存」で、今の予定を登録すると適用できます。
+          </p>
+        )}
         <div className="button-row">
           <button onClick={() => onEdit("training")}>
             種目・重量・回数を編集
@@ -1105,7 +1251,8 @@ function Weekly({
         <div>
           <h2>この予定で、1週間を過ごす</h2>
           <p>
-            毎日 {Math.round(n.calories)}kcal / P{Math.round(n.protein)}g / 食費
+            {c.oneDayPlan ? "初日" : "毎日"} {Math.round(n.calories)}kcal / P
+            {Math.round(n.protein)}g / 食費
             {yen(n.cost)} / 睡眠{c.plan.sleep}h
           </p>
           <p>
@@ -1121,6 +1268,10 @@ function Weekly({
           </p>
           <p>
             今日から最大7日分を1日ずつ計算・保存します。大会当日・必要な確認・疲労などの重要イベントでは途中で止まります。
+          </p>
+          <p>
+            <b>この操作は表示した曜日別の固定予定を使います。</b>
+            コーチによる途中の再計画はしません。1日ずつ実行する場合は、翌朝のコーチ管理の練習を更新します。「今日だけ」の変更は翌日に元へ戻ります。
           </p>
         </div>
         <button
@@ -1158,7 +1309,7 @@ function Records({
     ],
     values = snapshots.map((x) => x.body.muscle[part]),
     low = Math.min(...values),
-    span = Math.max(0.01, Math.max(...values) - low),
+    span = Math.max(0.25, Math.max(...values) - low),
     local =
       c.local?.results.find((r) => r.id === localId) ?? c.local?.results.at(-1);
   return (
@@ -1187,48 +1338,56 @@ function Records({
             <p>{c.athlete.day}日経過</p>
             <p>
               筋質量{" "}
-              {signed(muscleMass(c.athlete.body) - muscleMass(c.initial.body))}
-              kg / 初日比
+              {signed(
+                muscleMass(c.athlete.body) - muscleMass(c.initial.body),
+                3,
+                "kg",
+              )}{" "}
+              / 初日比
             </p>
             <p>練習 {c.progress?.trainingDays ?? "未記録"}日</p>
           </div>
-          <label>
-            推移を見る部位
-            <select
-              value={part}
-              onChange={(e) => setPart(e.target.value as Part)}
-            >
-              {PARTS.map((p) => (
-                <option key={p} value={p}>
-                  {LABELS[p]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="history-chart">
-            <h3>{LABELS[part]} / 筋質量kg</h3>
-            <svg
-              viewBox="0 0 800 150"
-              role="img"
-              aria-label={`初日${values[0].toFixed(3)}kg、現在${values.at(-1)!.toFixed(3)}kg。縦軸は変化に合わせた範囲です。`}
-            >
-              <polyline
-                fill="none"
-                stroke="#315c43"
-                strokeWidth="3"
-                points={values
-                  .map(
-                    (v, i) =>
-                      `${20 + (snapshots[i].day / Math.max(1, c.athlete.day)) * 760},${125 - ((v - low) / span) * 100}`,
-                  )
-                  .join(" ")}
-              />
-            </svg>
-            <p>
-              初日 {values[0].toFixed(3)}kg → 現在 {values.at(-1)!.toFixed(3)}kg
-              / 縦軸 {low.toFixed(3)}〜{(low + span).toFixed(3)}kg
-            </p>
-          </div>
+          <BodyHistory c={c} logs={logs} />
+          <details>
+            <summary>部位別の推移と数値を確認</summary>
+            <label>
+              推移を見る部位
+              <select
+                value={part}
+                onChange={(e) => setPart(e.target.value as Part)}
+              >
+                {PARTS.map((p) => (
+                  <option key={p} value={p}>
+                    {LABELS[p]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="history-chart">
+              <h3>{LABELS[part]} / 筋質量kg</h3>
+              <svg
+                viewBox="0 0 800 150"
+                role="img"
+                aria-label={`初日${values[0].toFixed(3)}kg、現在${values.at(-1)!.toFixed(3)}kg。縦軸は変化に合わせた範囲です。`}
+              >
+                <polyline
+                  fill="none"
+                  stroke="#315c43"
+                  strokeWidth="3"
+                  points={values
+                    .map(
+                      (v, i) =>
+                        `${20 + (snapshots[i].day / Math.max(1, c.athlete.day)) * 760},${125 - ((v - low) / span) * 100}`,
+                    )
+                    .join(" ")}
+                />
+              </svg>
+              <p>
+                初日 {values[0].toFixed(3)}kg → 現在 {values.at(-1)!.toFixed(3)}
+                kg / 縦軸 {low.toFixed(3)}〜{(low + span).toFixed(3)}kg
+              </p>
+            </div>
+          </details>
           <p>
             身体の見た目の比較は「今日」の選手欄で行えます。全身の数値は下で日付ごとに確認できます。
           </p>
@@ -1276,10 +1435,10 @@ function Records({
                     onClick={() => onSelect(s)}
                   >
                     <span>{dayDate(s.day)}</span>
-                    <b>{FOCUS_LABELS[s.training.focus]}</b>
+                    <b>{trainingResultLabel(s)}</b>
                     <span>
                       実施{s.training.completedSets}/{s.training.plannedSets} ·
-                      筋質量{signed(s.muscleDelta)}kg
+                      筋質量{signed(s.muscleDelta, 3, "kg")}
                     </span>
                     <span>詳しい結果 →</span>
                   </button>

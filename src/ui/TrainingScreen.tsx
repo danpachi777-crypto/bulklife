@@ -5,6 +5,7 @@ import {
   exerciseRecipe,
   sessionMinutes,
   exerciseById,
+  loadSpec,
 } from "../core/exercises";
 import { progressivePlan } from "../core/training";
 import { LABELS } from "../core/model";
@@ -15,16 +16,34 @@ export function TrainingScreen({
   career: c,
   onChange,
   busy,
+  todayOnly = false,
+  onAuxiliary,
 }: {
   career: Career;
   onChange: (c: Career | (() => Career)) => void;
   busy: boolean;
+  todayOnly?: boolean;
+  onAuxiliary?: () => void;
 }) {
-  const [day, setDay] = useState(c.athlete.day % 7),
+  const [chosenDay, setDay] = useState(c.athlete.day % 7),
     [selected, setSelected] = useState("bench");
+  const day = todayOnly ? c.athlete.day % 7 : chosenDay;
   const d = c.plan.days[day],
     e = exerciseById(selected)!;
-  const demonstration=selected==='ohp'?{clip:'TrainingPress',part:'frontDelts' as const,label:'立位オーバーヘッドプレス'}:selected==='squat'?{clip:'TrainingSquat',part:'quads' as const,label:'自重スクワット（荷重の実演ではありません）'}:null;
+  const demonstration =
+    selected === "ohp"
+      ? {
+          clip: "TrainingPress",
+          part: "frontDelts" as const,
+          label: "立位オーバーヘッドプレス",
+        }
+      : selected === "squat"
+        ? {
+            clip: "TrainingSquat",
+            part: "quads" as const,
+            label: "自重スクワット（荷重の実演ではありません）",
+          }
+        : null;
   const setExercises = (exercises: NonNullable<typeof d.exercises>) =>
     onChange({
       ...c,
@@ -53,22 +72,30 @@ export function TrainingScreen({
         <div className="section-heading">
           <div>
             <span className="eyebrow">TRAIN WITH INTENT</span>
-            <h2>今日と今週の練習</h2>
+            <h2>{todayOnly ? "今日だけの練習" : "今日と今週の練習"}</h2>
           </div>
           <button
             disabled={busy}
             onClick={() =>
               onChange(
-                progressivePlan({
-                  ...c,
-                  plan: {
-                    ...c.plan,
-                    days: c.plan.days.map((x) => ({
-                      ...x,
-                      exercises: x.exercises ?? exerciseRecipe(x.focus, 2),
-                    })),
+                progressivePlan(
+                  {
+                    ...c,
+                    plan: {
+                      ...c.plan,
+                      days: c.plan.days.map((x, i) =>
+                        todayOnly && i !== day
+                          ? x
+                          : {
+                              ...x,
+                              exercises:
+                                x.exercises ?? exerciseRecipe(x.focus, 2),
+                            },
+                      ),
+                    },
                   },
-                }),
+                  todayOnly ? day : undefined,
+                ),
               )
             }
           >
@@ -86,6 +113,7 @@ export function TrainingScreen({
             <button
               key={i}
               className={day === i ? "selected" : ""}
+              disabled={todayOnly && i !== day}
               onClick={() => setDay(i)}
             >
               {name}
@@ -198,11 +226,11 @@ export function TrainingScreen({
                 </div>
                 <div className="exercise-fields">
                   <Numeric
-                    label="重量 kg"
+                    label={loadSpec(exercise, x.load).label}
                     value={x.load}
                     min={0.5}
                     max={500}
-                    step={0.5}
+                    step={loadSpec(exercise, x.load).step}
                     onCommit={(load) => edit({ load })}
                     disabled={busy}
                   />
@@ -222,46 +250,72 @@ export function TrainingScreen({
                     onCommit={(sets) => edit({ sets: Math.round(sets) })}
                     disabled={busy}
                   />
-                  <Numeric
-                    label="余力 RIR"
-                    value={x.rir}
-                    min={0}
-                    max={6}
-                    onCommit={(rir) => edit({ rir: Math.round(rir) })}
-                    disabled={busy}
-                  />
-                  <Numeric
-                    label="休憩 秒"
-                    value={x.rest}
-                    min={15}
-                    max={600}
-                    step={15}
-                    onCommit={(rest) => edit({ rest })}
-                    disabled={busy}
-                  />
-                  <Numeric
-                    label="可動域比"
-                    value={x.rom}
-                    min={0.5}
-                    max={1}
-                    step={0.1}
-                    onCommit={(rom) => edit({ rom })}
-                    disabled={busy}
-                  />
-                  <label>
-                    優先するもの
-                    <select
-                      value={x.priority}
-                      disabled={busy}
-                      onChange={(e) =>
-                        edit({ priority: e.target.value as "rir" | "load" })
-                      }
-                    >
-                      <option value="rir">RIRを守り重量を調整</option>
-                      <option value="load">固定重量で回数を狙う</option>
-                    </select>
-                  </label>
                 </div>
+                <details className="exercise-advanced">
+                  <summary>詳細：余力・休憩・可動域</summary>
+                  <p>
+                    余力は、あと何回できるかのゲーム設定です。軽め＝5、標準＝3、しっかり＝2。可動域比1は十分な範囲を表します。
+                  </p>
+                  <div className="exercise-fields">
+                    <Numeric
+                      label="余力 RIR"
+                      value={x.rir}
+                      min={0}
+                      max={6}
+                      onCommit={(rir) => edit({ rir: Math.round(rir) })}
+                      disabled={busy}
+                    />
+                    <Numeric
+                      label="休憩 秒"
+                      value={x.rest}
+                      min={15}
+                      max={600}
+                      step={15}
+                      onCommit={(rest) => edit({ rest })}
+                      disabled={busy}
+                    />
+                    <Numeric
+                      label="可動域比"
+                      value={x.rom}
+                      min={0.5}
+                      max={1}
+                      step={0.1}
+                      onCommit={(rom) => edit({ rom })}
+                      disabled={busy}
+                    />
+                    <label>
+                      優先するもの
+                      <select
+                        value={x.priority}
+                        disabled={busy}
+                        onChange={(e) =>
+                          edit({ priority: e.target.value as "rir" | "load" })
+                        }
+                      >
+                        <option value="rir">RIRを守り重量を調整</option>
+                        <option value="load">固定重量で回数を狙う</option>
+                      </select>
+                    </label>
+                  </div>
+                </details>
+                <small>
+                  {loadSpec(exercise, x.load).note} 主な対象：
+                  {Object.entries(exercise.direct)
+                    .filter(([, v]) => v >= 0.5)
+                    .map(([p]) => LABELS[p as keyof typeof LABELS])
+                    .join("・")}{" "}
+                  / 必要設備：
+                  {
+                    (
+                      {
+                        free: "フリーウェイト",
+                        cable: "ケーブル",
+                        machine: "マシン",
+                        bodyweight: "懸垂設備",
+                      } as const
+                    )[exercise.equipment]
+                  }
+                </small>
               </article>
             );
           })}
@@ -349,41 +403,41 @@ export function TrainingScreen({
       {c.progress && (
         <section className="paper">
           <h2>技術と補助練習</h2>
-          <div className="fields">
-            <Numeric
-              label="ポージング 分/日"
-              value={c.progress.posingMinutes}
-              min={0}
-              max={60}
-              onCommit={(posingMinutes) =>
-                onChange({ ...c, progress: { ...c.progress!, posingMinutes } })
-              }
-              disabled={busy}
-            />
-            <Numeric
-              label="有酸素 分/日"
-              value={c.progress.cardioMinutes}
-              min={0}
-              max={60}
-              onCommit={(cardioMinutes) =>
-                onChange({ ...c, progress: { ...c.progress!, cardioMinutes } })
-              }
-              disabled={busy}
-            />
-          </div>
+          <p>
+            ポージング {c.progress.posingMinutes}分・有酸素{" "}
+            {c.progress.cardioMinutes}分 /
+            日。いずれも24時間の予定に含まれます。
+          </p>
+          {onAuxiliary && (
+            <button onClick={onAuxiliary}>休養・補助練習の設定を開く</button>
+          )}
+          {!onAuxiliary && (
+            <p>
+              練習の変更を保存してから、休養パネルで補助練習を編集できます。
+            </p>
+          )}
           <p>
             ポージング技術 {(c.progress.posing * 100).toFixed(1)} /
             100。いずれも24時間の予定に含まれます。
           </p>
           <details>
             <summary>練習動作を3Dで見る</summary>
-            {demonstration?<><p>{demonstration.label}</p><BodyView
-              model={c.versions.model}
-              body={c.athlete.body}
-              selected={demonstration.part}
-              stage="gym"
-              defaultClip={demonstration.clip}
-            /></>:<p>この種目に対応する実演は準備していません。説明と対象部位を確認できます。</p>}
+            {demonstration ? (
+              <>
+                <p>{demonstration.label}</p>
+                <BodyView
+                  model={c.versions.model}
+                  body={c.athlete.body}
+                  selected={demonstration.part}
+                  stage="gym"
+                  defaultClip={demonstration.clip}
+                />
+              </>
+            ) : (
+              <p>
+                この種目に対応する実演は準備していません。説明と対象部位を確認できます。
+              </p>
+            )}
           </details>
           <p className="muted">
             実演は対応する動作がある種目だけに表示します。重量・姿勢はゲーム内の説明用で、現実の運動指導ではありません。

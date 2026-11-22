@@ -11,7 +11,7 @@ import { validateProgress, validateExercisePlans } from "./validateProgress";
 import { validateLocal } from "./localCompetitions";
 import { EXERCISES } from "./exercises";
 import { unpackLog } from "./logCodec";
-import { validateCoach } from './validateCoach';
+import { validateCoach } from "./validateCoach";
 function obj(x: unknown): x is Record<string, any> {
   return !!x && typeof x === "object" && !Array.isArray(x);
 }
@@ -266,7 +266,37 @@ export function validateCareer(x: unknown): asserts x is Career {
   )
     fail();
   validateBody(a.body);
-  if(x.coachingGuide!==undefined)validateCoach(x.coachingGuide,a.day);
+  if (x.coachingGuide !== undefined) validateCoach(x.coachingGuide, a.day);
+  if (x.oneDayPlan !== undefined) {
+    const saved = x.oneDayPlan;
+    if (
+      !obj(saved) ||
+      saved.day !== a.day ||
+      !obj(saved.plan) ||
+      (saved.food !== undefined && !obj(saved.food))
+    )
+      fail();
+    if (
+      saved.sections !== undefined &&
+      (!Array.isArray(saved.sections) ||
+        !saved.sections.length ||
+        saved.sections.length > 3 ||
+        new Set(saved.sections).size !== saved.sections.length ||
+        saved.sections.some(
+          (s: unknown) => !["training", "food", "rest"].includes(s as string),
+        ))
+    )
+      fail();
+    const restored: Record<string, any> = { ...x, plan: saved.plan };
+    delete restored.oneDayPlan;
+    if (saved.guide !== undefined) restored.coachingGuide = saved.guide;
+    else delete restored.coachingGuide;
+    if (saved.food !== undefined) {
+      if (!obj(x.progress)) fail();
+      restored.progress = { ...x.progress, ...saved.food };
+    }
+    validateCareer(restored);
+  }
   validatePlan(x.plan);
   if (x.savedPlan !== undefined) validatePlan(x.savedPlan);
   if (

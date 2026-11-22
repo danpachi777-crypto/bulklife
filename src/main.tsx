@@ -7,3 +7,4 @@ createRoot(document.getElementById('root')!).render(<App/>);
 import "./ui/mobile.css";
 import "./ui/cinematic.css";
 import './ui/coach.css';
+import './ui/consistency.css';

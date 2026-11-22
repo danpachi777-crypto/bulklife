@@ -218,7 +218,17 @@ export const VERSIONS = {
   rules: "2026-jbbf-ifbb-2027oqs-game-1",
 } as const;
 export interface Career {
-  coachingGuide?: import('./coachTypes').CoachingGuide;
+  oneDayPlan?: {
+    day: number;
+    sections?: import("./coachTypes").CoachSection[];
+    plan: WeeklyPlan;
+    guide?: import("./coachTypes").CoachingGuide;
+    food?: Pick<
+      import("./careerTypes").CareerProgress,
+      "mealMode" | "meals" | "purpose" | "posingMinutes" | "cardioMinutes"
+    >;
+  };
+  coachingGuide?: import("./coachTypes").CoachingGuide;
   versions: DataVersions;
   athlete: AthleteState;
   plan: WeeklyPlan;
