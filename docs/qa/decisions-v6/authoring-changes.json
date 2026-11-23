@@ -1,0 +1,72 @@
+{
+  "source": "v5 protected copy",
+  "thoraxWeightsChanged": 374,
+  "hairVertices": 1755,
+  "morphs": {
+    "upperChest": {
+      "beforeMax": 0.012816420737913172,
+      "afterMax": 0.012913576995506392
+    },
+    "chest": {
+      "beforeMax": 0.02360187734386959,
+      "afterMax": 0.02550130761142161
+    },
+    "frontDelts": {
+      "beforeMax": 0.015318201390406202,
+      "afterMax": 0.009995629592432106
+    },
+    "sideDelts": {
+      "beforeMax": 0.01557524035407176,
+      "afterMax": 0.015100574619588263
+    },
+    "rearDelts": {
+      "beforeMax": 0.01649734084593792,
+      "afterMax": 0.01853491426229678
+    },
+    "lats": {
+      "beforeMax": 0.022749328785990394,
+      "afterMax": 0.026669300302975006
+    },
+    "upperBack": {
+      "beforeMax": 0.020788407541200152,
+      "afterMax": 0.022829958846615636
+    },
+    "erectors": {
+      "beforeMax": 0.012935375604790182,
+      "afterMax": 0.024192554909519437
+    },
+    "biceps": {
+      "beforeMax": 0.03919477381912513,
+      "afterMax": 0.020341462454425353
+    },
+    "triceps": {
+      "beforeMax": 0.040644142736991365,
+      "afterMax": 0.02395724959825409
+    },
+    "forearms": {
+      "beforeMax": 0.012726709752244655,
+      "afterMax": 0.013542176258396061
+    },
+    "quads": {
+      "beforeMax": 0.043100253023711725,
+      "afterMax": 0.02660207978670774
+    },
+    "hamstrings": {
+      "beforeMax": 0.03225912833770866,
+      "afterMax": 0.024897721477519265
+    },
+    "glutes": {
+      "beforeMax": 0.027018834692482903,
+      "afterMax": 0.016994203913024853
+    },
+    "calves": {
+      "beforeMax": 0.027136639187916416,
+      "afterMax": 0.013909751731382777
+    },
+    "abs": {
+      "beforeMax": 0.006957331476050073,
+      "afterMax": 0.024186883078264134
+    }
+  },
+  "notes": "Growth targets replaced with a partitioned full-muscle endpoint, not added to old deltas. Continuous skin and original simulation mapping preserved."
+}

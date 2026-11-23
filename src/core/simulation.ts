@@ -223,6 +223,7 @@ export function planIssues(c: Career, dayIndex: number): string[] {
 }
 export function simulateDay(
   input: Career,
+  context: { contestHours?: number } = {},
 ): { career: Career; summary: DailySummary } | null {
   if (input.pendingEvent || input.athlete.status !== "active") return null;
   const legacy = input.versions.simulation === "0.1.0" && !input.progress;
@@ -244,12 +245,13 @@ export function simulateDay(
     d = p.days[a.day % 7];
   const localShow = c.local?.results.find((r) => r.day === a.day),
     officialShow = c.progress?.results.some((r) => r.day === a.day),
-    contestHours = localShow
+    contestHours = context.contestHours ?? (localShow
       ? LOCAL_DEFS[localShow.series].hours
       : officialShow
         ? 6
-        : 0;
+        : 0);
   const onTrip =
+    contestHours > 0 ||
     !!localShow ||
     !!officialShow ||
     !!c.progress?.entries.some(

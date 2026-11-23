@@ -1,0 +1,6 @@
+{
+  "vertices": 594,
+  "maxBindDisplacementMetres": 0.020000000702348177,
+  "method": "six local surface-space relaxation passes on elevated shoulder; inverse four-bone skinning; same runtime shoulderRaise driver",
+  "limit": "A shallow corrective, not a replacement for a fully sculpted pose-specific anatomical surface."
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-23",
+  "release": "0.7.0",
+  "tests": {"command":"npm.cmd test","passed":113,"failed":0,"latestElapsedMs":40729.2801},
+  "typecheckAndBuild": {"command":"npm.cmd run build","result":"pass","warning":"3D JavaScript chunk approximately 1 MB before gzip; not a runtime failure"},
+  "pwaAndProvenance": {"command":"node scripts/verify-build-v6.mjs","result":"pass","cachedFiles":23,"cachedBytes":16670198,"licensedSourceFiles":22},
+  "preservedOriginals": {"command":"node scripts/verify-preserved-v6.mjs","result":"pass","files":9,"baseline":"33ce450"},
+  "model": {"command":"npx.cmd tsx scripts/verify-portrait-v6.ts","result":"pass","bodyClipTimes":243,"standUpTimes":37,"visualApprovalImplied":false},
+  "modeParity": {"command":"npx.cmd tsx scripts/audit-mode-parity.ts","result":"pass","decisions":40,"domesticEndingImmutable":true},
+  "sixPatterns": {"command":"npx.cmd tsx scripts/audit-challenges.ts","result":"pass","careers":6,"decisionsEach":40,"daysEach":2856},
+  "legalWorldTitle": {"command":"npx.cmd tsx scripts/audit-world-title.ts","result":"pass","finalScore":91.77420794454893},
+  "strategyTradeoffs": {"command":"npx.cmd tsx scripts/audit-strategy-tradeoffs.ts","result":"pass","initialConditions":3,"policies":5,"careers":15,"decisionsEach":40},
+  "browserEvidence":"browser-play-report.json",
+  "renderEvidence":"browser-performance.json",
+  "visualEvidence":"gallery.html",
+  "qualityLimits":"report.md"
+}

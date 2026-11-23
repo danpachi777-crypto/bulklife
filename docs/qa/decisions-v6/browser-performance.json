@@ -1,0 +1,19 @@
+{
+  "environment": {
+    "os": "Windows",
+    "browser": "Chrome desktop",
+    "cpu": "Intel Core i5-1235U",
+    "gpu": "Intel Iris Xe",
+    "window": [1536, 976],
+    "devicePixelRatio": 1,
+    "physicalMobile": false
+  },
+  "method": "DEV render-stats probe reads actual WebGL renderer counters and rendered frames; screenshots retained",
+  "samples": [
+    {"scene":"title standard","css":[882,793],"dpr":1,"fpsRange":[58.5,60.2],"calls":187,"triangles":101998,"geometries":100,"textures":22},
+    {"scene":"body standard","css":[1000,550],"dpr":1,"fps":58.5,"calls":196,"triangles":103210,"geometries":100,"textures":22},
+    {"scene":"body detail light","css":[631,410],"dpr":1,"fps":60.5,"calls":94,"triangles":51618,"geometries":96,"textures":17},
+    {"scene":"two-body ending, each canvas","css":[487,400],"dpr":1,"calls":21,"triangles":40764,"geometries":21,"textures":13,"notes":"Static demand-rendered comparison; approximately one debug-induced frame per second is not maximum rendering performance"}
+  ],
+  "limits": ["Single desktop GPU, not phone performance", "No long-duration heap/GPU leak measurement", "No thermal throttling or battery measurement", "No physical mobile quality budget established"]
+}

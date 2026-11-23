@@ -29,12 +29,15 @@ export function ModalSheet({
   const busyRef = useRef(busy);
   busyRef.current = busy;
   useEffect(() => {
+    dialog.current?.querySelector<HTMLElement>(".panel-content")?.scrollTo({top:0,behavior:"instant"});
+  }, [title]);
+  useEffect(() => {
     openSheets++;
     overlayEvent();
     const trigger = document.activeElement as HTMLElement | null;
     const scroll = window.scrollY;
     const app = document.querySelector<HTMLElement>(
-      ".experience-app, .opening",
+      ".experience-app, .opening, .challenge-game, .challenge-archive",
     );
     const oldStyle = document.body.getAttribute("style");
     const wasInert = app?.inert ?? false;
@@ -90,7 +93,7 @@ export function ModalSheet({
         <header>
           <h2>{title}</h2>
           <button disabled={busy} onClick={onClose}>
-            {body ? "今日へ戻る" : "キャンセル"}
+              {body ? "確認を閉じる" : "キャンセル"}
           </button>
         </header>
         <div className="panel-content">{children}</div>

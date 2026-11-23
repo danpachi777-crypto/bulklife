@@ -1,0 +1,8 @@
+{
+  "sourcePanels": 1874,
+  "tankVertices": 1857,
+  "rimVertices": 304,
+  "rimThicknessMetres": 0.0015,
+  "poseEdgeVertices": 183,
+  "method": "collar removal and curved neck/arm-hole clipping; rebuilt mesh and hems; body/pose morph transfer, neckline anchors and shoulder weight diffusion; original v5 remains protected"
+}

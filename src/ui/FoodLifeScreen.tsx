@@ -1,14 +1,308 @@
-import {useState} from 'react';
-import type {Career} from '../core/model';
-import {FOODS} from '../core/foods';
-import {mealTotals,nutritionPlan,useMealTemplate} from '../core/nutrition';
-import {changeEmployment,changeEquipment,enableCareer} from '../core/progress';
-import {Numeric} from './Forms';
-export function FoodLifeScreen({career:c,onChange,busy}:{career:Career;onChange:(c:Career|(()=>Career))=>void;busy:boolean}){
- const p=c.progress;const [food,setFood]=useState('rice');if(!p)return <section className="paper"><h2>生活の詳細を追加</h2><button onClick={()=>onChange(enableCareer(c))}>既存の選手へ詳細データを追加</button></section>;
- const totals=mealTotals(p.meals),setMeals=(meals:typeof p.meals)=>onChange({...c,progress:{...p,meals}});
- const current=nutritionPlan(c);
- const yearlySurplus=(c.athlete.life.income-c.athlete.life.fixed-c.athlete.life.gymMonthly-(p.coach?10000:0))*12-current.cost*365;
- return <><section className="paper"><span className="eyebrow">EAT, RECOVER, REPEAT</span><h2>食事を、実行できる形に。</h2><div className="button-row">{([['build','育成'],['maintain','維持'],['cut','減量'],['recover','大会後の回復']] as const).map(([purpose,name])=><button disabled={busy} className={p.purpose===purpose?'selected':''} key={purpose} onClick={()=>onChange(useMealTemplate(c,purpose))}>{name}の食事案</button>)}<button disabled={busy} onClick={()=>onChange({...c,progress:{...p,mealMode:p.mealMode==='foods'?'aggregate':'foods'}})}>{p.mealMode==='foods'?'週間計画の集約値へ戻す':'この食品計画を使う'}</button></div><p>使用中：{p.mealMode==='foods'?'食品と量から計算した計画':'週間計画で指定したエネルギー・タンパク質・食費'}。実行時に賄えた量を実績へ記録します。</p><p className="muted">{p.mealMode==='foods'?'使用中の食品計画の合計':`食品計画の下書き（未使用）。実行中の集約計画は ${c.plan.calories} kcal / タンパク質 ${c.plan.protein}g / 食費 ${c.plan.foodCost}円です。`}</p><div className="nutrition-totals"><span>{totals.calories.toFixed(0)} kcal</span><span>P {totals.protein.toFixed(1)}g</span><span>C {totals.carbs.toFixed(1)}g</span><span>F {totals.fat.toFixed(1)}g</span><span>食物繊維 {totals.fiber.toFixed(1)}g</span><span>食費 {(p.mealMode==='foods'?current.cost:totals.cost).toFixed(0)}円</span><span>準備 {(p.mealMode==='foods'?current.prep*60:totals.prep).toFixed(0)}分</span></div>{c.coachingGuide?.ownership.food==='coach'&&<p className="muted">採用中の食事プランの費用・準備時間です。この詳細画面で保存すると手動設定に切り替わり、食品ごとの標準費用・時間を使用します。</p>}<div className="meal-list">{p.meals.map((m,i)=>{const f=FOODS.find(f=>f.id===m.foodId)!;return <article className="meal-row" key={i}><div><b>{f.name}</b><small>{f.state} / 食品番号 {f.referenceId}</small></div><Numeric label="可食部 g" value={m.grams} min={1} max={1500} step={10} disabled={busy} onCommit={grams=>setMeals(p.meals.map((x,j)=>i===j?{...x,grams}:x))}/><Numeric label="時刻" value={m.time} min={0} max={23.5} step={.5} disabled={busy} onCommit={time=>setMeals(p.meals.map((x,j)=>i===j?{...x,time}:x))}/><button disabled={busy} onClick={()=>setMeals(p.meals.filter((_,j)=>j!==i))}>外す</button></article>;})}</div><div className="button-row"><label>食品を追加<select value={food} onChange={e=>setFood(e.target.value)}>{FOODS.map(f=><option key={f.id} value={f.id}>{f.name} / {f.state}</option>)}</select></label><button disabled={busy||p.meals.length>=40} onClick={()=>setMeals([...p.meals,{foodId:food,grams:100,time:12.5}])}>100gを追加</button></div><div className="fields spaced"><Numeric label="飲料水 L/日" value={p.waterLitres} min={.5} max={5} step={.1} disabled={busy} onCommit={waterLitres=>onChange({...c,progress:{...p,waterLitres}})}/><Numeric label="睡眠予定 時間" value={c.plan.sleep} min={3} max={10} step={.5} disabled={busy} onCommit={sleep=>onChange({...c,plan:{...c.plan,sleep}})}/></div><details><summary>微量栄養素・基準量・出典</summary><p>カルシウム {totals.calcium.toFixed(0)}mg / 鉄 {totals.iron.toFixed(1)}mg / ビタミンC {totals.vitaminC.toFixed(0)}mg / ナトリウム {totals.sodium.toFixed(0)}mg / 食品中水分 {(totals.water/1000).toFixed(2)}L</p><p>全成分は文科省「八訂 増補2023」の可食部100g基準。米・肉・魚等は記載した調理後重量です。ナトリウムmgと食塩gは同じではありません。価格・調理時間はゲーム設定。</p><a href="https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx" target="_blank" rel="noreferrer">確認した公式成分表</a></details></section>
- <section className="paper"><span className="eyebrow">A LIFE THAT SUPPORTS YOUR GOAL</span><h2>仕事と、競技の配分。</h2><p>所持金 {Math.round(c.athlete.life.money).toLocaleString()}円 / 手取り月収 {c.athlete.life.income.toLocaleString()}円 / 勤務 {c.athlete.life.work}時間・週</p><div className="button-row">{[.6,.8,1,1.1].map(r=><button key={r} disabled={busy} onClick={()=>onChange(changeEmployment(c,r))}>勤務 {Math.round(r*100)}% / 月収 {Math.round(p.employmentBase.income*r).toLocaleString()}円</button>)}</div><p>この計画の年収支目安：{Math.round(yearlySurplus).toLocaleString()}円。大会費・遠征費は別です。</p><div className="fields"><label>利用設備<select value={p.equipment} disabled={busy} onChange={e=>{const equipment=e.target.value as 'gym'|'home';onChange(()=>changeEquipment(c,equipment));}}><option value="gym">ジム / 月5,000円</option><option value="home">自宅の簡易器具 / 月1,500円・初回20,000円</option></select></label><label>指導<select disabled={busy} value={p.coach?'yes':'no'} onChange={e=>onChange({...c,progress:{...p,coach:e.target.value==='yes'}})}><option value="no">自主練習</option><option value="yes">技術・ポージング指導 / 月10,000円</option></select></label></div><p className="muted">勤務変更と設備の値は架空の選択肢です。お金を直接筋量へ変換せず、実行可能な練習と技術学習を変えます。現在の会計は暦月の日割り計上です。</p></section></>;
+import { useState } from "react";
+import type { Career } from "../core/model";
+import { FOODS } from "../core/foods";
+import { mealTotals, nutritionPlan, useMealTemplate } from "../core/nutrition";
+import {
+  changeEmployment,
+  changeEquipment,
+  enableCareer,
+} from "../core/progress";
+import { Numeric } from "./Forms";
+export function FoodLifeScreen({
+  career: c,
+  onChange,
+  busy,
+  nutritionOnly = false,
+}: {
+  nutritionOnly?: boolean;
+  career: Career;
+  onChange: (c: Career | (() => Career)) => void;
+  busy: boolean;
+}) {
+  const p = c.progress;
+  const [food, setFood] = useState("rice");
+  if (!p)
+    return (
+      <section className="paper">
+        <h2>生活の詳細を追加</h2>
+        <button onClick={() => onChange(enableCareer(c))}>
+          既存の選手へ詳細データを追加
+        </button>
+      </section>
+    );
+  const totals = mealTotals(p.meals),
+    setMeals = (meals: typeof p.meals) =>
+      onChange({ ...c, progress: { ...p, meals } });
+  const current = nutritionPlan(c);
+  const yearlySurplus =
+    (c.athlete.life.income -
+      c.athlete.life.fixed -
+      c.athlete.life.gymMonthly -
+      (p.coach ? 10000 : 0)) *
+      12 -
+    current.cost * 365;
+  return (
+    <>
+      <section className="paper">
+        <span className="eyebrow">EAT, RECOVER, REPEAT</span>
+        <h2>食事を、実行できる形に。</h2>
+        <div className="button-row">
+          {(
+            [
+              ["build", "育成"],
+              ["maintain", "維持"],
+              ["cut", "減量"],
+              ["recover", "大会後の回復"],
+            ] as const
+          ).map(([purpose, name]) => (
+            <button
+              disabled={busy}
+              className={p.purpose === purpose ? "selected" : ""}
+              key={purpose}
+              onClick={() => onChange(useMealTemplate(c, purpose))}
+            >
+              {name}の食事案
+            </button>
+          ))}
+          <button
+            disabled={busy}
+            onClick={() =>
+              onChange({
+                ...c,
+                progress: {
+                  ...p,
+                  mealMode: p.mealMode === "foods" ? "aggregate" : "foods",
+                },
+              })
+            }
+          >
+            {p.mealMode === "foods"
+              ? "週間計画の集約値へ戻す"
+              : "この食品計画を使う"}
+          </button>
+        </div>
+        <p>
+          使用中：
+          {p.mealMode === "foods"
+            ? "食品と量から計算した計画"
+            : "週間計画で指定したエネルギー・タンパク質・食費"}
+          。実行時に賄えた量を実績へ記録します。
+        </p>
+        {nutritionOnly && p.mealMode === "aggregate" && (
+          <div className="form-grid">
+            {([
+              ["calories", "エネルギー kcal/日", 1000, 5000, 50],
+              ["protein", "たんぱく質 g/日", 30, 250, 5],
+              ["foodCost", "食費 円/日", 300, 3000, 50],
+              ["prep", "準備時間 時間/日", 0.25, 2, 0.25],
+            ] as const).map(([key, label, min, max, step]) => (
+              <Numeric key={key} label={label} value={c.plan[key]} min={min} max={max} step={step}
+                onCommit={(value) => onChange({...c, plan:{...c.plan,[key]:value}})} />
+            ))}
+          </div>
+        )}
+        <p className="muted">
+          {p.mealMode === "foods"
+            ? "使用中の食品計画の合計"
+            : `食品計画の下書き（未使用）。実行中の集約計画は ${c.plan.calories} kcal / タンパク質 ${c.plan.protein}g / 食費 ${c.plan.foodCost}円です。`}
+        </p>
+        <div className="nutrition-totals">
+          <span>{totals.calories.toFixed(0)} kcal</span>
+          <span>P {totals.protein.toFixed(1)}g</span>
+          <span>C {totals.carbs.toFixed(1)}g</span>
+          <span>F {totals.fat.toFixed(1)}g</span>
+          <span>食物繊維 {totals.fiber.toFixed(1)}g</span>
+          <span>
+            食費{" "}
+            {(p.mealMode === "foods" ? current.cost : totals.cost).toFixed(0)}円
+          </span>
+          <span>
+            準備{" "}
+            {(p.mealMode === "foods" ? current.prep * 60 : totals.prep).toFixed(
+              0,
+            )}
+            分
+          </span>
+        </div>
+        {c.coachingGuide?.ownership.food === "coach" && (
+          <p className="muted">
+            採用中の食事プランの費用・準備時間です。この詳細画面で保存すると手動設定に切り替わり、食品ごとの標準費用・時間を使用します。
+          </p>
+        )}
+        <div className="meal-list">
+          {p.meals.map((m, i) => {
+            const f = FOODS.find((f) => f.id === m.foodId)!;
+            return (
+              <article className="meal-row" key={i}>
+                <div>
+                  <b>{f.name}</b>
+                  <small>
+                    {f.state} / 食品番号 {f.referenceId}
+                  </small>
+                </div>
+                <Numeric
+                  label="可食部 g"
+                  value={m.grams}
+                  min={1}
+                  max={1500}
+                  step={10}
+                  disabled={busy}
+                  onCommit={(grams) =>
+                    setMeals(
+                      p.meals.map((x, j) => (i === j ? { ...x, grams } : x)),
+                    )
+                  }
+                />
+                <Numeric
+                  label="時刻"
+                  value={m.time}
+                  min={0}
+                  max={23.5}
+                  step={0.5}
+                  disabled={busy}
+                  onCommit={(time) =>
+                    setMeals(
+                      p.meals.map((x, j) => (i === j ? { ...x, time } : x)),
+                    )
+                  }
+                />
+                <button
+                  disabled={busy}
+                  onClick={() => setMeals(p.meals.filter((_, j) => j !== i))}
+                >
+                  外す
+                </button>
+              </article>
+            );
+          })}
+        </div>
+        <div className="button-row">
+          <label>
+            食品を追加
+            <select value={food} onChange={(e) => setFood(e.target.value)}>
+              {FOODS.map((f) => (
+                <option key={f.id} value={f.id}>
+                  {f.name} / {f.state}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            disabled={busy || p.meals.length >= 40}
+            onClick={() =>
+              setMeals([...p.meals, { foodId: food, grams: 100, time: 12.5 }])
+            }
+          >
+            100gを追加
+          </button>
+        </div>
+        <div className="fields spaced">
+          <Numeric
+            label="飲料水 L/日"
+            value={p.waterLitres}
+            min={0.5}
+            max={5}
+            step={0.1}
+            disabled={busy}
+            onCommit={(waterLitres) =>
+              onChange({ ...c, progress: { ...p, waterLitres } })
+            }
+          />
+          <Numeric
+            label="睡眠予定 時間"
+            value={c.plan.sleep}
+            min={3}
+            max={10}
+            step={0.5}
+            disabled={busy}
+            onCommit={(sleep) => onChange({ ...c, plan: { ...c.plan, sleep } })}
+          />
+        </div>
+        <details>
+          <summary>微量栄養素・基準量・出典</summary>
+          <p>
+            カルシウム {totals.calcium.toFixed(0)}mg / 鉄{" "}
+            {totals.iron.toFixed(1)}mg / ビタミンC {totals.vitaminC.toFixed(0)}
+            mg / ナトリウム {totals.sodium.toFixed(0)}mg / 食品中水分{" "}
+            {(totals.water / 1000).toFixed(2)}L
+          </p>
+          <p>
+            全成分は文科省「八訂
+            増補2023」の可食部100g基準。米・肉・魚等は記載した調理後重量です。ナトリウムmgと食塩gは同じではありません。価格・調理時間はゲーム設定。
+          </p>
+          <a
+            href="https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx"
+            target="_blank"
+            rel="noreferrer"
+          >
+            確認した公式成分表
+          </a>
+        </details>
+      </section>
+      {!nutritionOnly && (
+        <section className="paper">
+          <span className="eyebrow">A LIFE THAT SUPPORTS YOUR GOAL</span>
+          <h2>仕事と、競技の配分。</h2>
+          <p>
+            所持金 {Math.round(c.athlete.life.money).toLocaleString()}円 /
+            手取り月収 {c.athlete.life.income.toLocaleString()}円 / 勤務{" "}
+            {c.athlete.life.work}時間・週
+          </p>
+          <div className="button-row">
+            {[0.6, 0.8, 1, 1.1].map((r) => (
+              <button
+                key={r}
+                disabled={busy}
+                onClick={() => onChange(changeEmployment(c, r))}
+              >
+                勤務 {Math.round(r * 100)}% / 月収{" "}
+                {Math.round(p.employmentBase.income * r).toLocaleString()}円
+              </button>
+            ))}
+          </div>
+          <p>
+            この計画の年収支目安：{Math.round(yearlySurplus).toLocaleString()}
+            円。大会費・遠征費は別です。
+          </p>
+          <div className="fields">
+            <label>
+              利用設備
+              <select
+                value={p.equipment}
+                disabled={busy}
+                onChange={(e) => {
+                  const equipment = e.target.value as "gym" | "home";
+                  onChange(() => changeEquipment(c, equipment));
+                }}
+              >
+                <option value="gym">ジム / 月5,000円</option>
+                <option value="home">
+                  自宅の簡易器具 / 月1,500円・初回20,000円
+                </option>
+              </select>
+            </label>
+            <label>
+              指導
+              <select
+                disabled={busy}
+                value={p.coach ? "yes" : "no"}
+                onChange={(e) =>
+                  onChange({
+                    ...c,
+                    progress: { ...p, coach: e.target.value === "yes" },
+                  })
+                }
+              >
+                <option value="no">自主練習</option>
+                <option value="yes">技術・ポージング指導 / 月10,000円</option>
+              </select>
+            </label>
+          </div>
+          <p className="muted">
+            勤務変更と設備の値は架空の選択肢です。お金を直接筋量へ変換せず、実行可能な練習と技術学習を変えます。現在の会計は暦月の日割り計上です。
+          </p>
+        </section>
+      )}
+    </>
+  );
 }

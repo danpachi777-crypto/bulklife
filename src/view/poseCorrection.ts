@@ -24,3 +24,15 @@ export function shoulderRaiseAmount(root: Object3D) {
   }
   return total / Math.max(1, count);
 }
+export function elbowFlexAmounts(root:Object3D){
+  const result={L:0,R:0};
+  for(const side of ['L','R'] as const){
+    const bone=(name:string)=>root.getObjectByName(name+side)??root.getObjectByName(name+'.'+side);
+    const upper=bone('upperArm'),lower=bone('forearm'),hand=bone('hand');
+    if(!upper||!lower||!hand)continue;
+    const shoulder=upper.getWorldPosition(new Vector3()),elbow=lower.getWorldPosition(new Vector3()),wrist=hand.getWorldPosition(new Vector3());
+    const angle=elbow.clone().sub(shoulder).angleTo(wrist.sub(elbow));
+    result[side]=Math.max(0,Math.min(1,(angle-.35)/1.35));
+  }
+  return result;
+}

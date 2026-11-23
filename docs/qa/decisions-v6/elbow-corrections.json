@@ -1,0 +1,12 @@
+{
+  "elbowFlexL": {
+    "vertices": 244,
+    "maxBindDisplacementMetres": 0.01036443361909836,
+    "driver": "same-side elbow angle; onset 0.35 radians, full at 1.70 radians"
+  },
+  "elbowFlexR": {
+    "vertices": 244,
+    "maxBindDisplacementMetres": 0.010364435001184552,
+    "driver": "same-side elbow angle; onset 0.35 radians, full at 1.70 radians"
+  }
+}

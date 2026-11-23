@@ -1,0 +1,371 @@
+{
+  "kind": "automated calculation; not fun or human playtime validation",
+  "runs": [
+    {
+      "seed": 823,
+      "profile": "P2",
+      "policy": "balanced",
+      "days": 2856,
+      "muscle": 45.914023023018245,
+      "fat": 13.872979622077539,
+      "money": 5039790.789554674,
+      "score": {
+        "mass": 84.91233121770688,
+        "balance": 81.15182779311448,
+        "condition": 100,
+        "posing": 88.61550185208684,
+        "readiness": 98.2640043323437,
+        "total": 88.68434082019104
+      },
+      "best": {
+        "tier": "world",
+        "rank": 2
+      },
+      "title": "BULK日本グランプリ",
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 12818
+    },
+    {
+      "seed": 823,
+      "profile": "P2",
+      "policy": "volume",
+      "days": 2856,
+      "muscle": 45.995430652133884,
+      "fat": 14.093058203656078,
+      "money": 6104143.789554781,
+      "score": {
+        "mass": 85.16926730253088,
+        "balance": 81.32672026816275,
+        "condition": 100,
+        "posing": 39.70150189623317,
+        "readiness": 91.26268545285012,
+        "total": 75.86776826373513
+      },
+      "best": {
+        "tier": "national",
+        "rank": 5
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 14568
+    },
+    {
+      "seed": 823,
+      "profile": "P2",
+      "policy": "spend",
+      "days": 2856,
+      "muscle": 45.911801582739706,
+      "fat": 14.395278212027588,
+      "money": 2598829.3225807394,
+      "score": {
+        "mass": 84.90531998087269,
+        "balance": 81.1503424129437,
+        "condition": 100,
+        "posing": 89.98910626083178,
+        "readiness": 98.25487503794724,
+        "total": 89.02442854585323
+      },
+      "best": {
+        "tier": "world",
+        "rank": 2
+      },
+      "title": "BULK日本グランプリ",
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 12818
+    },
+    {
+      "seed": 823,
+      "profile": "P2",
+      "policy": "work",
+      "days": 2856,
+      "muscle": 44.57985734803645,
+      "fat": 14.155395984708013,
+      "money": 9284329.838709878,
+      "score": {
+        "mass": 80.70148134085484,
+        "balance": 80.44523055145393,
+        "condition": 100,
+        "posing": 59.04499935468791,
+        "readiness": 97.40725338961326,
+        "total": 79.80146569018054
+      },
+      "best": {
+        "tier": "world",
+        "rank": 5
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 8498
+    },
+    {
+      "seed": 823,
+      "profile": "P2",
+      "policy": "no-stage",
+      "days": 2856,
+      "muscle": 46.35752413741325,
+      "fat": 17.426398698581547,
+      "money": 6415539.419355167,
+      "score": {
+        "mass": 86.31209486622033,
+        "balance": 81.51527521033938,
+        "condition": 100,
+        "posing": 72.6769526462583,
+        "readiness": 90.70995508612498,
+        "total": 84.43691717211105
+      },
+      "best": null,
+      "title": null,
+      "shortages": 0,
+      "rest": 1632,
+      "sets": 14688
+    },
+    {
+      "seed": 42,
+      "profile": "P6",
+      "policy": "balanced",
+      "days": 2856,
+      "muscle": 44.26454100123645,
+      "fat": 14.106436339737083,
+      "money": 5105271.789554689,
+      "score": {
+        "mass": 69.33394010587713,
+        "balance": 82.80731250341199,
+        "condition": 100,
+        "posing": 88.61550185208684,
+        "readiness": 98.53063657844133,
+        "total": 84.36858365331138
+      },
+      "best": {
+        "tier": "world",
+        "rank": 3
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 12818
+    },
+    {
+      "seed": 42,
+      "profile": "P6",
+      "policy": "volume",
+      "days": 2856,
+      "muscle": 44.3761208071954,
+      "fat": 14.165185562024249,
+      "money": 6197958.789554779,
+      "score": {
+        "mass": 69.659958530885,
+        "balance": 82.9388366456979,
+        "condition": 100,
+        "posing": 39.70150189623317,
+        "readiness": 91.79703405033499,
+        "total": 71.59083376749687
+      },
+      "best": {
+        "tier": "open",
+        "rank": 7
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 14568
+    },
+    {
+      "seed": 42,
+      "profile": "P6",
+      "policy": "spend",
+      "days": 2856,
+      "muscle": 44.25445282200037,
+      "fat": 14.299379854931734,
+      "money": 2663624.3225807417,
+      "score": {
+        "mass": 69.30446405259418,
+        "balance": 82.80252169918876,
+        "condition": 100,
+        "posing": 89.98910626083178,
+        "readiness": 98.52224175455669,
+        "total": 84.70134429627963
+      },
+      "best": {
+        "tier": "world",
+        "rank": 2
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 12818
+    },
+    {
+      "seed": 42,
+      "profile": "P6",
+      "policy": "work",
+      "days": 2856,
+      "muscle": 42.922601880281604,
+      "fat": 14.244511153753848,
+      "money": 9499397.1290323,
+      "score": {
+        "mass": 65.41300768526399,
+        "balance": 82.58138001218819,
+        "condition": 100,
+        "posing": 59.04499935468791,
+        "readiness": 97.7654774013947,
+        "total": 75.67797588682828
+      },
+      "best": {
+        "tier": "national",
+        "rank": 5
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 8498
+    },
+    {
+      "seed": 42,
+      "profile": "P6",
+      "policy": "no-stage",
+      "days": 2856,
+      "muscle": 44.70694960586767,
+      "fat": 17.387077111953943,
+      "money": 6466928.419355171,
+      "score": {
+        "mass": 70.62658759932117,
+        "balance": 83.0568135106463,
+        "condition": 100,
+        "posing": 72.6769526462583,
+        "readiness": 91.20881445644096,
+        "total": 80.08945858913428
+      },
+      "best": null,
+      "title": null,
+      "shortages": 0,
+      "rest": 1632,
+      "sets": 14688
+    },
+    {
+      "seed": 918,
+      "profile": "P5",
+      "policy": "balanced",
+      "days": 2856,
+      "muscle": 46.360696429593936,
+      "fat": 9.72691762096553,
+      "money": 6139260.88632874,
+      "score": {
+        "mass": 81.51184771403173,
+        "balance": 82.28538405751982,
+        "condition": 88.63458810482766,
+        "posing": 88.61550185208684,
+        "readiness": 98.26461617737266,
+        "total": 86.1861564221966
+      },
+      "best": {
+        "tier": "world",
+        "rank": 2
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 12818
+    },
+    {
+      "seed": 918,
+      "profile": "P5",
+      "policy": "volume",
+      "days": 2856,
+      "muscle": 46.460769200730155,
+      "fat": 9.814901419819991,
+      "money": 7259229.886328759,
+      "score": {
+        "mass": 81.81731082912658,
+        "balance": 82.43419706390249,
+        "condition": 89.07450709909996,
+        "posing": 39.70150189623317,
+        "readiness": 91.26407325832747,
+        "total": 73.4449915262745
+      },
+      "best": {
+        "tier": "open",
+        "rank": 6
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 14568
+    },
+    {
+      "seed": 918,
+      "profile": "P5",
+      "policy": "spend",
+      "days": 2856,
+      "muscle": 46.352529619419755,
+      "fat": 9.949870502977289,
+      "money": 3712955.419354754,
+      "score": {
+        "mass": 81.4869192619876,
+        "balance": 82.2811920831015,
+        "condition": 89.74935251488644,
+        "posing": 89.98910626083178,
+        "readiness": 98.25502378763768,
+        "total": 86.68749601642126
+      },
+      "best": {
+        "tier": "world",
+        "rank": 2
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 12818
+    },
+    {
+      "seed": 918,
+      "profile": "P5",
+      "policy": "work",
+      "days": 2856,
+      "muscle": 44.955864134165715,
+      "fat": 9.737327243698918,
+      "money": 11068494.48387067,
+      "score": {
+        "mass": 77.22372373909744,
+        "balance": 81.87093976146795,
+        "condition": 88.68663621849458,
+        "posing": 59.04499935468791,
+        "readiness": 97.40848208234303,
+        "total": 77.3463985537033
+      },
+      "best": {
+        "tier": "national",
+        "rank": 5
+      },
+      "title": null,
+      "shortages": 0,
+      "rest": 1642,
+      "sets": 8498
+    },
+    {
+      "seed": 918,
+      "profile": "P5",
+      "policy": "no-stage",
+      "days": 2856,
+      "muscle": 46.87363085099084,
+      "fat": 18.988466491086182,
+      "money": 7298911.516128907,
+      "score": {
+        "mass": 83.07753380846385,
+        "balance": 82.59402270513422,
+        "condition": 100,
+        "posing": 72.6769526462583,
+        "readiness": 90.71334054599262,
+        "total": 83.68263689972984
+      },
+      "best": null,
+      "title": null,
+      "shortages": 0,
+      "rest": 1632,
+      "sets": 14688
+    }
+  ]
+}

@@ -25,10 +25,12 @@ import {
   Group,
   LoopOnce,
   DoubleSide,
+  PlaneGeometry, MeshStandardMaterial, CanvasTexture, Quaternion,
 } from "three";
 import { GymRoom, ContactShade } from "./GymRoom";
 import { LocalStage } from "./LocalStage";
-import { shoulderRaiseAmount } from "./poseCorrection";
+import { RenderProbe,type RenderSample } from './RenderProbe';
+import { shoulderRaiseAmount, elbowFlexAmounts } from "./poseCorrection";
 import { coveredSkinIndex } from "./clothingCoverage";
 import {
   useReducedMotion,
@@ -75,7 +77,7 @@ const CLIPS: Record<string, string> = {
   ResultCelebrate: "結果・喜び",
   ResultReflect: "結果・振り返り",
 };
-type Mode = "normal" | "growth" | "recovery" | "load" | "balance" | "condition";
+type Mode = "normal" | "growth" | "recovery" | "load" | "balance" | "condition" | 'clay' | 'silhouette';
 const MODES: Record<Mode, string> = {
   normal: "通常",
   growth: "初日からの成長",
@@ -83,6 +85,8 @@ const MODES: Record<Mode, string> = {
   load: "一時的なパンプ",
   balance: "成長余地に対する割合",
   condition: "仕上がり",
+  clay:'造形を調べる・単色',
+  silhouette:'輪郭を調べる',
 };
 function Controls({
   angle,
@@ -208,6 +212,7 @@ function Athlete({
   model,
   wear,
   presentation,
+  competition = false,
 }: {
   body: BodyState;
   baseline?: BodyState;
@@ -221,10 +226,11 @@ function Athlete({
   model: string;
   wear: boolean;
   presentation: string;
+  competition?: boolean;
 }) {
   const gltf = useLoader(
     GLTFLoader,
-    model === "athlete-v2" ? PORTRAIT_ASSET_URL : BODY_ASSET_URL,
+    import.meta.env.DEV&&new URLSearchParams(location.search).has('fail-model')?'/__qa/missing-actor.glb':model === "athlete-v2" ? PORTRAIT_ASSET_URL : BODY_ASSET_URL,
   );
   const invalidate = useThree((s) => s.invalidate);
   const dumbbell = useLoader(GLTFLoader, "/assets/dumbbell-v1.glb");
@@ -255,12 +261,9 @@ function Athlete({
           for (const mat of Array.isArray(o.material)
             ? o.material
             : [o.material]) {
-            if ("color" in mat) {
-              if (o.name === "BL_V4_Hair")
-                (mat.color as Color).setRGB(0.45, 0.35, 0.27);
-              else (mat.color as Color).setRGB(0.38, 0.34, 0.3);
-            }
-            mat.alphaTest = 0.4;
+            // Preserve the authored color factor and fiber texture. A fixed
+            // runtime tint previously hid material changes made in Blender.
+            mat.alphaTest = 0.18;
             mat.alphaToCoverage = true;
             mat.transparent = false;
             mat.side = DoubleSide;
@@ -268,8 +271,15 @@ function Athlete({
         }
       }
     });
+    if (competition) {
+      const canvas=document.createElement('canvas');canvas.width=128;canvas.height=96;const ctx=canvas.getContext('2d')!;ctx.fillStyle='#f0efe2';ctx.fillRect(0,0,128,96);ctx.fillStyle='#173b2c';ctx.font='bold 68px sans-serif';ctx.textAlign='center';ctx.fillText('01',64,73);
+      const map=new CanvasTexture(canvas);map.colorSpace=SRGBColorSpace;
+      const badge=new Mesh(new PlaneGeometry(.055,.041),new MeshStandardMaterial({map,roughness:.9,side:DoubleSide}));badge.userData.athleteOwnsGeometry=true;badge.name='CompetitorNumber01';
+      r.updateMatrixWorld(true);const pelvis=r.getObjectByName('pelvis');if(pelvis){const rotation=pelvis.getWorldQuaternion(new Quaternion()).invert();badge.position.copy(pelvis.worldToLocal(new Vector3(.11,.94,.125)));badge.quaternion.copy(rotation);pelvis.add(badge);}else r.add(badge);
+      r.userData.numberTexture=map;
+    }
     return r;
-  }, [gltf]);
+  }, [gltf,competition]);
   const equipment = useMemo(
     () => [dumbbell.scene.clone(true), dumbbell.scene.clone(true)],
     [dumbbell],
@@ -315,14 +325,14 @@ function Athlete({
     if (!found) return;
     const action = mixer.clipAction(found);
     action.reset();
-    if (clip === "StandUp") {
+    if (clip === "StandUp" || clip==='StageEntry') {
       action.setLoop(LoopOnce, 1);
       action.clampWhenFinished = true;
     }
     action.play();
     if (!playing && clip === "SeatedPrepare") action.time = 5;
     const finished = () => {
-      if (clip !== "StandUp") return;
+      if (clip !== "StandUp" && clip!=='StageEntry') return;
       action.fadeOut(0.25);
       const idle = gltf.animations.find((a) => a.name === "GymIdle");
       if (idle) mixer.clipAction(idle).reset().fadeIn(0.25).play();
@@ -339,6 +349,7 @@ function Athlete({
   useEffect(
     () => () => {
       mixer.uncacheRoot(root);
+      root.userData.numberTexture?.dispose();
       root.traverse((o) => {
         if (o instanceof SkinnedMesh) o.skeleton.dispose();
         if (o instanceof Mesh && o.userData.athleteOwnsGeometry) {
@@ -438,6 +449,9 @@ function Athlete({
       }
     });
     root.scale.set(body.shoulder, body.height / 176.5, 1);
+    // Calibrated from the exported skinned soles, in metres. Footwear adds
+    // sole thickness; aligning it separately avoids burying the shoe in the floor.
+    root.position.y = model === "athlete-v2" ? (wear ? .01515 : .00360) * body.height / 176.5 : 0;
     onReady();
   }, [
     body,
@@ -452,6 +466,21 @@ function Athlete({
     presentation,
     onSelect,
   ]);
+  useEffect(()=>{
+    root.traverse(o=>{
+      if(!(o instanceof Mesh)||!o.userData.athleteOwnsGeometry)return;
+      for(const original of Array.isArray(o.material)?o.material:[o.material]){
+        const mat=original as MeshStandardMaterial;
+        if(!('color' in mat))continue;
+        mat.userData.authoredSurface??={map:mat.map,normalMap:mat.normalMap,roughnessMap:mat.roughnessMap,color:mat.color.clone(),roughness:mat.roughness,metalness:mat.metalness,vertexColors:mat.vertexColors};
+        const saved=mat.userData.authoredSurface;
+        if((mode==='clay'||mode==='silhouette')&&!/Hair|Brow/.test(o.name)){
+          mat.map=null;mat.normalMap=null;mat.roughnessMap=null;mat.vertexColors=false;mat.color.set(mode==='clay'?'#858c91':'#111715');mat.roughness=.85;mat.metalness=0;
+        }else{mat.map=saved.map;mat.normalMap=saved.normalMap;mat.roughnessMap=saved.roughnessMap;mat.color.copy(saved.color);mat.roughness=saved.roughness;mat.metalness=saved.metalness;mat.vertexColors=saved.vertexColors;}
+        mat.needsUpdate=true;
+      }
+    });
+  },[mode,root]);
   useFrame((_, delta) => {
     if (playing) expressionTime.current += Math.min(delta, 0.05);
     const time = expressionTime.current;
@@ -507,9 +536,12 @@ function Athlete({
     });
     if (shoulderMeshes.length) {
       const amount = shoulderRaiseAmount(root);
-      for (const mesh of shoulderMeshes)
+      const elbows=elbowFlexAmounts(root);
+      for (const mesh of shoulderMeshes){
         mesh.morphTargetInfluences![mesh.morphTargetDictionary!.shoulderRaise] =
           amount;
+        for(const side of ['L','R'] as const){const i=mesh.morphTargetDictionary!['elbowFlex'+side];if(i!==undefined)mesh.morphTargetInfluences![i]=elbows[side];}
+      }
     }
   });
   const click = (e: ThreeEvent<MouseEvent>) => {
@@ -636,6 +668,8 @@ export function BodyView({
   comparison?: boolean;
 }) {
   const studio = useRef<HTMLDivElement>(null);
+  const debug=import.meta.env.DEV&&new URLSearchParams(location.search).has('render-stats');
+  const [sample,setSample]=useState<RenderSample|null>(null);
   const reduced = useReducedMotion();
   const [visible, setVisible] = useState(true),
     [foreground, setForeground] = useState(!document.hidden);
@@ -745,6 +779,7 @@ export function BodyView({
       className={`body-studio presentation-${presentation}${preview ? " studio-preview" : ""}${competition ? " studio-competition" : ""}`}
       data-rendering={active ? "visible" : "paused"}
       data-rotation={interactive ? "free" : "locked"}
+      data-asset-url={model==='athlete-v2'?PORTRAIT_ASSET_URL:BODY_ASSET_URL}
     >
       <div className="body-view">
         {!loaded && !stage && (
@@ -786,7 +821,7 @@ export function BodyView({
             />
             <directionalLight position={[2, 2, 2.5]} intensity={0.65} />
             <Suspense fallback={null}>
-              {comparison ? (
+              {comparison || mode==='clay' || mode==='silhouette' ? (
                 <Studio />
               ) : stage?.startsWith("local-") ? (
                 <LocalStage kind={stage} />
@@ -811,6 +846,7 @@ export function BodyView({
                 model={model}
                 wear={wear || opening}
                 presentation={presentation}
+                competition={competition}
               />
             </Suspense>
             <Controls
@@ -822,6 +858,7 @@ export function BodyView({
               framing={framing}
               competition={competition}
             />
+            {debug&&<RenderProbe active={active} onSample={setSample}/>}
             <FrameClock
               active={active}
               playing={playing}
@@ -909,11 +946,11 @@ export function BodyView({
           <button
             aria-pressed={framing === "face"}
             onClick={() => {
-              setFraming((v) => (v === "face" ? "full" : "face"));
+              setFraming("face");
               setView((v) => ({ angle: 0, revision: v.revision + 1 }));
             }}
           >
-            {framing === "face" ? "全身" : "顔"}
+            顔
           </button>
           <button onClick={() => setWear(!wear)}>
             {wear ? "身体を確認" : "ウェアを着る"}
@@ -962,7 +999,9 @@ export function BodyView({
           </div>
         </details>
       )}
-      {!preview && !immersive && mode !== "normal" && (
+      {debug&&<pre className="render-probe" aria-label="開発用の描画計測">{sample?`${sample.fps.toFixed(1)} fps | ${sample.calls} calls | ${sample.triangles} tris | G${sample.geometries} T${sample.textures} | DPR${sample.dpr.toFixed(1)} | ${Math.round(sample.width)}×${Math.round(sample.height)} CSS\n${PORTRAIT_ASSET_URL}`:'描画を測定中…'}</pre>}
+      {!preview && !immersive && (mode==='clay'||mode==='silhouette')&&<p className="heat-legend">{MODES[mode]}：肌の色と細かな凹凸を外し、形を確認しています。育成の数値は変えません。</p>}
+      {!preview && !immersive && !['normal','clay','silhouette'].includes(mode) && (
         <p className="heat-legend">
           {MODES[mode]}：青は低い値、赤は高い値。
           {mode === "recovery"

@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-23",
+  "method": "Native Chrome UI via screenshots, clicks, scrolling and keyboard; no direct browser-state injection",
+  "origin": "http://127.0.0.2:5178/",
+  "userOriginsModified": false,
+  "physicalPhones": false,
+  "responsiveWidthsObserved": [360, 393, 430],
+  "coverageByWidth": {
+    "360": "Title, body/detail/face; not every game page",
+    "393": "Fresh world start, strategies, budget editing, periods, first and regional contest",
+    "430": "Title and public reference-site trial; not the complete game flow",
+    "1536": "Domestic ending, extended world ending, direct world ending, body and rendering checks"
+  },
+  "careers": [
+    {
+      "name": "大地",
+      "profile": "P6",
+      "seed": 1326575383,
+      "flow": "Japan20 then additional World20",
+      "decisions": 40,
+      "domesticRank": 4,
+      "finalWorldRank": 4,
+      "finalWorldCount": 9,
+      "finalScore": 86.18,
+      "initialMuscleKg": 29.84,
+      "finalMuscleKg": 44.30,
+      "qaElapsedDomesticMinutes": 52.153,
+      "qaElapsedExtensionMinutes": 80.665
+    },
+    {
+      "name": "蓮",
+      "profile": null,
+      "seed": null,
+      "flow": "Direct World40 including domestic milestone",
+      "decisions": 40,
+      "firstGymRank": 2,
+      "regionRank": 1,
+      "openRank": 3,
+      "domesticRank": 1,
+      "firstWorldRank": 2,
+      "finalWorldRank": 1,
+      "finalWorldCount": 9,
+      "finalScore": 89.63,
+      "initialMuscleKg": 31.19,
+      "finalMuscleKg": 46.23,
+      "finalWeightKg": 90.49,
+      "finalMoney": 5393258,
+      "qaElapsedDomesticMinutes": 46.9037,
+      "qaElapsedSecond20Minutes": 27.12257,
+      "qaElapsedTotalMinutes": 76.22333
+    }
+  ],
+  "verifiedActions": [
+    "Fresh six-pattern random creation and first period",
+    "Compare candidate strategies without consuming decisions",
+    "Cancel before confirmation without consuming decisions",
+    "Time/goal/food-budget/posing/equipment changes before adoption",
+    "Food shortage at 1200 yen versus sufficient 1600 yen quick plan, with lower net income",
+    "No extra period from repeated confirmation clicks",
+    "Mid-job reload: 7/28 days to 14/28 days and completion, same decision 1",
+    "Export JSON and import as a separate copy",
+    "Navigate during a period-result view",
+    "Automatic stage entry/front/back/result, skip and pause controls",
+    "First-versus-final two-body ending comparison",
+    "Body orbit, mouse-wheel zoom, front reset and face camera",
+    "Light and standard quality toggle",
+    "Intentional model-load failure shows an alternative and preserves access to records"
+  ],
+  "midJobReloadMethod": "DEV-only qa-slow-period delays batches to permit a reliable manual reload; absent from production behavior",
+  "limits": [
+    "QA elapsed time includes tools, screenshots, code changes and waits; not a normal human playtime benchmark",
+    "No physical iPhone Safari or Android Chrome test",
+    "The late consultation-goal restoration fix was rerun through automated first-four and forty-period audits, not another full manual forty-decision run",
+    "No independent first-time-player comprehension or fun study",
+    "Different evolving development fixtures must not be compared as identical competitive conditions"
+  ]
+}

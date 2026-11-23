@@ -14,5 +14,5 @@ export function GymRoom(){
 export function ContactShade(){
   const texture=useMemo(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d')!;const g=x.createRadialGradient(64,64,5,64,64,64);g.addColorStop(0,'rgba(0,0,0,.48)');g.addColorStop(.5,'rgba(0,0,0,.20)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new CanvasTexture(c);},[]);
   useEffect(()=>()=>texture.dispose(),[texture]);
-  return <mesh rotation={[-Math.PI/2,0,0]} position={[0,-.022,.02]}><planeGeometry args={[.8,.6]}/><meshBasicMaterial map={texture} transparent depthWrite={false}/></mesh>;
+  return <mesh rotation={[-Math.PI/2,0,0]} position={[0,.002,.02]}><planeGeometry args={[.8,.6]}/><meshBasicMaterial map={texture} transparent depthWrite={false}/></mesh>;
 }

@@ -1,0 +1,87 @@
+{
+  "status": "pass",
+  "files": 23,
+  "totalBytes": 16670198,
+  "cacheVersion": "1e095ceaa1a2c2a1",
+  "manifest": "BULK LIFE — その選択が、身体になる。",
+  "portrait": {
+    "revision": "portrait-v6",
+    "compatibleSaveModel": "athlete-v2",
+    "body": "BL_V2_AthleteBody",
+    "rig": "BL_V2_Rig",
+    "clips": [
+      "Breathing",
+      "Idle",
+      "FrontDoubleBiceps",
+      "FrontLatSpread",
+      "SideChest",
+      "BackDoubleBiceps",
+      "BackLatSpread",
+      "SideTriceps",
+      "AbdominalsThigh",
+      "MostMuscular",
+      "TrainingPress",
+      "TrainingRow",
+      "TrainingSquat",
+      "StageEntry",
+      "ResultCelebrate",
+      "ResultReflect",
+      "GymIdle",
+      "SeatedPrepare",
+      "StandUp"
+    ],
+    "morphs": [
+      "upperChest",
+      "chest",
+      "frontDelts",
+      "sideDelts",
+      "rearDelts",
+      "lats",
+      "upperBack",
+      "erectors",
+      "biceps",
+      "triceps",
+      "forearms",
+      "quads",
+      "hamstrings",
+      "glutes",
+      "calves",
+      "abs",
+      "bodyFat",
+      "pump"
+    ],
+    "bones": 50,
+    "garments": [
+      "BL_V2_Shorts",
+      "BL_V4_TrainingTank",
+      "BL_V4_TrainingShorts"
+    ],
+    "glbBytes": 7061680,
+    "sha256": "8e81d79dd2aa5059c6403ad4c071962b4ef4d8fd1e73a13ab44d28d750278401",
+    "triangles": 48026,
+    "expressionMorphs": [
+      "blink"
+    ],
+    "clothMorphs": [
+      "seatedCloth"
+    ],
+    "sources": [
+      "assets/sources/makehuman-system-v3/provenance.json",
+      "assets/sources/makehuman-clothing-v4/provenance.json"
+    ],
+    "poseMorphs": [
+      "shoulderRaise",
+      "elbowFlexL",
+      "elbowFlexR"
+    ],
+    "clothPoseMorphs": [
+      "shoulderRaise"
+    ]
+  },
+  "licensedSourceFiles": 22,
+  "limits": [
+    "Build and provenance validation, not a physical phone offline test.",
+    "The 3D JavaScript chunk remains approximately 1 MB before gzip.",
+    "Browser play and responsive viewport checks are documented separately in report.md."
+  ]
+}

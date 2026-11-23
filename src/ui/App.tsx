@@ -1,6 +1,7 @@
 // The previous screen implementation is preserved in git at cc3cdb5.
 import { lazy, Suspense } from "react";
 import { App as ExperienceApp } from "./ExperienceApp";
+import { ChallengeApp } from './ChallengeApp';
 const PortraitLab = import.meta.env.DEV ? lazy(() => import("./PortraitLab")) : null;
 export function App() {
   return PortraitLab &&
@@ -9,6 +10,6 @@ export function App() {
       <PortraitLab />
     </Suspense>
   ) : (
-    <ExperienceApp />
+    <ChallengeApp Legacy={ExperienceApp} />
   );
 }

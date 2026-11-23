@@ -19,6 +19,7 @@ export function Opening({
   pwa,
   error,
   children,
+  menu,
 }: {
   c: Career;
   phase: "title" | "create";
@@ -32,6 +33,7 @@ export function Opening({
   pwa: PwaState;
   error: string;
   children?: ReactNode;
+  menu?: ReactNode;
 }) {
   const [settings, setSettings] = useState(false);
   const reduced = useReducedMotion();
@@ -71,7 +73,7 @@ export function Opening({
       )}
       {phase === "title" ? (
         <section className="opening-menu" aria-label="ゲームを始める">
-          {hasSave && (
+          {menu ?? <>{hasSave && (
             <button className="primary" disabled={busy} onClick={onContinue}>
               つづきから{" "}
               <small>
@@ -86,6 +88,7 @@ export function Opening({
           >
             キャリアを始める
           </button>
+          </>}
           <button disabled={busy} onClick={() => setSettings(true)}>
             設定
           </button>
