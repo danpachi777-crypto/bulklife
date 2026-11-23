@@ -37,7 +37,7 @@ import {
   PRESENTATION_EVENT,
 } from "../ui/presentationSettings";
 import { linearVertexColors } from "./colorData";
-import { PORTRAIT_ASSET_URL } from "./portraitAsset";
+import { portraitAsset } from "./portraitAsset";
 import {belongsToHair,stabilizeHairMaterial} from './portraitMaterials';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -54,6 +54,10 @@ import {
 } from "../core/model";
 import {
   morphValues,
+  anatomyMorphValues,
+  canonicalAnatomyPoint,
+  seatedSupportValues,
+  portraitFloorLift,
   BODY_ASSET_URL,
   MAX_CAMERA_DISTANCE,
   STUDIO_WALL_Z,
@@ -89,11 +93,11 @@ const MODES: Record<Mode, string> = {
   clay:'造形を調べる・単色',
   silhouette:'輪郭を調べる',
 };
-function studioAsset(model:string){
+function studioAsset(model:string,height=176){
  const query=new URLSearchParams(location.search);
  if(import.meta.env.DEV&&query.has('fail-model'))return '/__qa/missing-actor.glb';
- if(import.meta.env.DEV&&query.has('portrait-baseline')&&model==='athlete-v2')return '/assets/athlete-v6.glb?revision=8e81d79dd2aa';
- return model==='athlete-v2'?PORTRAIT_ASSET_URL:BODY_ASSET_URL;
+ if(import.meta.env.DEV&&query.has('portrait-baseline')&&model==='athlete-v2')return query.get('portrait-baseline')==='v7'?'/assets/athlete-v7.glb?revision=8c2851d49c38':'/assets/athlete-v6.glb?revision=8e81d79dd2aa';
+ return model==='athlete-v2'?portraitAsset(height):BODY_ASSET_URL;
 }
 function Controls({
   angle,
@@ -104,6 +108,7 @@ function Controls({
   framing,
   competition,
   raised,
+  height,
 }: {
   angle: number;
   revision: number;
@@ -113,6 +118,7 @@ function Controls({
   framing: "full" | "face" | "upper";
   competition: boolean;
   raised: boolean;
+  height: number;
 }) {
   const { camera, gl, scene, invalidate, size } = useThree();
   const controls = useMemo(
@@ -148,6 +154,7 @@ function Controls({
   useEffect(() => {
     controls.enableDamping = false;
     const seated = presentation === "title";
+    const scale = height / 176.5;
     const distance =
       framing === "face"
         ? 0.82
@@ -168,11 +175,11 @@ function Controls({
               ? 0.76
               : 0.91;
     camera.position.set(
-      Math.sin(angle) * distance,
-      target + (framing === "face" ? 0.015 : 0.18),
-      Math.cos(angle) * distance,
+      Math.sin(angle) * distance * scale,
+      (target + (framing === "face" ? 0.015 : 0.18)) * scale,
+      Math.cos(angle) * distance * scale,
     );
-    controls.target.set(0, target, seated ? -0.35 : 0);
+    controls.target.set(0, target * scale, seated ? -0.35 : 0);
     controls.update();
     controls.enableDamping = true;
     invalidate();
@@ -185,6 +192,7 @@ function Controls({
     framing,
     competition,
     raised,
+    height,
     size.width,
     size.height,
     invalidate,
@@ -240,7 +248,7 @@ function Athlete({
 }) {
   const gltf = useLoader(
     GLTFLoader,
-    studioAsset(model),
+    studioAsset(model,body.height),
   );
   const invalidate = useThree((s) => s.invalidate);
   const dumbbell = useLoader(GLTFLoader, "/assets/dumbbell-v1.glb");
@@ -257,6 +265,7 @@ function Athlete({
         ) {
           o.userData.fullSkinIndex = o.geometry.index;
           o.userData.clothedSkinIndex = coveredSkinIndex(o);
+          o.userData.shortSkinIndex = coveredSkinIndex(o,'competition');
         }
         const colorAttribute = o.geometry.getAttribute("color");
         if (colorAttribute) {
@@ -369,7 +378,7 @@ function Athlete({
     [root, mixer],
   );
   useEffect(() => {
-    const values = morphValues(body),
+    const values = root.getObjectByName('BL_V2_AthleteBody')?.userData.anatomyV8 ? anatomyMorphValues(body) : morphValues(body),
       v = new Vector3();
     root.traverse((o) => {
       // A multi-material garment has a parent group as well as skinned primitives.
@@ -400,18 +409,19 @@ function Athlete({
       if (!["BL_AthleteBody", "BL_V2_AthleteBody"].includes(o.name)) return;
       if (o.userData.fullSkinIndex)
         o.geometry.setIndex(
-          wear ? o.userData.clothedSkinIndex : o.userData.fullSkinIndex,
+          wear ? o.userData.clothedSkinIndex : o.userData.shortSkinIndex ?? o.userData.fullSkinIndex,
         );
       const positions = o.geometry.attributes.position,
         colors = new Float32Array(positions.count * 3),
         color = new Color();
       for (let i = 0; i < positions.count; i++) {
         v.fromBufferAttribute(positions, i);
-        const region = selectedRegion(v, model);
+        const bind=o.userData.anatomyV8?canonicalAnatomyPoint(v,body.height):v;
+        const region = selectedRegion(bind, model);
         const baseColors = o.userData.baseColors as Float32Array | undefined;
         color.setRGB(1, 1, 1);
         if (region) {
-          const w = influence(v, region, model);
+          const w = influence(bind, region, model);
           let amount = 0;
           if (mode === "normal") {
             if (
@@ -460,7 +470,7 @@ function Athlete({
     root.scale.set(body.shoulder, body.height / 176.5, 1);
     // Calibrated from the exported skinned soles, in metres. Footwear adds
     // sole thickness; aligning it separately avoids burying the shoe in the floor.
-    root.position.y = model === "athlete-v2" ? (wear ? .01515 : .00360) * body.height / 176.5 : 0;
+    root.position.y = model === "athlete-v2" ? portraitFloorLift(body.height,wear) * body.height / 176.5 : 0;
     onReady();
   }, [
     body,
@@ -546,10 +556,18 @@ function Athlete({
     if (shoulderMeshes.length) {
       const amount = shoulderRaiseAmount(root);
       const elbows=elbowFlexAmounts(root);
+      const values=anatomyMorphValues(body);
+      const developed=(parts:Part[])=>parts.reduce((sum,p)=>sum+Math.max(0,values[p]),0)/(parts.length*1.2);
       for (const mesh of shoulderMeshes){
         mesh.morphTargetInfluences![mesh.morphTargetDictionary!.shoulderRaise] =
           amount;
         for(const side of ['L','R'] as const){const i=mesh.morphTargetDictionary!['elbowFlex'+side];if(i!==undefined)mesh.morphTargetInfluences![i]=elbows[side];}
+        const set=(name:string,value:number)=>{const index=mesh.morphTargetDictionary![name];if(index!==undefined)mesh.morphTargetInfluences![index]=value;};
+        set('shoulderRaiseMuscle',amount*developed(['frontDelts','sideDelts','rearDelts','chest','upperChest','lats']));
+        for(const side of ['L','R'] as const)set('elbowMuscle'+side,elbows[side]*developed(['biceps','triceps','forearms']));
+        set('seatedHandsMuscle',seated*developed(['quads','hamstrings']));
+        set('seatedHandsFat',seated*values.bodyFat);
+        for(const [name,value] of Object.entries(seatedSupportValues(body.height,values,seated)))set(name,value);
       }
     }
   });
@@ -572,7 +590,8 @@ function Athlete({
         .add(new Vector3().fromBufferAttribute(pos, e.face.b))
         .add(new Vector3().fromBufferAttribute(pos, e.face.c))
         .multiplyScalar(1 / 3);
-    const part = selectedRegion(v, model);
+    const bind=root.getObjectByName('BL_V2_AthleteBody')?.userData.anatomyV8?canonicalAnatomyPoint(v,body.height):v;
+    const part = selectedRegion(bind, model);
     if (part) {
       e.stopPropagation();
       onSelect(part);
@@ -717,7 +736,7 @@ export function BodyView({
     };
   }, []);
   const [loadedModel, setLoadedModel] = useState<string | null>(null);
-  const loaded = loadedModel === studioAsset(model);
+  const loaded = loadedModel === studioAsset(model,body.height);
   const [view, setView] = useState({ angle: 0, revision: 0 }),
     [playing, setPlaying] = useState(() => !preview && !reduced && !(import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-still'))),
     [quality, setQuality] = useState(() => {
@@ -746,7 +765,7 @@ export function BodyView({
     return () => window.removeEventListener(PRESENTATION_EVENT, update);
   }, []);
   useEffect(() => setClip(defaultClip), [defaultClip]);
-  const onReady = useMemo(() => () => setLoadedModel(studioAsset(model)), [stage, model]);
+  const onReady = useMemo(() => () => setLoadedModel(studioAsset(model,body.height)), [stage, model,body.height]);
   const download = () => {
     const data = capture.current?.();
     if (!data) return;
@@ -788,7 +807,7 @@ export function BodyView({
       className={`body-studio presentation-${presentation}${preview ? " studio-preview" : ""}${competition ? " studio-competition" : ""}`}
       data-rendering={active ? "visible" : "paused"}
       data-rotation={interactive ? "free" : "locked"}
-      data-asset-url={studioAsset(model)}
+      data-asset-url={studioAsset(model,body.height)}
     >
       <div className="body-view">
         {!loaded && !stage && (
@@ -867,6 +886,7 @@ export function BodyView({
               framing={framing}
               competition={competition}
               raised={/FrontDoubleBiceps|BackDoubleBiceps|TrainingPress/.test(clip)}
+              height={body.height}
             />
             {debug&&<RenderProbe active={active} onSample={setSample}/>}
             <FrameClock
@@ -1009,7 +1029,7 @@ export function BodyView({
           </div>
         </details>
       )}
-      {debug&&<pre className="render-probe" aria-label="開発用の描画計測">{sample?`${sample.fps.toFixed(1)} fps | ${sample.calls} calls | ${sample.triangles} tris | G${sample.geometries} T${sample.textures} | DPR${sample.dpr.toFixed(1)} | ${Math.round(sample.width)}×${Math.round(sample.height)} CSS\n${studioAsset(model)}`:'描画を測定中…'}</pre>}
+      {debug&&<pre className="render-probe" aria-label="開発用の描画計測">{sample?`${sample.fps.toFixed(1)} fps | ${sample.calls} calls | ${sample.triangles} tris | G${sample.geometries} T${sample.textures} | DPR${sample.dpr.toFixed(1)} | ${Math.round(sample.width)}×${Math.round(sample.height)} CSS\n${studioAsset(model,body.height)}`:'描画を測定中…'}</pre>}
       {!preview && !immersive && (mode==='clay'||mode==='silhouette')&&<p className="heat-legend">{MODES[mode]}：肌の色と細かな凹凸を外し、形を確認しています。育成の数値は変えません。</p>}
       {!preview && !immersive && !['normal','clay','silhouette'].includes(mode) && (
         <p className="heat-legend">

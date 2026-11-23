@@ -1,0 +1,14 @@
+{
+  "Low": {
+    "sourceSeatPlane": 0.445,
+    "maxBaseCorrection": 0.0062100026827366425
+  },
+  "Mid": {
+    "sourceSeatPlane": 0.472,
+    "maxBaseCorrection": 0.040282514719336984
+  },
+  "High": {
+    "sourceSeatPlane": 0.5,
+    "maxBaseCorrection": 0.07600091586740872
+  }
+}

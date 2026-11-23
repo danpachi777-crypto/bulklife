@@ -1,0 +1,4 @@
+{
+  "flippedPolygons": 3414,
+  "method": "compare each groom surface normal to the actual underlying head normal; retain topology, morph indices and UVs"
+}

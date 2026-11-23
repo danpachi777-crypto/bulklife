@@ -1,0 +1,16 @@
+{
+  "bodyVertices": 13380,
+  "reference": "user-supplied A1/A3/A5, multiple views; image stages are artistic anchors, not physiological measurements",
+  "reset": "all body below the neck rebuilt from pinned CC0 male base, face identity retained",
+  "maxDevelopedMetres": 0.06969866003155356,
+  "maxFatMetres": 0.0919896749084484,
+  "maxLeanMetres": 0.0168044848932527,
+  "garmentBarycentricTransfers": {
+    "BL_V2_Shorts": 675,
+    "BL_V4_TrainingTank": 3073,
+    "BL_V4_TrainingShorts": 500
+  },
+  "growthPartition": "sum of the16 regional morphs at1.2 equals one developed endpoint, not16 overlapping endpoints",
+  "boneRestChanged": false,
+  "simulationChanged": false
+}

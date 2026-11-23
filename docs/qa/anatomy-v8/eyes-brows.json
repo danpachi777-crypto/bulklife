@@ -1,0 +1,17 @@
+{
+  "method": "same eye size/gaze; radial brown iris and limbal transition; pupil recessed0.35mm;250 directional tapered brow hairs per side",
+  "brows": [
+    {
+      "side": -1,
+      "strands": 250,
+      "vertices": 2500
+    },
+    {
+      "side": 1,
+      "strands": 250,
+      "vertices": 2500
+    }
+  ],
+  "irisSizeChanged": false,
+  "faceIdentityChanged": false
+}

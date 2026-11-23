@@ -1,0 +1,30 @@
+{
+  "shoulderRaise": {
+    "maxBindMetres": 0.014000473634283323
+  },
+  "shoulderRaiseMuscle": {
+    "maxBindMetres": 0.004679187020233133
+  },
+  "elbowFlexL": {
+    "maxBindMetres": 0.018000042559263532
+  },
+  "elbowFlexR": {
+    "maxBindMetres": 0.018000041548716227
+  },
+  "elbowMuscleL": {
+    "maxBindMetres": 0.0065175975845768635
+  },
+  "elbowMuscleR": {
+    "maxBindMetres": 0.00651756730335649
+  },
+  "seatedContact": {
+    "L": {
+      "muscle": 0.06799805164337158,
+      "fat": 0.026680171489715576
+    },
+    "R": {
+      "muscle": 0.06367117166519165,
+      "fat": 0.025483310222625732
+    }
+  }
+}

@@ -65,3 +65,43 @@ Webのカメラ最大距離は5m、背景壁は6.5m。背面でもカメラと�
 v2 は公式 MakeHuman の CC0 グラフィック資産を基礎としている。アプリケーションの AGPL ソースコードは使用していない。固定commit・取得URL・SHA256・元ライセンスは `assets/sources/makehuman/` に保持。筋形、ゲーム部位マッピング、衣装、アニメーション、肌の頂点色と微細法線/粗さテクスチャは添付スクリプトで制作した。外部素材なしという上記 v1 の記述は v1 に適用する。
 
 再生成順序、読み込み名、座標、負荷、QA画像と制約は [athlete-v2.md](athlete-v2.md) を参照。v2既存blendからの再出力は `export_athlete_v2.py`、独立検証は `node scripts/verify-athlete-v2.mjs`。人体の規定身長は1.77m、glTF正面は+Z。待機表示にはAポーズのbind姿勢ではなく `Idle` / `Breathing` を使用する。
+
+## 人体 anatomy-v8（2026-11-24）
+
+実際の制作ファイル、参照60方向、比較条件、検証の区別は
+[anatomy-v8/report.md](qa/anatomy-v8/report.md) を参照。
+元のv1〜v7、固定版のMakeHuman資料、支給された画像は上書きしない。
+
+再構成はv7の複製を `bulk-life-athlete-v8-work.blend` に用意して開始する。
+既にあるv8の作業を再生成する際も、先にその作業をコミットまたは複製して保護する。
+Blender 5.3のバックグラウンドで `run_anatomy_v8.py --` に次を順番に渡す。
+
+1. `rebuild_anatomy_v8.py`：連続人体の基準形状と分担する16部位、独立した脂肪・絞り。
+2. `correct_poses_v8.py`：骨変形から求める肩・肘と手の接触補正。
+3. `finish_face_groom_v8.py`：顔の面と短髪。
+4. `bake_skin_v8.py`：衣装非表示マスクを解除した全身のUV焼き込み。
+5. `face_winding_v8.py`：毛束の外向きの面。
+6. `tailor_tank_v8.py`：身体へのフィット、曲線の袖ぐりと薄い縫い代。
+7. `finish_eyes_brows_v8.py`：虹彩、瞳孔、方向と密度を持つ眉。
+8. `finish_hairline_v8.py`、`feather_hairline_v8.py`：前縁とつながった短い毛束。
+9. `correct_seat_v8.py`：ベンチの高さと足の接地を両立する接触形状。
+10. `build_frames_v8.py`：標準・長身・広い骨格へ展開。B/Cの座位・立ち上がりを接触に合わせて焼き直し、姿勢補正を再計算して各GLBへ書き出す。
+11. `install_coverage_v8.py`：4つのv8制作ファイルへ身体確認用ショーツのプレビューマスクを用意する。書き出しではマスクを外して全皮膚を保持し、ゲームの衣装切替に応じて被覆範囲を選ぶ。
+
+各GLBへは50ボーン、19クリップと通常のモーフを出力する。
+`export_anatomy_v8.py` は、出力時に落ちる髪の乗算色を
+`gltf_materials_v8.py` で標準glTFの色係数として保持し、SHA256を再計算する。
+補助骨制約やBlender専用マテリアルがそのままWebで動くとは扱わない。
+
+書き出し後に `npm.cmd run assets:portrait` でゲームの参照URLを更新する。
+`npx.cmd tsx scripts/anatomy-fixtures-v8.ts` がゲームと同じ変換関数で
+撮影用の身体値を出力する。`render_exported_v8.py` は、そのJSONと
+**書き出したGLBそのもの**を読み直して60方向と追加のポーズを描画する。
+`qa_baseline_v8.py` は旧ファイルを読み取り専用で撮影する。
+`scripts/gallery-anatomy-v8.py` が原本と3D、修正前後を区別した一覧を作る。
+
+検証コマンド：`npm.cmd test`、`npm.cmd run build`、
+`npx.cmd tsx scripts/audit-anatomy-v8.ts`、
+`node scripts/verify-preserved-v8.mjs`、`node scripts/verify-runtime-v8.mjs`。
+HTTPとファイルの一致、CPU上の骨変形検査、Blenderの描画、ブラウザの目視、
+実機FPSは、それぞれ別の検証として報告する。

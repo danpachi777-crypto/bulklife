@@ -1,0 +1,89 @@
+{
+  "environment": "Node v24.21.0 / win32; CPU glTF decoding and geometry only; not browser or GPU FPS",
+  "benchBounds": {
+    "min": [
+      -0.5899999737739563,
+      0.38749998807907104,
+      -0.6600000262260437
+    ],
+    "max": [
+      0.5899999737739563,
+      0.48249998688697815,
+      -0.30000001192092896
+    ]
+  },
+  "results": [
+    {
+      "profile": "P1",
+      "height": 172,
+      "frame": "standard",
+      "parseMilliseconds": 318.7638999999997,
+      "seatTopMetres": 0.48249998688697815,
+      "buttBottomMetres": 0.48220751913596127,
+      "butt5PercentileMetres": 0.48250002173857187,
+      "seatDeltaMetres": -0.0002924677510168783,
+      "shoeFloorMetres": 0.000005197456368174341,
+      "samples": 178
+    },
+    {
+      "profile": "P2",
+      "height": 178,
+      "frame": "standard",
+      "parseMilliseconds": 279.2352000000001,
+      "seatTopMetres": 0.48249998688697815,
+      "buttBottomMetres": 0.48250060315579757,
+      "butt5PercentileMetres": 0.48290738909543357,
+      "seatDeltaMetres": 6.162688194200072e-7,
+      "shoeFloorMetres": 0.000005378762985539659,
+      "samples": 178
+    },
+    {
+      "profile": "P3",
+      "height": 175,
+      "frame": "standard",
+      "parseMilliseconds": 173.39390000000003,
+      "seatTopMetres": 0.48249998688697815,
+      "buttBottomMetres": 0.4825045258342366,
+      "butt5PercentileMetres": 0.48253866415888663,
+      "seatDeltaMetres": 0.000004538947258436732,
+      "shoeFloorMetres": 0.000005288109676924654,
+      "samples": 178
+    },
+    {
+      "profile": "P4",
+      "height": 169,
+      "frame": "broad",
+      "parseMilliseconds": 335.1107999999999,
+      "seatTopMetres": 0.48249998688697815,
+      "buttBottomMetres": 0.48241211980532855,
+      "butt5PercentileMetres": 0.4824874016090024,
+      "seatDeltaMetres": -0.00008786708164959522,
+      "shoeFloorMetres": -0.0000021510825686035795,
+      "samples": 178
+    },
+    {
+      "profile": "P5",
+      "height": 181,
+      "frame": "standard",
+      "parseMilliseconds": 352.90920000000006,
+      "seatTopMetres": 0.48249998688697815,
+      "buttBottomMetres": 0.48256129341547255,
+      "butt5PercentileMetres": 0.48327399766381796,
+      "seatDeltaMetres": 0.0000613065284943981,
+      "shoeFloorMetres": 0.000005469416294232726,
+      "samples": 178
+    },
+    {
+      "profile": "P6",
+      "height": 185,
+      "frame": "tall",
+      "parseMilliseconds": 344.3265000000001,
+      "seatTopMetres": 0.48249998688697815,
+      "buttBottomMetres": 0.48250016692474335,
+      "butt5PercentileMetres": 0.4860386543150718,
+      "seatDeltaMetres": 1.8003776519615045e-7,
+      "shoeFloorMetres": 0.0001435459738634362,
+      "samples": 178
+    }
+  ]
+}

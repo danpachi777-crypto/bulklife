@@ -1,0 +1,487 @@
+{
+  "baseline": "d10b656",
+  "files": [
+    {
+      "path": "assets/blender/bulk-life-athlete-v1.blend",
+      "sha256": "4065af3de0814ee38b8e57c6f131999e8b1757b5ef6859313685184ed0a34bc6",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v2.blend",
+      "sha256": "db34d8e224e5de3426534349a52af1649ba4dbe257725176fc6e5eca52b262be",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v3-work.blend",
+      "sha256": "c15855f542bb4825ef259cfa8d22c23b12ba5349c594a42bbd6f6275ea898c46",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v4-final.blend",
+      "sha256": "cec256f50000a46a875a07bf3b977ec0b73083ca93b88bb1515a1bc8bac3735c",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v4-work.blend",
+      "sha256": "c19532b7132c1a246b2a1e0e01e4756d9e7ae06199c68cfa7058dce97937abf6",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v5-work.blend",
+      "sha256": "53595b208a27710aa247780ec4f20d8ddc1777627ba1bac5521197f1ba355c9e",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v6-work.blend",
+      "sha256": "26832f61adbe1de5536c33c5c04fb01e138c7d9f3d7ff3893e58f6efc33652b5",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v7-work.blend",
+      "sha256": "b0acdcb6c46b961d1f1a9ba6075f7994247754301f26f7dfd5af5ee78467c655",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/LICENSE.CC0.md",
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06.mhclo",
+      "sha256": "9cebda22a0fa57fc556a1a77723f59b176724dc7e987c01214283677444ddcc5",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06.mhmat",
+      "sha256": "2210d331d0e319147280363e281a4e98d24b71e678dac243d1250f5d27e9169f",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06.obj",
+      "sha256": "9a86386435d7557a520320b8db4cd0ffe4755040044d1925c2b5730b864a603e",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06.thumb",
+      "sha256": "df34cd082fd23e39f25f78d64fb49c27ad5ed054077b4ea3b101c7a59a93e459",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06_ao.png",
+      "sha256": "dc27b02602060a8df4c1117f55bde7dea952342d847003afe2c6e12145301147",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06_diffuse.png",
+      "sha256": "e9a581e0d4eb64c7a031886f2faf109a4703a3046a5fcc97ea9ce9112e99a344",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/clothes/male_casualsuit06/male_casualsuit06_normal.png",
+      "sha256": "ccdbf48a86eb922f5ccf38a7d3dc9de8828a6460c687eb84dacf8315d079a343",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-clothing-v4/provenance.json",
+      "sha256": "89af9fac28bdc0cbbf5d9fa7c6b2f20cafe70824a17008a6bd9b87f30647e5e3",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/LICENSE.CC0.md",
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/clothes/shoes02/shoes02.mhclo",
+      "sha256": "0d447fd6b7415d6b2603e91697336ee51ac2f00ef85878d6667e9acfb45a20fe",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/clothes/shoes02/shoes02.mhmat",
+      "sha256": "7f2cb19506784fbe22ba3f766f94bb13d1eee1712dd29ed10b926c5905bab924",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/clothes/shoes02/shoes02.mhw",
+      "sha256": "dba34894b93f102ea64d7ad21968894a9788c7a0770c066584a66a536a3e92b6",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/clothes/shoes02/shoes02.obj",
+      "sha256": "5726aabac42ff489998d0a769545dea013961bbb71b9c6024d75170181a98818",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/clothes/shoes02/shoes02.thumb",
+      "sha256": "0e41c095f5ff5a13c0d2b12a6c96d65d907137e1ae3fb120ff14300fc818015d",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/clothes/shoes02/shoes02_diffuse.png",
+      "sha256": "efef94ea34b0e0c2283095cb47a9e0389b55449c61a4f4972d0ad4d2bf06b4f0",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/hair/short02/short02.mhclo",
+      "sha256": "625736cdb73e6d094df6e5a2df18f371781f1d2cd37b0ae15795c5d7051c3ec2",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/hair/short02/short02.mhmat",
+      "sha256": "2ed04c8aad9c1a35d858ca72091525d32b1da3b61b5a031634dd528fd8530f6d",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/hair/short02/short02.obj",
+      "sha256": "48f979114adfa712165a69cc55c45a70831af1fb3cba8e2a89120f0c87407b64",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/hair/short02/short02.thumb",
+      "sha256": "af21a0e84bfcc294b9840d90a04f1b6655ad909bc09328251886adffbc0727e8",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/hair/short02/short02_diffuse.png",
+      "sha256": "47fe33831a3929567c733356dd66243116e05df2ace1f884ddca0080b728229f",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/hair/short02/short02_normal.png",
+      "sha256": "2cfac7619f8eec77dd90df979d912415058f4f0fc16940cba40a8eb1ae6d74b5",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/provenance.json",
+      "sha256": "714481511dc7c25052d7ccf968fd2a353e0e74232dfd69d2aff0b4c2640db2c5",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/skins/young_asian_male/young_asian_male.mhmat",
+      "sha256": "9fdfc9863cd15d1359311435f2da7de3906f81d6eea549fba6bf14cd82ceb6a0",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/skins/young_asian_male/young_asian_male.thumb",
+      "sha256": "21245c121a4efc96d18cb64a2fc7d95bfcc768f7b333d59b7a471708551ed13d",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman-system-v3/skins/young_asian_male/young_lightskinned_male_diffuse3.png",
+      "sha256": "f50016a5507fc687dc8df06599c8ea48de950cd185de33a71cafc1319ddab4d5",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/LICENSE.ASSETS.md",
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/LICENSE.md",
+      "sha256": "edd99571ca62698f78c943fd4fffb159a413c315fa0d4819d3cec5cadaf8b4f1",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/asian-male-young.target",
+      "sha256": "ed2e8c191cb6b87b4a2d97c80486acb2604fa549316c7aa2a738a5d5a14334dc",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/base.obj",
+      "sha256": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/default.mhskel",
+      "sha256": "99f179bce0aa850b45d4191a1d0d234c5851f881c057439470ded3bddf729a24",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/default_weights.mhw",
+      "sha256": "0f3641d651ae3d00ad6b4ccee43142edb109d3bd909d27d9e4139ef1beed8625",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/provenance.json",
+      "sha256": "61097f3ee1be224f352541b59793156094feaa00c67235e4b1dd6fac90d012eb",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/universal-male-young-averagemuscle-averageweight.target",
+      "sha256": "4ba5396ddabda448ece15650a566fbebfbb10239256ccb201e8f883429e12249",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/universal-male-young-averagemuscle-maxweight.target",
+      "sha256": "3e77ff5a07a9b870db5226507e1cf8a295f0e09c109fb72142770f5f50427b5e",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "assets/sources/makehuman/universal-male-young-maxmuscle-averageweight.target",
+      "sha256": "c171ff9cc95e96273beb3e3b1969a01988c2d4982ebc6fe04bf81cf72ee3b295",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v1.glb",
+      "sha256": "0a592de8371bfeee057ca8c4e80e8ad4cac2fa237088e8e3770e30fcf2572c31",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v2.glb",
+      "sha256": "3b4ff1ed7253368c09d4d6b1e593f6c46a2d84ae31686a584098cf67979543b6",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v3.glb",
+      "sha256": "2d8907ef0dd75393cdf425e97a339c9fed0a3b6c59a74203abe96685607b120a",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v4.glb",
+      "sha256": "4e3a63c054a09dd33ea1f6b56421724d836b15aa7f3bc6e8e65cab8e453c6800",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v5.glb",
+      "sha256": "dd0df7623f409cbcce0374cc8d8c9df27ec7d760861a320ad36ad576a5386ea9",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v6.glb",
+      "sha256": "8e81d79dd2aa5059c6403ad4c071962b4ef4d8fd1e73a13ab44d28d750278401",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v7.glb",
+      "sha256": "8c2851d49c381d295c5ddeddde7ed8a72c86df22d43ff266e263d626aca7416c",
+      "comparison": "byte-identical",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/calendar.ts",
+      "sha256": "b0c583d9234c67d3a04fb24d20e76820dc6a6f74f2f3b2c797ade5536a074654",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/careerTypes.ts",
+      "sha256": "f1f91dcf8bcab933e46976201894df9da54ea7510b112aac2fd5443bab325b04",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/challenge.ts",
+      "sha256": "d8f47a17e45375adf6cddfc6e670092eec5de2abfdbeb80da1b5290996bdf2b4",
+      "comparison": "only new-career modelVersion metadata changed; all calculation code identical",
+      "unchanged": false
+    },
+    {
+      "path": "src/core/challengeStorage.ts",
+      "sha256": "aac7d592479d107016eb625e3c01dce0c30e550e0fcb710998a9ea6bd8adb452",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/challengeTypes.ts",
+      "sha256": "c56b6f78425a754a2d1c94df71f62949cabce881a32739088ded8cc52e882cc0",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/coach.ts",
+      "sha256": "7924da1fda721f77533df94d4919e0adbfb3bfd80ba966088e3960b6cbf6463e",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/coachHistory.ts",
+      "sha256": "a3ca80613f54cc7caf08128c034695356cf34b14cf4eeaee57dddab9336393c0",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/coachTypes.ts",
+      "sha256": "696ad54e8e90fa6fadb807697e8b9d0b334015b95a3247ddb326a95c3220f91a",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/competitions.ts",
+      "sha256": "fb00daca67d54ac4be7ab61743d6d3fcac64082b170363fccbf246c432514ee7",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/content.ts",
+      "sha256": "56af54c9a799fcff9393de807b55162e21616d842df62d1c322f6e220b5c1734",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/draftAutosave.ts",
+      "sha256": "84931f3e60287f364becbd9edd614824a2da990c631af541ece87045bc823878",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/exercises.ts",
+      "sha256": "80c69406eb5dd39a4369855561a69d5e0978aa4537bc90e875e365d2651b34c4",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/foods.ts",
+      "sha256": "ed9e5bfe12ea8a6713a3be1817891576636ab19fdc5db350cf2068d402385454",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/identity.ts",
+      "sha256": "39c8145fdcfe8b08f9246930192f9a237d1f6a8855eb961111497e2beca7eace",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/localCompetitions.ts",
+      "sha256": "e39da3dc48d9f16eb508cdaf7c61fdaba41c7d0e6545466c325ac6e65154767a",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/localEvaluation.ts",
+      "sha256": "be632897f2788c1af3335072f179995aa798aa44ee86054559bd21ce80c6d586",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/logCodec.ts",
+      "sha256": "6ea08329d0cb93f7b763e70eb651fa86e5d56921a7abbab556b4d9592ac8e5f1",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/model.ts",
+      "sha256": "a1906e46bec7cd1accb27b979b6d6a3521d9e5e7fc7c7cc83b91f673e5446301",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/nutrition.ts",
+      "sha256": "16a0dbd5c5ac2dc03580ff1a9068c08bcc93ef004d98d8fb22be92742a957d34",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/planScope.ts",
+      "sha256": "6a7fd385a81ff76231c5db3c80d7601b9663223473d1beecf9b52e4389f8afcc",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/planning.ts",
+      "sha256": "6151fb64681da3c4974c295310163ba829ffa2cfd5c3f3dad9ec9ae3c2c15ce6",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/progress.ts",
+      "sha256": "70f7e8499cc482e2b7e74ecfd323e0ebc853fc7b9e993d566b0ab865556536dc",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/simulation.ts",
+      "sha256": "a468ccd878bec23302730656375d433ea4b2011daa7c7a52e0a87e429da4ea3f",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/storage.ts",
+      "sha256": "e9c31663d15a02b6cf2421692b4e3f7556466be6c2f95d98a108f1cd619a8342",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/training.ts",
+      "sha256": "b237920671142ae80193e7fdd36be64b63764da5d1c38a13bc6f3f45406c5900",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/validateCoach.ts",
+      "sha256": "1005869fcf7b2f161ed64cdb50ad9c37adb395245c809bb79d81e847827b9884",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/validateProgress.ts",
+      "sha256": "229e585e6beb0880066011e43c8b4a6882431217d67b6d8066ff2a3f71c4e855",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/validation.ts",
+      "sha256": "ac577832c79c6e1b84907f8872680d6938442d1edbaa88e0882c908103e2d246",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    },
+    {
+      "path": "src/core/weeklyPlanning.ts",
+      "sha256": "3158399b0ffb955d41240f93618d352ab8fc65e47e093a5b24fd092060d79e21",
+      "comparison": "text-identical after Git CRLF/LF normalisation",
+      "unchanged": true
+    }
+  ],
+  "referencesChecked": 60,
+  "notes": "Original Blender/GLB and reference PNG files are byte-identical. Calculation/source text is unchanged after Git line-ending normalisation, except the explicit new-career modelVersion label. Existing saves/labels are not rewritten. No browser save was read or modified by this script."
+}

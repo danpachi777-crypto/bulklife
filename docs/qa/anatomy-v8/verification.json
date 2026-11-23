@@ -1,0 +1,42 @@
+{
+  "version": "0.7.2",
+  "models": [
+    {
+      "frame": "standard",
+      "sha256": "7ca64aa9cb7ef0c013f8cc02e252bf1dae9d089940e806223b132423b6d7e0af",
+      "bytes": 15672856,
+      "triangles": 73424
+    },
+    {
+      "frame": "tall",
+      "sha256": "8b9ee7c3953457b0e1a3e9164164da409ec4eb55db99da870ea59e64643f8582",
+      "bytes": 15794336,
+      "triangles": 73424
+    },
+    {
+      "frame": "broad",
+      "sha256": "63c919ca70bf625b51c22988d59bd7959f9a914151274e4996c94f877a74120b",
+      "bytes": 15816016,
+      "triangles": 73424
+    }
+  ],
+  "automatedTests": {
+    "tests": 121,
+    "pass": 121,
+    "fail": 0,
+    "durationMs": 19730.9611
+  },
+  "productionBuild": "passed; matching final model hashes verified in the built JavaScript and PWA paths",
+  "exportedViews": 95,
+  "referencePairs": 60,
+  "matchedAndContextArticles": 28,
+  "galleryImageReferences": 173,
+  "allGalleryFilesExist": true,
+  "galleryHttpStatus": 200,
+  "maxInitialSeatErrorMetres": 0.0002924677510168783,
+  "maxInitialShoeFloorErrorMetres": 0.0001435459738634362,
+  "browserVisualInspection": false,
+  "smartphoneHardwareTest": false,
+  "gpuFpsMeasured": false,
+  "notes": "Blender images and CPU geometry/HTTP checks are not browser screenshots, a full manual playthrough or smartphone performance evidence."
+}

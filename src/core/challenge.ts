@@ -147,7 +147,7 @@ export function newChallenge(
     format: "BULK_CHALLENGE",
     version: 1,
     calculation: "decisions-1",
-    modelVersion: "portrait-v7",
+    modelVersion: "anatomy-v8",
     id,
     revision: 0,
     seed,

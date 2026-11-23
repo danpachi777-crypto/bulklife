@@ -1,6 +1,6 @@
-# BULK LIFE 0.7.1
+# BULK LIFE 0.7.2
 
-0.7.1は人物の追加改修です。顔の面と眉の根元、短髪の毛流れと深度描画、高筋量の胸・肩・脇、実際の縫い代を修正しています。v6までの制作・配信資産と既存セーブを保護。[人物の変更と検証](docs/qa/portrait-v7/report.md) / [前後比較・接写・ゲーム表示](docs/qa/portrait-v7/gallery.html)。
+0.7.2は支給された60枚の参照画像と指示書に基づく人物改修です。骨格3種類、部位別の筋量と独立した脂肪・絞り、座位と腕上げの補正、短髪・目・眉・タンクトップを更新しています。育成計算と既存セーブを維持。[人物の変更・検証範囲](docs/qa/anatomy-v8/report.md) / [参照60方向と3D・修正前後の比較](docs/qa/anatomy-v8/index.html)。
 
 その選択が、身体になる。
 
@@ -71,16 +71,15 @@ PCとスマホを同じWi-Fiへ接続し、`lan:url` が表示したWi-FiのURL�
 
 ブラウザーのIndexedDBへ選手と日次実績を一緒に保存します。設定から全データをJSONへ書き出し、既存選手を消さず別枠に読み込めます。0.1/0.2のセーブを読み込めます。古いモデル参照は保持し、設定で身体値・資格・乱数を変えずに新モデルへ切り替えられます。
 
-3Dは回転、正面/側面/背面、部位のクリック、初日/期間との比較、ポーズ、画像保存、画質切替に対応。v2互換の参照はハッシュ付きv7アセットへ解決し、タイトル・育成・大会・比較で共用します。[v7の実際の変更と検証](docs/qa/portrait-v7/report.md)、元の連続人体・骨格の [v2制作記録](docs/athlete-v2.md) を参照してください。
+3Dは回転、正面/側面/背面、部位のクリック、初日/期間との比較、ポーズ、画像保存、画質切替に対応。v2互換の参照はハッシュ付きv8アセットへ解決し、タイトル・育成・大会・比較で共用します。骨格は身長に対応する固定の制作フレームで、筋量・脂肪の変化で別の骨格へ切り替わりません。[v8の制作・検証](docs/qa/anatomy-v8/report.md)、元の連続人体・骨格の [v2制作記録](docs/athlete-v2.md) を参照してください。
 
 ## 検証と仕様
 
 ```powershell
 npm.cmd test
 npm.cmd run build
-npx.cmd tsx scripts/verify-portrait-v7.ts
-node scripts/verify-build-v7.mjs
-node scripts/verify-preserved-v7.mjs
+npx.cmd tsx scripts/audit-anatomy-v8.ts
+node scripts/verify-preserved-v8.mjs
 npx.cmd tsx scripts/audit-challenges.ts
 npx.cmd tsx scripts/audit-mode-parity.ts
 npx.cmd tsx scripts/audit-strategy-tradeoffs.ts

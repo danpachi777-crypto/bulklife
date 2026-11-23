@@ -1,0 +1,44 @@
+[
+  {
+    "frame": "standard",
+    "authoring": "assets\\blender\\bulk-life-athlete-v8-standard-work.blend",
+    "heightMetres": 1.77,
+    "frameChangesWithGrowth": false,
+    "sameRestTransformForSkinGarmentsAndBones": true,
+    "contactRetarget": {}
+  },
+  {
+    "frame": "tall",
+    "authoring": "assets\\blender\\bulk-life-athlete-v8-tall-work.blend",
+    "heightMetres": 1.77,
+    "frameChangesWithGrowth": false,
+    "sameRestTransformForSkinGarmentsAndBones": true,
+    "contactRetarget": {
+      "SeatedPrepare": {
+        "samples": 184,
+        "constraintsBakedAndRemoved": true
+      },
+      "StandUp": {
+        "samples": 19,
+        "constraintsBakedAndRemoved": true
+      }
+    }
+  },
+  {
+    "frame": "broad",
+    "authoring": "assets\\blender\\bulk-life-athlete-v8-broad-work.blend",
+    "heightMetres": 1.77,
+    "frameChangesWithGrowth": false,
+    "sameRestTransformForSkinGarmentsAndBones": true,
+    "contactRetarget": {
+      "SeatedPrepare": {
+        "samples": 184,
+        "constraintsBakedAndRemoved": true
+      },
+      "StandUp": {
+        "samples": 19,
+        "constraintsBakedAndRemoved": true
+      }
+    }
+  }
+]

@@ -1,0 +1,1432 @@
+{
+  "source": "actual exported v8 standard/tall/broad GLBs",
+  "normalisedHeightMetres": 1.77,
+  "renderer": "Blender 5.3 EEVEE; not browser or smartphone evidence",
+  "captures": [
+    {
+      "file": "A-1-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-1-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-1-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-2-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-2-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-2-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-3-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-3-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-3-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-4-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-4-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-4-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-5-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-5-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "A-5-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-1-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-1-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-1-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-2-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-2-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-2-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-3-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-3-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-3-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-4-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-4-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-4-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-5-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-5-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "D-5-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-FrontDoubleBiceps.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-BackDoubleBiceps.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-TrainingSquat.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-SeatedPrepare.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-SeatedPrepare-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-HIGHFAT-SEATED.png",
+      "camera": [
+        1.1,
+        -4,
+        1.15
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-standard-HIGHFAT-SEATED-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-face-FRONT.png",
+      "camera": [
+        0,
+        -0.92,
+        1.63
+      ],
+      "target": [
+        0,
+        -0.03,
+        1.63
+      ],
+      "lens": 70.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-face-THREEQUARTER.png",
+      "camera": [
+        0.58,
+        -0.72,
+        1.63
+      ],
+      "target": [
+        0,
+        -0.03,
+        1.63
+      ],
+      "lens": 70.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-face-SIDE.png",
+      "camera": [
+        0.92,
+        -0.12,
+        1.63
+      ],
+      "target": [
+        0,
+        -0.03,
+        1.63
+      ],
+      "lens": 70.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-face-HAIR-BACK.png",
+      "camera": [
+        0,
+        0.84,
+        1.67
+      ],
+      "target": [
+        0,
+        -0.03,
+        1.63
+      ],
+      "lens": 70.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-face-HIGHFAT.png",
+      "camera": [
+        0,
+        -0.92,
+        1.63
+      ],
+      "target": [
+        0,
+        -0.03,
+        1.63
+      ],
+      "lens": 70.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A1-FRONT-clay.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A1-SIDE-clay.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A1-BACK-clay.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A3-FRONT-clay.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A3-SIDE-clay.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A3-BACK-clay.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A5-FRONT-clay.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A5-SIDE-clay.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-A5-BACK-clay.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-1-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-1-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-1-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-2-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-2-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-2-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-3-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-3-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-3-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-4-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-4-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-4-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-5-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-5-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "B-5-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-FrontDoubleBiceps.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-BackDoubleBiceps.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-TrainingSquat.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-SeatedPrepare.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-SeatedPrepare-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-HIGHFAT-SEATED.png",
+      "camera": [
+        1.1,
+        -4,
+        1.15
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-tall-HIGHFAT-SEATED-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-1-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-1-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-1-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-2-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-2-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-2-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-3-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-3-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-3-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-4-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-4-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-4-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-5-FRONT.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-5-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "C-5-BACK.png",
+      "camera": [
+        0,
+        4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.91
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-FrontDoubleBiceps.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-BackDoubleBiceps.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-TrainingSquat.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        1.04
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-SeatedPrepare.png",
+      "camera": [
+        0,
+        -4.3,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-SeatedPrepare-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-HIGHFAT-SEATED.png",
+      "camera": [
+        1.1,
+        -4,
+        1.15
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "exported-broad-HIGHFAT-SEATED-SIDE.png",
+      "camera": [
+        4.3,
+        0,
+        1.2
+      ],
+      "target": [
+        0,
+        0,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    }
+  ]
+}

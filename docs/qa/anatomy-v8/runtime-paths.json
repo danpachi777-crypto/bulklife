@@ -1,0 +1,31 @@
+{
+  "base": "http://localhost:5178",
+  "models": [
+    {
+      "frame": "standard",
+      "url": "/assets/athlete-v8-standard.glb?revision=7ca64aa9cb7e",
+      "status": 200,
+      "sha256": "7ca64aa9cb7ef0c013f8cc02e252bf1dae9d089940e806223b132423b6d7e0af",
+      "bytes": 15672856,
+      "triangles": 73424
+    },
+    {
+      "frame": "tall",
+      "url": "/assets/athlete-v8-tall.glb?revision=8b9ee7c39534",
+      "status": 200,
+      "sha256": "8b9ee7c3953457b0e1a3e9164164da409ec4eb55db99da870ea59e64643f8582",
+      "bytes": 15794336,
+      "triangles": 73424
+    },
+    {
+      "frame": "broad",
+      "url": "/assets/athlete-v8-broad.glb?revision=63c919ca70bf",
+      "status": 200,
+      "sha256": "63c919ca70bf625b51c22988d59bd7959f9a914151274e4996c94f877a74120b",
+      "bytes": 15816016,
+      "triangles": 73424
+    }
+  ],
+  "metadataOnly": "creation modelVersion label updated; simulation unchanged",
+  "notes": "HTTP responses and content hashes verified. This does not claim browser rendering, interaction, offline installation or smartphone FPS."
+}

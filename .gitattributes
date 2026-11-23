@@ -3,3 +3,5 @@ assets/sources/makehuman/** -text
 # Preserve downloaded source bytes so provenance SHA256 remains reproducible.
 assets/sources/makehuman-system-v3/** -text -whitespace
 assets/sources/makehuman-clothing-v4/** -text -whitespace
+# User-provided reference originals, including their intentional text endings.
+docs/qa/anatomy-v8/reference/** -text -whitespace

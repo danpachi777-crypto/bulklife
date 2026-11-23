@@ -1,0 +1,23 @@
+{
+  "source": "BL_V6_SkinAlbedo (derived from CC0 MakeHuman skin)",
+  "target": "assets\\textures\\anatomy-v8\\skin-albedo.png",
+  "sha256": "47cfc1c401aed6dee752e2f224c8bd556220909a4d885450aca9c92210ee2610",
+  "resolution": [
+    2048,
+    2048
+  ],
+  "anatomyPainted": false,
+  "adjustment": "existing licensed albedo, leg saturation reduced32%, arm8%, actual UV material bake; no new painted muscle/vein shadows",
+  "coverageMaskDuringBake": false,
+  "previousBug": "outfit coverage had left feet and hidden thigh UVs black; entire body is now baked and sampled",
+  "verifiedRegions": {
+    "feet": {
+      "meanRGB": 0.7712288300399158,
+      "nonBlackFraction": 1.0
+    },
+    "thighs": {
+      "meanRGB": 0.7285376645419496,
+      "nonBlackFraction": 1.0
+    }
+  }
+}

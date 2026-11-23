@@ -1,15 +1,19 @@
 import {BufferAttribute,SkinnedMesh} from 'three';
+import {canonicalAnatomyPoint} from './bodyMapping';
 /** Hide only skin fully enclosed by the outfit. Full geometry is restored for
  * inspection; attributes, morph indices, bones and anatomical picking stay intact.
  * This avoids small skin specks from differences in cloth/skin tessellation.
  */
-export function coveredSkinIndex(mesh:SkinnedMesh):BufferAttribute|null{
+export function coveredSkinIndex(mesh:SkinnedMesh,outfit:'training'|'competition'='training'):BufferAttribute|null{
   const geometry=mesh.geometry,index=geometry.index;if(!index)return null;
   const p=geometry.getAttribute('position'),joint=geometry.getAttribute('skinIndex'),weight=geometry.getAttribute('skinWeight');
   const enclosed=(i:number)=>{
     let arm=0;for(let j=0;j<4;j++){const bone=mesh.skeleton.bones[joint.getComponent(i,j)];if(/finger|hand|forearm|upperArm/.test(bone.name))arm+=weight.getComponent(i,j);}
     if(arm>.15)return false;
-    const y=p.getY(i),x=Math.abs(p.getX(i));
+    const source={x:p.getX(i),y:p.getY(i),z:p.getZ(i)};
+    const canonical=mesh.userData.anatomyV8?canonicalAnatomyPoint(source,mesh.userData.frameV8==='tall'?185:mesh.userData.frameV8==='broad'?169:176.5):source;
+    const y=canonical.y,x=Math.abs(canonical.x);
+    if(outfit==='competition')return y>.80&&y<.975;
     return mesh.userData.v7Sculpt
       ? y<.112||(y>.695&&y<.97)
       : y<.112||(y>.695&&y<.99)||(y>.985&&y<1.17&&x<.16);

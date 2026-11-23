@@ -1,0 +1,50 @@
+{
+  "captures": [
+    {
+      "file": "context-title-3d.png",
+      "camera": [
+        0.65,
+        -3.0,
+        1.15
+      ],
+      "target": [
+        0,
+        0.25,
+        0.8
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "context-home-3d.png",
+      "camera": [
+        0.6,
+        -3.5,
+        1.18
+      ],
+      "target": [
+        0,
+        0,
+        0.94
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    },
+    {
+      "file": "context-two-actors-3d.png",
+      "camera": [
+        0,
+        -5.6,
+        1.1
+      ],
+      "target": [
+        0,
+        0,
+        0.94
+      ],
+      "lens": 65.0,
+      "source": "exported GLB re-import, neutral QA renderer (not browser screenshot)"
+    }
+  ],
+  "notes": "Blender previews built from the same exported actor/room assets and corresponding pose/placement. Not browser screenshots; browser UI/layout/lighting parity and GPU FPS were not tested."
+}
