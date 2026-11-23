@@ -11,9 +11,10 @@ export default function PortraitLab() {
       <header>
         <h1>人物・体型の制作確認</h1>
         <p>制作確認用の身体値です。育成中の選手やセーブには反映しません。</p>
-        <code>{PORTRAIT_ASSET_URL}</code>
+        <code>{new URLSearchParams(location.search).has('portrait-baseline')?'/assets/athlete-v6.glb?revision=8e81d79dd2aa':PORTRAIT_ASSET_URL}</code>
         <a href="/">ゲームへ戻る</a>
       </header>
+      <p>同条件の顔比較：<a href="?portrait-lab=1&portrait-face=1&portrait-still=1&portrait-baseline=1&render-stats=1">基準v6</a> / <a href="?portrait-lab=1&portrait-face=1&portrait-still=1&render-stats=1">改修版</a>（同じカメラ・照明・体型、待機を停止）</p>
       <nav aria-label="比較する体型">
         {PORTRAIT_CASES.map((c) => (
           <button

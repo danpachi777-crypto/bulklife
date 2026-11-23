@@ -1,0 +1,12 @@
+{
+  "rearUndercoatVertices": 201,
+  "replacedRearCardFaces": 491,
+  "rearDirectionalLocks": 1800,
+  "morphedMeshes": {
+    "BL_V4_Hair": 30831,
+    "BL_V4_Brow_-1": 3120,
+    "BL_V4_Brow_1": 3120
+  },
+  "maxFatFollowMetres": 0.004463742499817971,
+  "method": "rear-skull surface copy only, concealed under the groom; hair/brows follow bodyFat"
+}

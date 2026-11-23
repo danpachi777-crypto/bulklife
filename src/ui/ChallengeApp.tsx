@@ -388,7 +388,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
             <p>{r.world?.text ?? r.domestic?.text ?? "挑戦中"} </p>
             {r.importedFrom && <p>読み込んだコピー（元の挑戦は保持）</p>}
             <small>
-              同条件の識別：seed {r.seed} / {r.calculation} / 表示版 {r.modelVersion??"未記録（現行で表示）"}
+              同条件の識別：seed {r.seed} / {r.calculation} / 作成時の表示版 {r.modelVersion??"未記録（現行で表示）"}
             </small>
             <div className="button-row">
               <button

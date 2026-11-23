@@ -1,0 +1,72 @@
+{
+  "baseline": "cdb928b",
+  "files": [
+    {
+      "path": "assets/blender/bulk-life-athlete-v2.blend",
+      "bytes": 8134274,
+      "sha256": "db34d8e224e5de3426534349a52af1649ba4dbe257725176fc6e5eca52b262be",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v3-work.blend",
+      "bytes": 9154524,
+      "sha256": "c15855f542bb4825ef259cfa8d22c23b12ba5349c594a42bbd6f6275ea898c46",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v4-final.blend",
+      "bytes": 7840211,
+      "sha256": "cec256f50000a46a875a07bf3b977ec0b73083ca93b88bb1515a1bc8bac3735c",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v4-work.blend",
+      "bytes": 10497535,
+      "sha256": "c19532b7132c1a246b2a1e0e01e4756d9e7ae06199c68cfa7058dce97937abf6",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v5-work.blend",
+      "bytes": 8414724,
+      "sha256": "53595b208a27710aa247780ec4f20d8ddc1777627ba1bac5521197f1ba355c9e",
+      "unchanged": true
+    },
+    {
+      "path": "assets/blender/bulk-life-athlete-v6-work.blend",
+      "bytes": 11170008,
+      "sha256": "26832f61adbe1de5536c33c5c04fb01e138c7d9f3d7ff3893e58f6efc33652b5",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v2.glb",
+      "bytes": 6633436,
+      "sha256": "3b4ff1ed7253368c09d4d6b1e593f6c46a2d84ae31686a584098cf67979543b6",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v3.glb",
+      "bytes": 7519812,
+      "sha256": "2d8907ef0dd75393cdf425e97a339c9fed0a3b6c59a74203abe96685607b120a",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v4.glb",
+      "bytes": 7726624,
+      "sha256": "4e3a63c054a09dd33ea1f6b56421724d836b15aa7f3bc6e8e65cab8e453c6800",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v5.glb",
+      "bytes": 7993880,
+      "sha256": "dd0df7623f409cbcce0374cc8d8c9df27ec7d760861a320ad36ad576a5386ea9",
+      "unchanged": true
+    },
+    {
+      "path": "public/assets/athlete-v6.glb",
+      "bytes": 7061680,
+      "sha256": "8e81d79dd2aa5059c6403ad4c071962b4ef4d8fd1e73a13ab44d28d750278401",
+      "unchanged": true
+    }
+  ],
+  "notes": "Original source and distributed assets compared by content hash, not only timestamps."
+}

@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\shota\\Documents\\BulkLife\\assets\\blender\\bulk-life-athlete-v6-work.blend",
+  "cameraLensFull": 65,
+  "cameraLensFace": 70,
+  "lights": [
+    480,
+    300,
+    420
+  ],
+  "sameConditions": true
+}

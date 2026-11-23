@@ -1,0 +1,13 @@
+{
+  "faceVertices": 2164,
+  "browFibresEach": 390,
+  "clothEdgeVertices": 608,
+  "regionalVolumeMaxMetres": {
+    "chest": 0.020499070595735743,
+    "upperChest": 0.008000597505606727,
+    "frontDelts": 0.010897307250337177,
+    "sideDelts": 0.011499885384871886,
+    "rearDelts": 0.010936089225460922
+  },
+  "method": "actual basis/morph/edge changes; no simulation changes"
+}

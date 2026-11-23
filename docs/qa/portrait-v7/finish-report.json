@@ -1,0 +1,8 @@
+{
+  "torsoSurfaceVertices": 535,
+  "maxTorsoFinishMetres": 0.004942447810924507,
+  "bindingVertices": 1216,
+  "bindingWidthMetres": 0.004,
+  "bindingThicknessMetres": 0.0009,
+  "method": "volume-preserving local torso surface finish; physical knitted edge binding shares every body and pose target and skin weights"
+}

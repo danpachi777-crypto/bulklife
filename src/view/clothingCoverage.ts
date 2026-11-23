@@ -10,7 +10,9 @@ export function coveredSkinIndex(mesh:SkinnedMesh):BufferAttribute|null{
     let arm=0;for(let j=0;j<4;j++){const bone=mesh.skeleton.bones[joint.getComponent(i,j)];if(/finger|hand|forearm|upperArm/.test(bone.name))arm+=weight.getComponent(i,j);}
     if(arm>.15)return false;
     const y=p.getY(i),x=Math.abs(p.getX(i));
-    return y<.112||(y>.695&&y<.99)||(y>.985&&y<1.17&&x<.16);
+    return mesh.userData.v7Sculpt
+      ? y<.112||(y>.695&&y<.97)
+      : y<.112||(y>.695&&y<.99)||(y>.985&&y<1.17&&x<.16);
   };
   const keep:number[]=[];
   for(let i=0;i<index.count;i+=3){const a=index.getX(i),b=index.getX(i+1),c=index.getX(i+2);if(!(enclosed(a)&&enclosed(b)&&enclosed(c)))keep.push(a,b,c);}

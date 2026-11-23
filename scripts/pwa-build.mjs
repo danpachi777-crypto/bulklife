@@ -17,7 +17,7 @@ export function pwaBuild() {
           else {
             const url = "/" + path.relative(root, file).replaceAll("\\", "/");
             // The preserved authoring/reference v2 file is not a runtime URL.
-            if (["/assets/athlete-v2.glb", "/assets/athlete-v3.glb", "/assets/athlete-v4.glb", "/assets/athlete-v5.glb", "/assets/gym-v4.glb"].includes(url)) continue;
+            if (["/assets/athlete-v2.glb", "/assets/athlete-v3.glb", "/assets/athlete-v4.glb", "/assets/athlete-v5.glb", "/assets/athlete-v6.glb", "/assets/gym-v4.glb"].includes(url)) continue;
             if (
               /\.(js|css|html|glb|webmanifest)$/.test(url) ||
               url === "/assets/gym-loading.jpg" ||

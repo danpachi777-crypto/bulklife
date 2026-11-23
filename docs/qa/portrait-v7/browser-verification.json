@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-23",
+  "environment": "Windows, Chrome, Core i5-1235U / Iris Xe, DPR1, native UI operated manually through CUA",
+  "testOrigin": "http://127.0.0.2:5178/",
+  "userSaveOriginsUntouched": ["http://localhost:5178", "http://127.0.0.1:5178", "http://192.168.2.197:5178"],
+  "finalAsset": "/assets/athlete-v7.glb?revision=8c2851d49c38",
+  "sha256": "8c2851d49c381d295c5ddeddde7ed8a72c86df22d43ff266e263d626aca7416c",
+  "captureRevisions": {
+    "browser-after-face.png": "8c2851d49c38",
+    "browser-after-face-side.png": "8c2851d49c38",
+    "browser-after-hair-back.png": "8c2851d49c38",
+    "mobileAndGameplayScreens": "ad4df9a2a925; before the final nape-only curve adjustment, same body/face/cloth/rig and triangle count",
+    "browser-before-pose-framing-393.png": "before the raised-arm framing fix; retained as the discovered defect",
+    "browser-v6-fixed-face.png": "protected v6 plus the depth-write renderer fix, frame0 / animation off"
+  },
+  "checks": [
+    "actual requested final revision visible in the real renderer",
+    "same camera / light / frame / body / 760x640 CSS region for browser face before/after",
+    "face front and side; back hair and final curved nape",
+    "high-fat head and hair roots; no orange scalp slits in the checked rear view",
+    "saved 40-decision athlete continues without modifying physical values or progress",
+    "same saved athlete on the seated title and standing body screen",
+    "high-muscle front double biceps animation, bare and wearing the new binding",
+    "garment parent and binding both disappear when switching to body inspection",
+    "mobile interaction opt-in, orbit by drag, return to scrolling, reset to front",
+    "360px raised-arm frame includes both hands and feet after the camera fix",
+    "mobile 393px face and rear controls, 430px garment pose controls fit",
+    "two body models together on the saved ending comparison, first day and final day"
+  ],
+  "viewportsCSS": [[360,802],[393,802],[430,802],[1536,889]],
+  "performanceSamples": [
+    {"scene":"animated high-muscle clothed pose in body detail","quality":"light","canvasCSS":[631,410],"fpsObserved":[58.5,59.5],"calls":106,"triangles":86547,"geometries":107,"textures":37,"revision":"ad4df9a2a925"},
+    {"scene":"animated bare pose in body detail","quality":"light","canvasCSS":[631,410],"fpsObserved":[59.3,60.4],"calls":101,"triangles":83332,"revision":"ad4df9a2a925"},
+    {"scene":"animated seated title","quality":"light","canvasCSS":[882,793],"fpsObserved":[59.6,60.5],"calls":95,"triangles":84959,"revision":"ad4df9a2a925"},
+    {"scene":"mobile-size standing body on desktop GPU","quality":"light","canvasCSS":[332,450],"fpsObserved":[29.9,30.0],"calls":73,"triangles":81975,"revision":"ad4df9a2a925"}
+  ],
+  "performanceMeaning": "Observed render-probe samples, not a controlled phone benchmark. Mobile rendering intentionally caps at30fps. Static1fps is demand rendering. Blender image rendering had finished before the recorded desktop samples.",
+  "physicalDevices": {"iPhoneSafari":false,"AndroidChrome":false,"multitouchPinchOnPhone":false},
+  "scopeLimits": [
+    "No new 20/40-decision UI playthrough for this asset-only update; earlier completed-run evidence remains separate.",
+    "No claim that a finite-frame numeric asset check proves all-frame collision freedom or photographic artistic quality.",
+    "Live Blender MCP timed out; source editing/export/rendering used installed official Blender5.3 background mode."
+  ]
+}

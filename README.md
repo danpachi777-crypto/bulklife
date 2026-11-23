@@ -1,4 +1,6 @@
-# BULK LIFE 0.7.0
+# BULK LIFE 0.7.1
+
+0.7.1は人物の追加改修です。顔の面と眉の根元、短髪の毛流れと深度描画、高筋量の胸・肩・脇、実際の縫い代を修正しています。v6までの制作・配信資産と既存セーブを保護。[人物の変更と検証](docs/qa/portrait-v7/report.md) / [前後比較・接写・ゲーム表示](docs/qa/portrait-v7/gallery.html)。
 
 その選択が、身体になる。
 
@@ -36,7 +38,7 @@ PCとスマホを同じWi-Fiへ接続し、`lan:url` が表示したWi-FiのURL�
 
 タイトルで日本挑戦・世界挑戦を選ぶか、「つづきから」で保存した選手へ戻れます。スマホでは選手と今回の課題を短く表示し、作戦の比較と期間の確定へ進みます。身体の詳細では接写・部位・ポーズ・過去との比較を使えます。通常は縦スクロール、回転したい時だけ「指で回転・ピンチで拡大」を選びます。週間計画と食品・種目の編集は作戦の詳細にあります。
 
-本番用PWAは `npm.cmd run build` で作成されます。`npm.cmd run preview` の `http://localhost:4178/` はPCでの検証用です。スマホのWi-Fi HTTPではオフライン機能を利用できません。HTTPSへ配置した本番ビルドは、初回のオフライン準備後に育成・大会・記録・3Dを使えます。最初に約16.7MBをキャッシュします。外部の出典ページは通信が必要です。更新は「保存して更新」で適用します。今回の改修版での実機オフライン動作は未確認です。
+本番用PWAは `npm.cmd run build` で作成されます。`npm.cmd run preview` の `http://localhost:4178/` はPCでの検証用です。スマホのWi-Fi HTTPではオフライン機能を利用できません。HTTPSへ配置した本番ビルドは、初回のオフライン準備後に育成・大会・記録・3Dを使えます。最初に約21.5MBをキャッシュします。外部の出典ページは通信が必要です。更新は「保存して更新」で適用します。今回の改修版での実機オフライン動作は未確認です。
 
 セーブは端末・ブラウザー・URLごとに別で、自動共有しません。挑戦はタイトルの「過去のキャリア」からJSONを書き出し・読み込みできます。読み込みは元の記録を残して別枠へ追加します。従来キャリアは別の保存領域で保護し、新モードへ暗黙変換しません。3Dも元の制作データv2〜v5を残し、作業コピーv6を使用しています。
 
@@ -69,15 +71,16 @@ PCとスマホを同じWi-Fiへ接続し、`lan:url` が表示したWi-FiのURL�
 
 ブラウザーのIndexedDBへ選手と日次実績を一緒に保存します。設定から全データをJSONへ書き出し、既存選手を消さず別枠に読み込めます。0.1/0.2のセーブを読み込めます。古いモデル参照は保持し、設定で身体値・資格・乱数を変えずに新モデルへ切り替えられます。
 
-3Dは回転、正面/側面/背面、部位のクリック、初日/期間との比較、ポーズ、画像保存、画質切替に対応。v2互換の参照はハッシュ付きv6アセットへ解決し、タイトル・育成・大会・比較で共用します。[v6の実際の変更と制約](docs/qa/decisions-v6/report.md)、元の連続人体・骨格の [v2制作記録](docs/athlete-v2.md) を参照してください。
+3Dは回転、正面/側面/背面、部位のクリック、初日/期間との比較、ポーズ、画像保存、画質切替に対応。v2互換の参照はハッシュ付きv7アセットへ解決し、タイトル・育成・大会・比較で共用します。[v7の実際の変更と検証](docs/qa/portrait-v7/report.md)、元の連続人体・骨格の [v2制作記録](docs/athlete-v2.md) を参照してください。
 
 ## 検証と仕様
 
 ```powershell
 npm.cmd test
 npm.cmd run build
-npx.cmd tsx scripts/verify-portrait-v6.ts
-node scripts/verify-build-v6.mjs
+npx.cmd tsx scripts/verify-portrait-v7.ts
+node scripts/verify-build-v7.mjs
+node scripts/verify-preserved-v7.mjs
 npx.cmd tsx scripts/audit-challenges.ts
 npx.cmd tsx scripts/audit-mode-parity.ts
 npx.cmd tsx scripts/audit-strategy-tradeoffs.ts

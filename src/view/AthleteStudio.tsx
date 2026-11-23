@@ -38,6 +38,7 @@ import {
 } from "../ui/presentationSettings";
 import { linearVertexColors } from "./colorData";
 import { PORTRAIT_ASSET_URL } from "./portraitAsset";
+import {belongsToHair,stabilizeHairMaterial} from './portraitMaterials';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
@@ -88,6 +89,12 @@ const MODES: Record<Mode, string> = {
   clay:'造形を調べる・単色',
   silhouette:'輪郭を調べる',
 };
+function studioAsset(model:string){
+ const query=new URLSearchParams(location.search);
+ if(import.meta.env.DEV&&query.has('fail-model'))return '/__qa/missing-actor.glb';
+ if(import.meta.env.DEV&&query.has('portrait-baseline')&&model==='athlete-v2')return '/assets/athlete-v6.glb?revision=8e81d79dd2aa';
+ return model==='athlete-v2'?PORTRAIT_ASSET_URL:BODY_ASSET_URL;
+}
 function Controls({
   angle,
   revision,
@@ -96,6 +103,7 @@ function Controls({
   presentation,
   framing,
   competition,
+  raised,
 }: {
   angle: number;
   revision: number;
@@ -104,6 +112,7 @@ function Controls({
   presentation: string;
   framing: "full" | "face" | "upper";
   competition: boolean;
+  raised: boolean;
 }) {
   const { camera, gl, scene, invalidate, size } = useThree();
   const controls = useMemo(
@@ -145,7 +154,7 @@ function Controls({
         : framing === "upper"
           ? 1.45
           : Math.max(
-              competition ? 3.6 : seated ? 2.65 : 2.85,
+              competition || raised ? 3.6 : seated ? 2.65 : 2.85,
               (competition ? 1.25 : 1.05) / (size.width / size.height),
             );
     const target =
@@ -153,7 +162,7 @@ function Controls({
         ? 1.63
         : framing === "upper"
           ? 1.25
-          : competition
+          : competition || raised
             ? 1.1
             : seated
               ? 0.76
@@ -175,6 +184,7 @@ function Controls({
     presentation,
     framing,
     competition,
+    raised,
     size.width,
     size.height,
     invalidate,
@@ -230,7 +240,7 @@ function Athlete({
 }) {
   const gltf = useLoader(
     GLTFLoader,
-    import.meta.env.DEV&&new URLSearchParams(location.search).has('fail-model')?'/__qa/missing-actor.glb':model === "athlete-v2" ? PORTRAIT_ASSET_URL : BODY_ASSET_URL,
+    studioAsset(model),
   );
   const invalidate = useThree((s) => s.invalidate);
   const dumbbell = useLoader(GLTFLoader, "/assets/dumbbell-v1.glb");
@@ -257,16 +267,13 @@ function Athlete({
           : o.material.clone();
         o.castShadow = true;
         o.receiveShadow = true;
-        if (o.name === "BL_V3_NaturalHair" || o.name === "BL_V4_Hair") {
+        if (belongsToHair(o)) {
           for (const mat of Array.isArray(o.material)
             ? o.material
             : [o.material]) {
             // Preserve the authored color factor and fiber texture. A fixed
             // runtime tint previously hid material changes made in Blender.
-            mat.alphaTest = 0.18;
-            mat.alphaToCoverage = true;
-            mat.transparent = false;
-            mat.side = DoubleSide;
+            stabilizeHairMaterial(mat);
           }
         }
       }
@@ -365,6 +372,8 @@ function Athlete({
     const values = morphValues(body),
       v = new Vector3();
     root.traverse((o) => {
+      // A multi-material garment has a parent group as well as skinned primitives.
+      if(['BL_V3_TrainingTank','BL_V3_Trainers','BL_V4_TrainingTank','BL_V4_TrainingShorts'].includes(o.name))o.visible=wear;
       if (o.name === "BL_V3_Trainers") o.visible = wear;
       if (!(o instanceof Mesh)) return;
       if (o.morphTargetDictionary && o.morphTargetInfluences)
@@ -474,7 +483,7 @@ function Athlete({
         if(!('color' in mat))continue;
         mat.userData.authoredSurface??={map:mat.map,normalMap:mat.normalMap,roughnessMap:mat.roughnessMap,color:mat.color.clone(),roughness:mat.roughness,metalness:mat.metalness,vertexColors:mat.vertexColors};
         const saved=mat.userData.authoredSurface;
-        if((mode==='clay'||mode==='silhouette')&&!/Hair|Brow/.test(o.name)){
+        if((mode==='clay'||mode==='silhouette')&&!belongsToHair(o)&&!/Brow/.test(o.name)){
           mat.map=null;mat.normalMap=null;mat.roughnessMap=null;mat.vertexColors=false;mat.color.set(mode==='clay'?'#858c91':'#111715');mat.roughness=.85;mat.metalness=0;
         }else{mat.map=saved.map;mat.normalMap=saved.normalMap;mat.roughnessMap=saved.roughnessMap;mat.color.copy(saved.color);mat.roughness=saved.roughness;mat.metalness=saved.metalness;mat.vertexColors=saved.vertexColors;}
         mat.needsUpdate=true;
@@ -708,9 +717,9 @@ export function BodyView({
     };
   }, []);
   const [loadedModel, setLoadedModel] = useState<string | null>(null);
-  const loaded = loadedModel === model;
+  const loaded = loadedModel === studioAsset(model);
   const [view, setView] = useState({ angle: 0, revision: 0 }),
-    [playing, setPlaying] = useState(() => !preview && !reduced),
+    [playing, setPlaying] = useState(() => !preview && !reduced && !(import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-still'))),
     [quality, setQuality] = useState(() => {
       try {
         const saved = localStorage.getItem("bulk-life-quality");
@@ -721,10 +730,10 @@ export function BodyView({
     }),
     [clip, setClip] = useState(defaultClip),
     [mode, setMode] = useState<Mode>("normal"),
-    [framing, setFraming] = useState<"full" | "face" | "upper">("full"),
+    [framing, setFraming] = useState<"full" | "face" | "upper">(() => import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-face')?'face':'full'),
     [wear, setWear] = useState(immersive && !competition);
   const capture = useRef<(() => string) | null>(null);
-  useEffect(() => setPlaying(!preview && !reduced), [reduced, preview]);
+  useEffect(() => setPlaying(!preview && !reduced && !(import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-still'))), [reduced, preview]);
   useEffect(() => {
     const update = () => {
       try {
@@ -737,7 +746,7 @@ export function BodyView({
     return () => window.removeEventListener(PRESENTATION_EVENT, update);
   }, []);
   useEffect(() => setClip(defaultClip), [defaultClip]);
-  const onReady = useMemo(() => () => setLoadedModel(model), [stage, model]);
+  const onReady = useMemo(() => () => setLoadedModel(studioAsset(model)), [stage, model]);
   const download = () => {
     const data = capture.current?.();
     if (!data) return;
@@ -779,7 +788,7 @@ export function BodyView({
       className={`body-studio presentation-${presentation}${preview ? " studio-preview" : ""}${competition ? " studio-competition" : ""}`}
       data-rendering={active ? "visible" : "paused"}
       data-rotation={interactive ? "free" : "locked"}
-      data-asset-url={model==='athlete-v2'?PORTRAIT_ASSET_URL:BODY_ASSET_URL}
+      data-asset-url={studioAsset(model)}
     >
       <div className="body-view">
         {!loaded && !stage && (
@@ -857,6 +866,7 @@ export function BodyView({
               presentation={presentation}
               framing={framing}
               competition={competition}
+              raised={/FrontDoubleBiceps|BackDoubleBiceps|TrainingPress/.test(clip)}
             />
             {debug&&<RenderProbe active={active} onSample={setSample}/>}
             <FrameClock
@@ -999,7 +1009,7 @@ export function BodyView({
           </div>
         </details>
       )}
-      {debug&&<pre className="render-probe" aria-label="開発用の描画計測">{sample?`${sample.fps.toFixed(1)} fps | ${sample.calls} calls | ${sample.triangles} tris | G${sample.geometries} T${sample.textures} | DPR${sample.dpr.toFixed(1)} | ${Math.round(sample.width)}×${Math.round(sample.height)} CSS\n${PORTRAIT_ASSET_URL}`:'描画を測定中…'}</pre>}
+      {debug&&<pre className="render-probe" aria-label="開発用の描画計測">{sample?`${sample.fps.toFixed(1)} fps | ${sample.calls} calls | ${sample.triangles} tris | G${sample.geometries} T${sample.textures} | DPR${sample.dpr.toFixed(1)} | ${Math.round(sample.width)}×${Math.round(sample.height)} CSS\n${studioAsset(model)}`:'描画を測定中…'}</pre>}
       {!preview && !immersive && (mode==='clay'||mode==='silhouette')&&<p className="heat-legend">{MODES[mode]}：肌の色と細かな凹凸を外し、形を確認しています。育成の数値は変えません。</p>}
       {!preview && !immersive && !['normal','clay','silhouette'].includes(mode) && (
         <p className="heat-legend">
