@@ -21,12 +21,16 @@ export interface Strategy {
   coach: boolean;
   effort: "light" | "standard" | "hard";
   contest: StageTier | null;
+  routine?: "regular" | "joint" | "weekend" | "home";
+  bookingFee?: number;
+  visitHours?: number;
   manual?: Career;
   autoTraining: boolean;
   autoFood: boolean;
   autoRecovery: boolean;
 }
 export interface Challenger {
+  storyPerson?:string;
   id: string;
   name: string;
   style: string;
@@ -34,6 +38,8 @@ export interface Challenger {
   history: { decision: number; rank: number; tier: StageTier }[];
 }
 export interface ChallengeShow {
+  judging?: "life-1";
+  preparation?: string;
   decision: number;
   day: number;
   tier: StageTier;
@@ -73,6 +79,8 @@ export interface PeriodStats {
   trainingSamples?: {day:number;exercises:import('./careerTypes').ExerciseActual[]}[];
 }
 export interface DecisionRecord {
+  fact?: import("./turningPoints").TurningFact;
+  response?: string;
   number: number;
   issue: string;
   candidates: Pick<Strategy, "id" | "name" | "aim" | "tradeoff">[];
@@ -118,6 +126,8 @@ export interface ChallengeRun {
   version: 1;
   calculation: "decisions-1";
   /** Presentation revision at creation; omitted in pre-release challenge files. */
+  origin?: import("./lifeStory").LifeOrigin;
+  storyVersion?: 2;
   modelVersion?: string;
   id: string;
   revision: number;

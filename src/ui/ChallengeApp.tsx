@@ -1,3 +1,5 @@
+import {relationshipBook} from "../core/turningPoints";
+import { profile, currentEpisode } from "../core/lifeStory";
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import { Opening } from "./Opening";
 import { BodyView } from "../view/BodyView";
@@ -41,11 +43,13 @@ import {
   nextDecision,
   continueWorld,
   challengeIssue,
+  decisionScene,
   decisionDays,
   CHAPTERS,
   LEAGUE,
   TIERS,
   eligibilityChallenge,
+  entryReason,
 } from "../core/challenge";
 import {
   listChallenges,
@@ -70,6 +74,14 @@ import "./challenge.css";
 const money = (n: number) => Math.round(n).toLocaleString("ja-JP") + "円";
 export const challengeDate = (day: number) =>
   gameDate(day).toLocaleDateString("ja-JP", { timeZone: "UTC" });
+function OriginCard({ run }: {run: ChallengeRun}) {
+  if (!run.origin) return null;
+  const o=run.origin, p=profile(o);
+  return <section className="origin-card"><h3>{p.title}</h3>
+    <p>{p.origin}</p><p>{p.past}。</p><blockquote>{p.wish}</blockquote>
+    <small>{run.career.athlete.ageAtStart}歳で競技へ · 生まれ {o.birthplace} · 育ち {o.upbringing} · 現在 {o.residence}</small>
+    <p>{p.role}の{o.contact}との話題は「{p.thread}」。</p></section>;
+}
 const freshSeed = () => crypto.getRandomValues(new Uint32Array(1))[0] || 1;
 export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
   useVisualViewport();
@@ -87,9 +99,10 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     [notice, setNotice] = useState(""),
     [tab, setTab] = useState("decision"),
     [plan, setPlan] = useState<Strategy | null>(null),
-    [confirm, setConfirm] = useState(false),
+
     [edit, setEdit] = useState<"basic" | "training" | "food" | null>(null),
     [part, setPart] = useState<Part>("chest"),
+    [inspectBody,setInspectBody]=useState(false),
     [selectedRecord, setSelectedRecord] = useState<DecisionRecord | null>(null),
     [guide, setGuide] = useState(false);
   const lock = useRef(false),
@@ -188,12 +201,12 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
   const choose = (p: Strategy) => {
     setPlan(structuredClone(p));
     setEdit(null);
-    setConfirm(false);
+
   };
   function leaveTitle() {
     setScreen("title");
     setPlan(null);
-    setConfirm(false);
+
     setEdit(null);
     setSelectedRecord(null);
   }
@@ -288,7 +301,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                   ? "20の決断。あなたの身体は、日本の頂点に届くか。"
                   : "40の決断。その先の世界へ。"}
               </span>
-              <h3>{d.career.athlete.profileTitle}</h3>
+              <OriginCard run={d} /><h3>{d.career.athlete.profileTitle}</h3>
               <p>
                 {
                   PROFILES.find((p) => p.id === d.career.athlete.profileId)
@@ -319,7 +332,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                 />
               </label>
               <p>
-                6種類を各1/6で抽選。外見で有利不利は変わりません。最初の作戦は選手を迎えた後に比較できます。
+                経歴60種類、出生地47都道府県、初期タイプ6種類をそれぞれ等確率で抽選。外見で有利不利は変わりません。最初の作戦は選手を迎えた後に比較できます。
               </p>
               <p>
                 このモードの頂点：
@@ -420,8 +433,9 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     chapter = CHAPTERS[Math.min(9, Math.floor((n - 1) / 4))],
     candidates = run.status === "planning" ? strategyCandidates(run) : [],
     evaluation = plan ? inspectStrategy(run, plan) : null;
-  const body = <AthleteSummary c={{...c,snapshots:run.records.map(v=>({day:v.to,body:v.after}))}} part={part} setPart={setPart} />;
+  const body = <AthleteSummary openInspection={inspectBody} narrative={!!run.origin} c={{...c,snapshots:run.records.map(v=>({day:v.to,body:v.after}))}} part={part} setPart={setPart} />;
   const nav = (key: string) => {
+    setInspectBody(false);
     setTab(key);
     setSelectedRecord(null);
     setPlan(null);
@@ -442,7 +456,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
             </small>
           </h1>
           <p>
-            頂点：{run.limit === 20 ? LEAGUE.national.name : LEAGUE.world.name}
+            {run.records.length<run.limit ? "残り"+(run.limit-run.records.length)+"回 · ":""}目標 {run.limit === 20 ? LEAGUE.national.name : LEAGUE.world.name}
           </p>
         </div>
         <div>
@@ -495,7 +509,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
               <p>
                 {eligibilityChallenge(run, t).length
                   ? "次の条件：" + eligibilityChallenge(run, t).join("、")
-                  : "出場条件を満たしています"}
+                  : "出場資格："+entryReason(run,t)}
               </p>
               <p>
                 次回：
@@ -537,6 +551,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
       ) : tab === "records" ? (
         <section>
           <ChallengeGraph run={run} />
+          {run.storyVersion===2 && <details><summary>人物・約束と練習場所の記録</summary>{relationshipBook(run.records).map(p=><section key={p.name+p.meet}><h4>{p.name} · {p.role}</h4><p>最初のやり取りは決断{p.meet}。これまでに{p.exchanges}回関わった。</p><p>{p.known.join(" ／ ")}</p></section>)}{run.records.filter(x=>x.fact).map(x=><p key={x.number}>決断{x.number} · {x.fact!.place} · {x.fact!.personName} {x.fact!.promise}　{x.response}</p>)}</details>}
           <h2>選んだ作戦の記録</h2>
           {run.records.map((rec) => (
             <button
@@ -589,7 +604,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                   setPlan(null);
                 })
               }
-              onBody={() => nav("body")}
+              onBody={focus => {nav("body");if(focus){setPart(focus);setInspectBody(true);}}}
             />
           ) : (
             run.status !== "running" && (
@@ -626,8 +641,10 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                     <span className="eyebrow">
                       今回の課題 · {decisionDays(n) / 7}週間
                     </span>
-                    <h2>{chapter}の作戦を考える</h2>
+                    <h2>{run.origin ? (run.storyVersion===2?decisionScene(run).title:currentEpisode(run).title) : chapter} · {n===20||n===40?"最後の準備":"今回の転機"}</h2>
                     <p>{challengeIssue(run)}</p>
+                    {import.meta.env.DEV && run.origin && run.storyVersion===2 && new URLSearchParams(location.search).has("story-debug") && <details><summary>開発用・出来事の選出理由</summary>{decisionScene(run).entries.map((x,i)=><p key={i}>{x.event} · {x.eligible?"候補":"対象外"} · {x.reason} {x.source?"決断"+x.source.number:""}</p>)}</details>}
+                    {run.origin && <details><summary>選手の経歴と願い</summary><OriginCard run={run}/></details>}
                     <small>
                       期間：{challengeDate(c.athlete.day)}〜
                       {challengeDate(c.athlete.day + decisionDays(n) - 1)}
@@ -679,14 +696,14 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                         >
                           <span>
                             {decisionDays(n) / 7}週間 ·{" "}
-                            {p.contest ? "大会に出場" : "育成に集中"}
+                            {p.contest ? entryReason(run,p.contest) : "育成に集中"}
                           </span>
                           <h3>{p.name}</h3>
                           <p>{p.aim}</p>
-                          <dl>
+                          <details><summary>練習・食事・家計の見込み</summary><dl>
                             <div>
                               <dt>練習</dt>
-                              <dd>週3回を基本／上限{p.minutes}分</dd>
+                              <dd>{p.routine==="joint"?"火・木・土":p.routine==="weekend"?"火・金・土":p.routine==="home"?"月・木・日":"月・水・金"}／上限{p.minutes}分</dd>
                             </div>
                             <div>
                               <dt>食事</dt>
@@ -696,9 +713,9 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                               <dt>収支見込み</dt>
                               <dd>{money(v.net)}</dd>
                             </div>
-                          </dl>
+                          </dl></details>
                           <p className="strategy-tradeoff">
-                            優先しないこと：{p.tradeoff}
+                            この期間の条件：{p.tradeoff}
                           </p>
                           {v.warnings.length > 0 && (
                             <p className="warning">
@@ -714,7 +731,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                             onClick={() => choose(p)}
                           >
                             {plan?.id === p.id
-                              ? "選択中 · 詳細を見る"
+                              ? "選択中 · 内容を見る"
                               : "この作戦を詳しく見る"}
                           </button>
                         </article>
@@ -726,8 +743,8 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                       onClick={() => {
                         choose({
                           ...candidates[0],
-                          id: "custom",
-                          name: "自分で組む作戦",
+                          id: "custom",bookingFee:0,visitHours:0,
+                          name: "自分で組む作戦",reason:"人物との予定を外して、この期間の条件を自分で決めます。",aim:"練習・食事・生活を調整する",tradeoff:"選んだ勤務・設備・登録費を確定前に確認できます。",
                         });
                         setEdit("basic");
                       }}
@@ -762,16 +779,12 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
       </nav>
       {plan && evaluation && (
         <ModalSheet
-          title={
-            confirm
-              ? "作戦の最終確認"
-              : edit
+          title={edit
                 ? "作戦を調整する"
                 : "作戦の詳細・比較"
           }
           onClose={() => {
-            if (confirm) setConfirm(false);
-            else if (edit) setEdit(null);
+            if (edit) setEdit(null);
             else setPlan(null);
           }}
           busy={busy}
@@ -782,21 +795,15 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                 className="primary"
                 disabled={busy || !!evaluation.errors.length}
                 onClick={() => {
-                  if (!confirm) {
-                    setConfirm(true);
-                    setEdit(null);
-                  } else
-                    void guarded(async () => {
+                  void guarded(async () => {
                       await commit(confirmStrategy(run, plan));
                       setPlan(null);
-                      setConfirm(false);
+
                       setTab("decision");
                     });
                 }}
               >
-                {confirm
-                  ? `決断${n}を確定して${evaluation.days / 7}週間進む`
-                  : "この作戦の確定内容を確認"}
+                {`決断${n}を確定して${evaluation.days / 7}週間進む`}
               </button>
             </>
           }
@@ -804,10 +811,9 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
           <StrategyEditor
             run={run}
             plan={plan}
-            setPlan={setPlan}
+            setPlan={value => setPlan({...value,bookingFee:0,visitHours:0,id:"custom",name:"自分で調整した方針",reason:"人物との予定を外して、表示中の練習・生活・出場条件を確定します。",aim:PRIORITIES[value.priority]+"・"+GOALS[value.goal],tradeoff:`勤務は基準の${Math.round(value.workRatio*100)}%。${value.contest?LEAGUE[value.contest].name+"へ出場。":"今期は育成に集中。"}`})}
             editing={edit}
             setEdit={setEdit}
-            confirm={confirm}
           />
         </ModalSheet>
       )}
@@ -851,14 +857,12 @@ function StrategyEditor({
   setPlan,
   editing,
   setEdit,
-  confirm,
 }: {
   run: ChallengeRun;
   plan: Strategy;
   setPlan: (v: Strategy) => void;
   editing: "basic" | "training" | "food" | null;
   setEdit: (v: "basic" | "training" | "food" | null) => void;
-  confirm: boolean;
 }) {
   const v = inspectStrategy(run, p),
     c = v.career,
@@ -911,12 +915,7 @@ function StrategyEditor({
           {challengeDate(run.career.athlete.day + v.days - 1)}／{v.days}日
         </b>
       </p>
-      {confirm && (
-        <p className="challenge-confirm-note">
-          練習・食事・休養・生活・出場方針をまとめて1回として確定します。直後に進行開始を保存し、取り消して別の結果を選ぶことはできません。
-        </p>
-      )}
-      {!confirm && editing==='basic' && (
+      {editing==='basic' && (
         <div className="challenge-basic-fields">
           <label>
             目的
@@ -1026,7 +1025,7 @@ function StrategyEditor({
             >
               {[0.6, 0.8, 1, 1.1, 1.2].map((r) => (
                 <option key={r} value={r}>
-                  基準の{r * 100}%／月収
+                  基準の{Math.round(r * 100)}%／月収
                   {money(run.career.progress!.employmentBase.income * r)}
                 </option>
               ))}
@@ -1141,7 +1140,7 @@ function StrategyEditor({
       </details>
       <details>
         <summary>自動調整と手動設定の範囲</summary>
-        {!confirm && <label><input type="checkbox" checked={p.autoRecovery} onChange={e=>change("autoRecovery",e.target.checked)} />高疲労時は休養へ調整する（大会前3日の休養は出場準備に含みます）</label>}
+        {<label><input type="checkbox" checked={p.autoRecovery} onChange={e=>change("autoRecovery",e.target.checked)} />高疲労時は休養へ調整する（大会前3日の休養は出場準備に含みます）</label>}
         <p>
           練習：
           {p.autoTraining
@@ -1160,7 +1159,7 @@ function StrategyEditor({
           大会、目的、仕事、指導の購入、設備は合意した内容を維持します。成長量の保証やコーチ専用の能力補正はありません。
         </p>
       </details>
-      {!confirm && (
+      {(
         <div className="button-row">
           <button onClick={()=>setEdit(editing==='basic'?null:'basic')}>{editing==='basic'?'調整を閉じて内容を確認':'目的・生活条件を調整する'}</button>
           <button onClick={() => setEdit("training")}>

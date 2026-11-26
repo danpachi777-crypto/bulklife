@@ -280,10 +280,10 @@ export function localPerson(c: Career): LocalPerson {
     previousSleep: c.athlete.previousSleep,
   };
 }
-export function scoreLocal(p: LocalPerson): LocalScore {
+export function scoreLocal(p: LocalPerson, lifeJudging = false): LocalScore {
   const base = scoreBody(p.body, p.posing, p.asymmetry),
     fat = fatPercent(p.body),
-    condition = clamp(100 - Math.max(12 - fat, fat - 22, 0) * 5, 0, 100),
+    condition = lifeJudging ? clamp(100 - Math.abs(fat - 12) * 3.5, 0, 100) : clamp(100 - Math.max(12 - fat, fat - 22, 0) * 5, 0, 100),
     readiness = clamp(
       (1 - PARTS.reduce((s, k) => s + p.body.fatigue[k], 0) / 16) * 40 +
         (1 - p.systemicFatigue) * 30 +

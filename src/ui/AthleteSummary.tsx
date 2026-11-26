@@ -1,3 +1,4 @@
+import {BodyComparison} from "./BodyComparison";
 import { useState } from "react";
 import {
   PARTS,
@@ -17,17 +18,21 @@ export function AthleteSummary({
   c,
   part,
   setPart,
+  openInspection = false,
+  narrative = false,
 }: {
   c: Career;
   part: Part;
   setPart: (p: Part) => void;
+  openInspection?: boolean;
+  narrative?: boolean;
 }) {
   const a = c.athlete,
     b = a.body;
 
   const [comparison, setComparison] = useState(-1),
-    [inspect, setInspect] = useState(false),
-    [bodyOpen, setBodyOpen] = useState(false);
+    [inspect, setInspect] = useState(openInspection),
+    [bodyOpen, setBodyOpen] = useState(openInspection);
   const old =
     comparison === -1
       ? null
@@ -50,31 +55,7 @@ export function AthleteSummary({
       </div>
       {old ? (
         <>
-          <div className="body-compare">
-            {[
-              { name: `${dayDate(old.day)}の身体`, body: old.body },
-              { name: "現在の身体", body: b },
-            ].map((v) => (
-              <div key={v.name}>
-                <h3>{v.name}</h3>
-                <BodyView
-                  body={v.body}
-                  selected={part}
-                  model={c.versions.model}
-                  defaultClip="GymIdle"
-                  preview
-                  comparison
-                />
-                <p>
-                  体重 {weight(v.body).toFixed(2)}kg / 筋質量
-                  {muscleMass(v.body).toFixed(2)}kg
-                </p>
-              </div>
-            ))}
-          </div>
-          <p>
-            同じカメラ・照明・静止ポーズで並べています。回転して調べる場合は「現在の身体」へ戻してください。
-          </p>
+          <BodyComparison before={old.body} after={b} model={c.versions.model} labels={[dayDate(old.day)+"の身体","現在の身体"]}/>
         </>
       ) : (
         <BodyView
@@ -185,7 +166,7 @@ export function AthleteSummary({
         <summary>この選手の特徴と生活</summary>
         <p>{profile?.challenge}</p>
         <p>
-          {profile?.experience}。{profile?.environment}
+          {!narrative && profile?.experience+"。"}{profile?.environment}
         </p>
         <p>
           月収 {yen(a.life.income)} / 固定費 {yen(a.life.fixed)} / 仕事{" "}

@@ -44,7 +44,14 @@ export function LocalStage({ kind }: { kind: string }) {
         <planeGeometry args={[2.9, 0.725]} />
         <meshBasicMaterial map={texture} />
       </mesh>
+      {kind==="local-gym" && [-.82,.82].map(x=><group key={x} position={[x,0,-.9]}>
+        <mesh position-y={.53}><boxGeometry args={[.035,1.06,.06]}/><meshStandardMaterial color="#77817a" metalness={.5} roughness={.48}/></mesh>
+        {[.14,.30,.46].map(y=><mesh key={y} position-y={y} rotation-z={Math.PI/2}><cylinderGeometry args={[.18,.18,.07,24]}/><meshStandardMaterial color="#283533" roughness={.82}/></mesh>)}
+      </group>)}
+      {kind==="local-open" && [-1,1].map(side=><mesh key={side} position={[side*.88,1.18,-1.22]}><boxGeometry args={[.25,2.36,.05]}/><meshStandardMaterial color="#497866" roughness={.94}/></mesh>)}
       {major && <group>
+        {[-1,1].flatMap(side=>[0,1,2].map(i=><mesh key={side+"-"+i} position={[side*(.78+i*.14),1.18,-1.29+i*.015]} rotation-z={side*-.12}><boxGeometry args={[.026,2.58,.03]}/><meshStandardMaterial color={world?"#b6a475":"#a9c5b2"} metalness={.58} roughness={.38}/></mesh>))}
+        <mesh position={[0,.003,.12]} rotation-x={-Math.PI/2}><ringGeometry args={[.64,.652,64]}/><meshStandardMaterial color={accent} roughness={.6}/></mesh>
         <mesh position={[0,2.58,-1.17]} rotation={[0,0,Math.PI/2]}>
           <cylinderGeometry args={[.035,.035,5.3,10]}/>
           <meshStandardMaterial color="#7b8589" metalness={.8} roughness={.38}/>

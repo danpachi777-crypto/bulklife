@@ -1,3 +1,5 @@
+import {BodyComparison} from "./BodyComparison";
+import {profile} from "../core/lifeStory";
 import { useEffect, useState } from "react";
 import { BodyView } from "../view/BodyView";
 import {
@@ -28,42 +30,7 @@ function downloadShowCard(s:ChallengeShow){
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680"><rect width="1000" height="680" fill="#173b2c"/><rect x="24" y="24" width="952" height="632" rx="12" fill="none" stroke="#d8ef83" stroke-width="3"/><text x="64" y="105" fill="#d8ef83" font-size="42" font-family="sans-serif">BULK LIFE</text>${lines.map((line,i)=>`<text x="64" y="${185+i*72}" fill="#f0f6e8" font-size="${i===2?48:30}" font-family="sans-serif">${escape(line)}</text>`).join('')}</svg>`;
  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=`BULK-LIFE-decision-${s.decision}-result.svg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
 }
-function Compare({
-  before,
-  after,
-  model,
-  labels = ["期間前", "期間後"],
-}: {
-  before: BodyState;
-  after: BodyState;
-  model: string;
-  labels?: [string,string];
-}) {
-  return (
-    <div className="challenge-compare">
-      {[
-        [labels[0], before],
-        [labels[1], after],
-      ].map(([name, body]) => (
-        <div key={name as string}>
-          <h3>{name as string}</h3>
-          <BodyView
-            body={body as BodyState}
-            selected="chest"
-            model={model}
-            defaultClip="GymIdle"
-            preview
-            comparison
-          />
-          <p>
-            体重{weight(body as BodyState).toFixed(1)}kg／筋質量
-            {muscleMass(body as BodyState).toFixed(2)}kg
-          </p>
-        </div>
-      ))}
-    </div>
-  );
-}
+type StrategyPriority = DecisionRecord["strategy"]["priority"];
 export function ChallengePeriod({
   record: r,
   career,
@@ -74,7 +41,7 @@ export function ChallengePeriod({
   record: DecisionRecord;
   career: Career;
   onNext: () => void;
-  onBody: () => void;
+  onBody: (focus?:Part) => void;
   archived?: boolean;
 }) {
   const [compare, setCompare] = useState(false),
@@ -83,6 +50,8 @@ export function ChallengePeriod({
       p,
       delta: r.after.muscle[p] - r.before.muscle[p],
     })).sort((a, b) => b.delta - a.delta);
+  const focusParts:Record<StrategyPriority,Part[]> = {balanced:[],arms:["biceps","triceps","forearms"],chest:["chest","upperChest"],back:["lats","upperBack","erectors"],shoulders:["frontDelts","sideDelts","rearDelts"],legs:["quads","hamstrings","glutes","calves"]};
+  const targets=focusParts[r.strategy.priority];
   return (
     <section className="challenge-period">
       <span className="eyebrow">
@@ -106,9 +75,11 @@ export function ChallengePeriod({
           資金<b>{formatDelta(r.afterMoney - r.beforeMoney, 0, "円")}</b>
         </p>
       </div>
-      <h3>作戦の成果と、引き受けた負担</h3>
+      <h3>今回の狙いと身体の変化</h3>
+      {targets.length>0 && <p>{targets.map(k=>(k==="chest"?"大胸筋":LABELS[k])+" "+formatDelta(r.after.muscle[k]-r.before.muscle[k],3,"kg")).join(" ／ ")}</p>}
+      {r.response && <blockquote>{r.response}</blockquote>}
       <p>
-        {r.strategy.aim}を目指し、練習{s.trainingDays}日・実施{s.sets}/
+        今回の狙いは「{r.strategy.aim}」。練習{s.trainingDays}日・実施{s.sets}/
         {s.plannedSets}セット。{changes[0].delta>0?"最も増えた部位":"変化が最も小さかった部位"}は{LABELS[changes[0].p]}（
         {formatDelta(changes[0].delta, 3, "kg")}）でした。
       </p>
@@ -136,10 +107,10 @@ export function ChallengePeriod({
         筋量・脂肪・技術は別々に変化します。
       </p>
       <button onClick={() => setCompare(!compare)}>
-        {compare ? "比較を閉じる" : "前回と現在の身体を並べる"}
+        {compare ? "比較を閉じる" : "前回と現在の身体を比べる"}
       </button>
       {compare && (
-        <Compare
+        <BodyComparison
           before={r.before}
           after={r.after}
           model={career.versions.model}
@@ -171,7 +142,7 @@ export function ChallengePeriod({
           個々の筋量変化は刺激・食事・回復・成長余地などを同時に計算した結果で、一つの要因だけとは断定しません。
         </p>
       </details>
-      <h3>次の作戦へ</h3>
+      <h3>{r.number===20||r.number===40?"挑戦の結果へ":"次の作戦へ"}</h3>
       <p>
         {r.number===20||r.number===40
           ? "今回の挑戦を、初日からの身体と大会の記録で振り返れます。"
@@ -187,7 +158,7 @@ export function ChallengePeriod({
         <button className="primary" onClick={onNext}>
           {archived ? "記録を閉じる" : r.number===20?'国内編の結果を振り返る':r.number===40?'世界編の結果を振り返る':`決断${r.number + 1}の作戦を考える`}
         </button>
-        <button onClick={onBody}>身体と過去の比較へ</button>
+        <button onClick={()=>onBody(targets[0]??changes[0].p)}>育てた部位を身体で見る</button>
       </div>
     </section>
   );
@@ -217,6 +188,7 @@ export function ChallengeShowView({
     return()=>clearTimeout(t);
   },[phase,pose,playing]);
   const above = s.standings.find((v) => v.rank === s.rank - 1),
+    nearest = above ?? s.standings.find(v=>v.rank===s.rank+1),
     axes = Object.entries(LOCAL_AXES).map(([k, v]) => ({
       ...v,
       key: k as keyof typeof LOCAL_AXES,
@@ -233,6 +205,7 @@ export function ChallengeShowView({
     <section className="challenge-show">
       <span className="eyebrow">決断{s.decision}の舞台</span>
       <h3>{LEAGUE[s.tier].name}</h3>
+      {s.preparation && <p>{s.preparation}</p>}
       <p>
         {challengeDate(s.day)} · 出場{s.count}人 · 支払済み{yen(s.fee)}
       </p>
@@ -281,6 +254,7 @@ export function ChallengeShowView({
           <div className="challenge-stage">
             <BodyView
               body={s.body}
+              opponent={rivalCompare ? nearest?.body : undefined}
               selected="chest"
               model={model}
               stage={
@@ -298,6 +272,8 @@ export function ChallengeShowView({
               defaultClip={pose}
             />
           </div>
+          {nearest && <button aria-pressed={rivalCompare} onClick={()=>{setPlaying(false);setPose("FrontDoubleBiceps");setRivalCompare(!rivalCompare)}}>{rivalCompare?"単独審査へ戻る":"比較審査へ"} · {nearest.name}</button>}
+          {rivalCompare && nearest && <p>左が自分、右が{nearest.name}。相手の筋量 {nearest.score.mass.toFixed(1)}／ポージング {nearest.score.posing.toFixed(1)}。</p>}
           <div className="button-row">
             <button onClick={() => {setPlaying(false);setPose("FrontDoubleBiceps");}}>
               フロント・ダブルバイセップス
@@ -314,7 +290,7 @@ export function ChallengeShowView({
       ) : (
         <>
           <h4>
-            {s.count}人中{s.rank}位 · {s.score.total.toFixed(2)}点
+            {s.rank===1?"優勝 · ":s.rank<=3?"表彰台 · ":"審査結果 · "}{s.count}人中{s.rank}位 · {s.score.total.toFixed(2)}点
           </h4>
           <p>
             強み：{[...axes].sort((a, b) => b.score - a.score)[0].name}
@@ -343,7 +319,7 @@ export function ChallengeShowView({
               筋量は体格に対する筋質量、バランスは部位の配分、ポージングは練習した習熟、状態は疲労と睡眠から評価します。
             </p>
             <p>
-              仕上がりは架空ルールの体脂肪12〜22%で100点、範囲外の1ポイントにつき5点減点。満点は総合の15点分で、現実の大会の仕上がり判定ではありません。
+              {s.judging==="life-1"?"仕上がりは架空審査の中心値12%との差1ポイントにつき3.5点の減点。":"仕上がりは架空ルールの体脂肪12〜22%で100点、範囲外の1ポイントにつき5点減点。"}満点は総合の15点分で、現実の大会の仕上がり判定ではありません。
             </p>
             {axes.map((a) => (
               <p key={a.key}>
@@ -354,7 +330,7 @@ export function ChallengeShowView({
           </details>
           <details>
             <summary>ライバルとの比較</summary>
-            {above&&<><button onClick={()=>setRivalCompare(!rivalCompare)}>{rivalCompare?'身体の比較を閉じる':'一つ上の選手と身体を並べる'}</button>{rivalCompare&&<Compare before={s.body} after={above.body} model={model} labels={['自分',above.name]}/>}</>}
+            {nearest&&<><button onClick={()=>setRivalCompare(!rivalCompare)}>{rivalCompare?'身体の比較を閉じる':'比較審査の相手を見る'}</button>{rivalCompare&&<BodyComparison before={s.body} after={nearest.body} model={model} labels={['自分',nearest.name]}/>}</>}
             {s.standings.map((v) => (
               <p key={v.id}>
                 {v.rank}位 {v.name}／{v.score.total.toFixed(2)}点／筋量
@@ -392,7 +368,8 @@ export function ChallengeEndingView({
       <span className="eyebrow">{e.at}の決断が作ったキャリア</span>
       <h2>{e.title ?? "自分の身体で、ここまで来た。"}</h2>
       <p>{e.text}</p>
-      <Compare
+      {r.origin && <section><h3>{profile(r.origin).title}</h3><p>{r.origin.birthplace}から始まった挑戦。{r.storyVersion===2 ? records.find(x=>x.fact?.action==="letter")?.response : profile(r.origin).ending}</p><blockquote>{profile(r.origin).wish}</blockquote></section>}
+      <BodyComparison
         before={r.initial.athlete.body}
         after={e.body}
         model={r.career.versions.model}
@@ -434,21 +411,14 @@ export function ChallengeEndingView({
       </div>
       <details>
         <summary>重要だった決断とライバル</summary>
-        {[...records]
-          .sort(
-            (a, b) =>
-              Math.abs(b.afterMoney - b.beforeMoney) -
-              Math.abs(a.afterMoney - a.beforeMoney),
-          )
-          .slice(0, 3)
+        {records.filter((x,i)=>i===0 || i===records.findIndex(v=>!!v.show) || i===records.findIndex(v=>v.show && v.show.rank<=3) || i===records.length-1)
           .map((x) => (
             <p key={x.number}>
-              決断{x.number}：{x.strategy.name}／資金
-              {formatDelta(x.afterMoney - x.beforeMoney, 0, "円")}
+              決断{x.number}：{x.strategy.name}。{x.show ? LEAGUE[x.show.tier].name+" "+x.show.rank+"位" : x.strategy.aim}
             </p>
           ))}
         {r.rivals
-          .filter((x) => x.history.length)
+          .filter((x) => x.history.some(h=>h.decision<=e.at))
           .map((x) => (
             <p key={x.id}>
               {x.name}と{x.history.filter((h) => h.decision <= e.at).length}

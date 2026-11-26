@@ -312,9 +312,11 @@
 .challenge-ending > p {
   line-height: 1.9;
 }
+.challenge-compare > div { min-width: 0; }
+.challenge-compare .body-view, .life-single-body .body-view { contain: inline-size; width:100%; overflow:hidden; }
 .challenge-compare {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2,minmax(0,1fr));
   gap: 12px;
   margin: 20px 0;
 }
@@ -650,4 +652,14 @@
   .challenge-strategies dl div { min-width: 0; }
   .challenge-strategies dl div:last-child { grid-column: 1 / -1; display: flex; gap: 12px; align-items: baseline; }
   .challenge-strategies .strategy-tradeoff { font-size: 13px; margin-bottom: 12px; }
+}
+.origin-card {padding: 1em 1.15em; border-left: 3px solid #719055; background: #eef3e7; color: #183b2b; border-radius: 4px;}
+.origin-card blockquote,.challenge-period blockquote,.challenge-ending blockquote {margin: 1em 0; padding: .6em 1em; border-inline-start: 3px solid #8ca555;line-height:1.7;}
+.life-compare button[aria-pressed=true] {background:#244c36;color:#fff;}
+.life-single-body {width:100%;min-width:0;}
+.life-single-body canvas {max-width:100%;}
+.challenge-game details summary {cursor:pointer;padding-block:.6em;}
+@media(max-width:800px){.challenge-game button,.challenge-game summary {min-height:44px;}
+.challenge-game {overflow-wrap:anywhere;padding-bottom:calc(84px + env(safe-area-inset-bottom));}
+.life-compare .button-row {flex-wrap:wrap;}
 }

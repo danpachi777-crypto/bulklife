@@ -1,4 +1,6 @@
-﻿import {
+import {validateTurningFact,makeFact,turningEnding,turningPoint,turningStrategies} from "./turningPoints";
+import { currentEpisode, lifeCandidates, originFor, validOrigin } from "./lifeStory";
+import {
   PARTS,
   LABELS,
   muscleMass,
@@ -112,8 +114,8 @@ export function newChallenge(
     "川端 陸",
     "藤代 直哉",
     "高槻 翔",
-    "緒方 涼",
-    "相原 壮太",
+    "ノア・マルタン",
+    "ルイス・コスタ",
   ];
   const rivals = names.map((name, n) => {
     let r = compactCareer(
@@ -148,6 +150,8 @@ export function newChallenge(
     version: 1,
     calculation: "decisions-1",
     modelVersion: "anatomy-v8",
+    origin: originFor(seed),
+    storyVersion:2,
     id,
     revision: 0,
     seed,
@@ -186,7 +190,22 @@ export function eligibilityChallenge(r: ChallengeRun, tier: StageTier) {
       ? []
       : ["日本グランプリ3位以内"];
 }
+export function entryReason(r:ChallengeRun,tier:StageTier) {
+  const missing=eligibilityChallenge(r,tier);
+  if(missing.length) return missing.join("、");
+  const shows=r.records.flatMap(v=>v.show?[v.show]:[]);
+  if(tier==="gym") return "初参加を受け付けるジム測定会";
+  if(tier==="region") return "測定会への参加記録あり";
+  if(tier==="open") return shows.some(x=>x.tier==="region" && x.rank<=6)?"地域新人戦6位以内の実績":"2大会への出場記録";
+  if(tier==="world") return "日本グランプリ3位以内の実績";
+  const open=shows.filter(x=>x.tier==="open").sort((a,b)=>a.rank-b.rank);
+  return open[0]?.rank<=4 ? "地方オープン"+open[0].rank+"位による推薦" : "地方オープン6位以内を2回達成";
+}
+function bestStage(r:ChallengeRun){return [...TIERS].reverse().find(t=>!eligibilityChallenge(r,t).length)!;}
+export function decisionScene(r:ChallengeRun){const best=bestStage(r);return turningPoint(r,best,LEAGUE[best].name);}
 export function challengeIssue(r: ChallengeRun) {
+  if(r.origin && r.storyVersion===2)return decisionScene(r).issue;
+  if (r.origin) return currentEpisode(r).issue;
   const n = r.records.length + 1,
     a = r.career.athlete,
     prev = r.records.at(-1),
@@ -312,6 +331,8 @@ export function strategyCandidates(r: ChallengeRun): Strategy[] {
     reason: `現状のポージング${((c.progress?.posing ?? 0) * 100).toFixed(0)}。筋量だけでなく技術と当日の状態も審査されます。`,
     tradeoff: "筋量を増やす練習量を抑え、指導と大会には費用が必要。",
   };
+  if(r.origin && r.storyVersion===2)return turningStrategies(r,base,priority,best,LEAGUE[best].name);
+  if (r.origin) return lifeCandidates(r,base,specialist,stage,LEAGUE[best].name);
   const candidates=[base,specialist,stage];
   // A contextual fourth option uses the same costs and daily engine. It is a
   // concrete investment or rematch decision, never a free event/stat reward.
@@ -361,7 +382,7 @@ export function applyStrategy(c: Career, p: Strategy) {
   if (p.autoTraining) {
     const day = structuredClone(next.plan.days[next.athlete.day % 7]);
     next.plan.days = Array.from({ length: 7 }, (_, i) =>
-      [0, 2, 4].includes(i)
+      practiceDays(p).includes(i)
         ? structuredClone(day)
         : { focus: "rest", sets: 1, rir: 3, start: day.start, exercises: [] },
     );
@@ -393,7 +414,7 @@ export function inspectStrategy(r: ChallengeRun, p: Strategy) {
   const days = decisionDays(r.records.length + 1),
     n = nutritionPlan(c),
     def = p.contest ? LEAGUE[p.contest] : null,
-    fees = def ? def.fee + def.travel : 0,
+    fees = (def ? def.fee + def.travel : 0)+(p.bookingFee??0),
     equipment = r.career.athlete.life.money - c.athlete.life.money;
   const net =
     ((c.athlete.life.income -
@@ -463,13 +484,26 @@ export function confirmStrategy(
     expectedRevision !== input.revision
   )
     throw Error("この決断は確定済み、または状態が更新されています");
+  if(input.storyVersion===2 && input.origin && p.id.startsWith("turn/")){
+    const offered=strategyCandidates(input).find(x=>x.id===p.id);
+    if(!offered)throw Error("この選択肢の期限または前提が変わりました");
+    if((["contest","equipment","coach","visitHours","bookingFee","routine"] as const).some(k=>p[k]!==offered[k])){
+      p={...p,id:"custom",name:"自分で調整した方針",reason:"変更した練習・生活・出場条件を採用した。",aim:"選んだ条件で育成する",tradeoff:"勤務は基準の"+Math.round(p.workRatio*100)+"%。",visitHours:0,bookingFee:0};
+    }
+  }
   const preview = inspectStrategy(input, p);
   if (preview.errors.length) throw Error(preview.errors.join("。"));
   const r = structuredClone(input),
     c = preview.career,
     number = r.records.length + 1;
   const fee = p.contest ? LEAGUE[p.contest].fee + LEAGUE[p.contest].travel : 0;
-  c.athlete.life.money -= fee;
+  c.athlete.life.money -= fee+(p.bookingFee??0);
+  const best=bestStage(input);
+  const fact=input.origin && input.storyVersion===2?makeFact(input,p,best,LEAGUE[best].name):undefined;
+  if(fact?.action==="friend"){
+    const peer=r.rivals[0];peer.storyPerson=fact.person;peer.name=fact.personName!;peer.career.athlete.name=peer.name;
+  }
+  if(fact?.person && fact.visit)fact.appointment={day:r.career.athlete.day+preview.days-1,person:fact.person,activity:p.name};
   const before = r.career;
   r.career = c;
   r.status = "running";
@@ -483,6 +517,7 @@ export function confirmStrategy(
     startedAt: Date.now(),
     record: {
       number,
+      ...(fact?{fact}:{}),
       issue: challengeIssue(input),
       candidates: strategyCandidates(input).map(
         ({ id, name, aim, tradeoff }) => ({ id, name, aim, tradeoff }),
@@ -504,6 +539,9 @@ export function confirmStrategy(
   };
   return r;
 }
+function practiceDays(p:Strategy){
+ return p.routine==="joint"?[1,3,5]:p.routine==="weekend"?[1,4,5]:p.routine==="home"?[0,3,6]:[0,2,4];
+}
 export function prepareStrategyDay(c: Career, p: Strategy, remaining: number) {
   let v: Career = {
     ...c,
@@ -516,7 +554,7 @@ export function prepareStrategyDay(c: Career, p: Strategy, remaining: number) {
     PARTS.reduce((s, k) => s + c.athlete.body.fatigue[k], 0) / 16 > 0.43 ||
     c.athlete.day < c.progress!.injuryUntil;
   if (p.autoTraining) {
-    if ([0, 2, 4].includes(c.athlete.day % 7) && !tired) {
+    if (practiceDays(p).includes(c.athlete.day % 7) && !tired) {
       v = adoptCoach(
         v,
         proposeCoach(v, {
@@ -538,7 +576,7 @@ export function prepareStrategyDay(c: Career, p: Strategy, remaining: number) {
         exercises: [],
       };
   }
-  if ((p.autoRecovery && tired) || (p.contest && remaining <= 3))
+  if ((p.autoRecovery && tired) || (p.contest && remaining <= 3) || (p.visitHours && remaining===1))
     v.plan.days[c.athlete.day % 7] = {
       focus: "rest",
       sets: 1,
@@ -593,21 +631,30 @@ function contestField(r: ChallengeRun, tier: StageTier) {
   const offset = { gym: 0, region: 1, open: 2, national: 3, world: 4 }[tier];
   const count = { gym: 4, region: 6, open: 8, national: 10, world: 8 }[tier],
     start = tier === "national" ? 0 : offset;
-  return r.rivals.slice(start, start + count);
+  const pool=r.rivals.slice(start,start+count);
+  const peer=r.rivals.find(x=>x.storyPerson);
+  if(!peer)return pool;
+  if(r.job?.record.fact?.jointRegistration)return [peer,...pool.filter(x=>x!==peer)].slice(0,count);
+  const separate=r.records.some(x=>x.fact?.promise==="別日程で支援"||x.fact?.action==="help");
+  if(separate && pool.includes(peer)){
+    const replacement=r.rivals.find(x=>!pool.includes(x));
+    if(replacement)return pool.map(x=>x===peer?replacement:x);
+  }
+  return pool;
 }
 function contest(r: ChallengeRun, tier: StageTier): ChallengeShow {
   const field = contestField(r,tier)
     .map((x) => ({
       id: x.id,
       name: x.name,
-      score: scoreLocal(localPerson(x.career)),
+      score: scoreLocal(localPerson(x.career), !!r.origin),
       body: structuredClone(x.career.athlete.body),
       posing: x.career.progress!.posing,
     }));
   const player = {
     id: "player",
     name: r.career.athlete.name,
-    score: scoreLocal(localPerson(r.career)),
+    score: scoreLocal(localPerson(r.career), !!r.origin),
     body: structuredClone(r.career.athlete.body),
     posing: r.career.progress!.posing,
   };
@@ -620,6 +667,8 @@ function contest(r: ChallengeRun, tier: StageTier): ChallengeShow {
     if (s) rival.history.push({ decision: r.job!.number, tier, rank: s.rank });
   }
   return {
+    ...(r.job?.record.fact ? {preparation:r.job.record.fact.place+"からこの舞台へ。"+(r.job.record.fact.witnesses?.length?r.job.record.fact.witnesses.join("、")+"が準備を支えた。":"自分の準備で出場した。")+"今期の練習は"+r.job.record.stats.trainingDays+"日。"} : {}),
+    ...(r.origin ? {judging:"life-1" as const} : {}),
     decision: r.job!.number,
     day: r.career.athlete.day - 1,
     tier,
@@ -653,7 +702,7 @@ export function ending(r: ChallengeRun, at: 20 | 40): ChallengeEnding {
     posing: r.career.progress!.posing,
     title,
     best: best ? { tier: best.tier, rank: best.rank } : null,
-    text: title
+    text: r.storyVersion===2 && r.origin ? (best?LEAGUE[best.tier].name+" "+best.rank+"位。":"")+turningEnding(records) : title
       ? `${title}を制した${at}の決断。`
       : best
         ? `${LEAGUE[best.tier].name}で${best.rank}位。選んだ生活と身体が、この到達点を作りました。`
@@ -678,7 +727,7 @@ export function runPeriodBatch(
         r.career.plan.days[c.athlete.day % 7].focus !== "rest";
     const result = simulateDay(c, {
       contestHours:
-        j.plan.contest && remaining === 1 ? LEAGUE[j.plan.contest].hours : 0,
+        remaining === 1 ? (j.plan.contest?LEAGUE[j.plan.contest].hours:0)+(j.plan.visitHours??0) : 0,
     });
     if (!result)
       throw Error("期間を進められません。保存した時点から再開してください");
@@ -689,13 +738,14 @@ export function runPeriodBatch(
     for (const rival of r.rivals) {
       // The established rival field has entry qualifications before this run.
       // Once entered, it pays and rests under the same rules as the player.
-      const entered = j.plan.contest && contestField(r,j.plan.contest).some(x=>x.id===rival.id) ? j.plan.contest : null;
+      const entered = rival.storyPerson && j.record.fact?.action==="help" ? "gym" : j.plan.contest && contestField(r,j.plan.contest).some(x=>x.id===rival.id) ? j.plan.contest : null;
       if(entered && remaining===j.end-j.start)
         rival.career.athlete.life.money-=LEAGUE[entered].fee+LEAGUE[entered].travel;
       const p: Strategy = {
         ...j.plan,
         manual: undefined,
         contest: entered,
+        routine:"regular",visitHours:0,bookingFee:0,
         goal: "ask",
         priority: ["balanced", "chest", "back", "legs"][
           Number(rival.id.split("-").at(-1)) % 4
@@ -730,6 +780,20 @@ export function runPeriodBatch(
       afterPosing: r.career.progress!.posing,
       elapsedMs: Date.now() - j.startedAt,
     });
+    if(j.record.fact){
+      const f=j.record.fact;
+      if(f.action==="help")f.partnerStart={day:j.end-1,tier:"gym"};
+      const shared=f.jointRegistration && j.record.show?.standings.find(x=>r.rivals.some(v=>v.storyPerson && v.id===x.id));
+      if(shared)f.sharedStart=true;
+      const closed=f.closed.filter(num=>num!==f.cause).map(num=>"決断"+num+"の予定は今回は見送った。").join("");
+      j.record.response=f.reply+(shared?" "+shared.name+"も同じ大会に出場し、"+shared.rank+"位だった。":"")+closed+(j.record.show?" 結果は"+LEAGUE[j.record.show.tier].name+"で"+j.record.show.rank+"位。":"");
+    }else if(r.origin){
+      const friend=r.origin.contact, plan=j.record.strategy;
+      j.record.response=j.record.show ? friend+"に"+LEAGUE[j.record.show.tier].name+"の"+j.record.show.rank+"位を知らせた。「次に見たい動きがある」と返事がきた。" :
+        plan.coach ? "担当コーチが次の個別枠を知らせてくれた。今期は勤務を基準の"+Math.round(plan.workRatio*100)+"%にして指導を受けた。" :
+        plan.posing>=35 ? friend+"が立ち姿の動画を見返した。「前の姿とも並べてみたい」" :
+        friend+"に練習帳を見せた。今期の練習は"+j.record.stats.trainingDays+"日。次はこの記録から相談できる。";
+    }
     r.records.push(j.record);
     r.job = null;
     r.status = "result";
@@ -763,6 +827,7 @@ export function validateStrategy(p:Strategy) {
  const text=(v:unknown,max=1000)=>typeof v==='string'&&v.length<=max;
  const num=(v:unknown,a:number,b:number)=>typeof v==='number'&&Number.isFinite(v)&&v>=a&&v<=b;
  if(!p||!text(p.id,100)||!text(p.name,120)||!text(p.reason)||!text(p.aim)||!text(p.tradeoff)||!['build','cut','balance','ask'].includes(p.goal)||!['balanced','chest','back','shoulders','arms','legs'].includes(p.priority)||!['budget','recommend','quick'].includes(p.foodStyle)||!['light','standard','hard'].includes(p.effort)||!['gym','home'].includes(p.equipment)||!(p.contest===null||TIERS.includes(p.contest))||!num(p.minutes,20,90)||!num(p.budget,300,2500)||!num(p.sleep,6,9)||!num(p.posing,0,60)||!num(p.cardio,0,60)||!num(p.workRatio,.5,1.2)||['coach','autoTraining','autoFood','autoRecovery'].some(k=>typeof p[k as keyof Strategy]!=='boolean'))throw Error('作戦の設定が不正です');
+ if(p.routine!==undefined && !["regular","joint","weekend","home"].includes(p.routine) || p.bookingFee!==undefined&&!num(p.bookingFee,0,12000) || p.visitHours!==undefined&&!num(p.visitHours,0,8))throw Error("練習日程・費用が不正です");
  if(p.manual)validateCareer(p.manual);
 }
 export function validateChallenge(x: unknown): asserts x is ChallengeRun {
@@ -773,6 +838,8 @@ export function validateChallenge(x: unknown): asserts x is ChallengeRun {
     r.version !== 1 ||
     r.calculation !== "decisions-1" ||
     (r.modelVersion!==undefined&&(typeof r.modelVersion!=="string"||r.modelVersion.length>64)) ||
+    (r.storyVersion!==undefined && r.storyVersion!==2) ||
+    (r.origin !== undefined && !validOrigin(r.origin,r.seed)) ||
     !["japan", "world"].includes(r.mode) ||
     ![20, 40].includes(r.limit) ||
     !Array.isArray(r.records) ||
@@ -794,6 +861,8 @@ export function validateChallenge(x: unknown): asserts x is ChallengeRun {
   if((r.status==='result'&&!r.records.length)||(r.status==='planning'&&r.records.length>=r.limit)||(r.status==='japanEnd'&&r.records.length!==20)||(r.status==='worldEnd'&&r.records.length!==40))throw Error('挑戦の区切りが不正です');
   let day = 0;
   r.records.forEach((v, i) => {
+    if(v.fact!==undefined)validateTurningFact(v.fact,v.number);
+    if(v.response!==undefined && (typeof v.response!=="string"||v.response.length>1000)) throw Error("人物の記録が不正です");
     validateStrategy(v.strategy);validateBody(v.before);validateBody(v.after);
     if(!v.stats||Object.entries(v.stats).some(([k,n])=>!['events','muscle','trainingSamples'].includes(k)&&(typeof n!=='number'||!Number.isFinite(n)))||!Array.isArray(v.stats.events)||v.stats.events.some(e=>typeof e!=='string')||!Array.isArray(v.candidates)||v.candidates.length>6||typeof v.issue!=='string'||PARTS.some(p=>!Number.isFinite(v.stats.muscle[p])))throw Error('期間の記録が不正です');
     if(v.stats.trainingSamples&&(!Array.isArray(v.stats.trainingSamples)||v.stats.trainingSamples.length>2||v.stats.trainingSamples.some(s=>!Number.isInteger(s.day)||s.day<v.from||s.day>=v.to||!Array.isArray(s.exercises)||s.exercises.length>30||s.exercises.some(e=>typeof e.exerciseId!=='string'||!Number.isFinite(e.plannedSets)||typeof e.reason!=='string'||!Array.isArray(e.sets)||e.sets.length>20||e.sets.some(x=>Object.values(x).some(n=>!Number.isFinite(n)))))))throw Error('練習実績の記録が不正です');
@@ -818,6 +887,7 @@ export function validateChallenge(x: unknown): asserts x is ChallengeRun {
     )
       throw Error("再開用の実行記録が不正です");
     validateStrategy(r.job.plan);
+    if(r.job.record.fact)validateTurningFact(r.job.record.fact,r.job.number);
   } else if (r.job || r.career.athlete.day !== day)
     throw Error("進行状態が一致しません");
   if (!Array.isArray(r.rivals) || r.rivals.length !== 12)

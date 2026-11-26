@@ -1,0 +1,507 @@
+{
+  "seed": 42,
+  "combinations": 2820,
+  "outcomes": [
+    {
+      "label": "日常",
+      "seed": 42,
+      "first": "自主練で一種目ずつ試す",
+      "decisions": 20,
+      "history": [
+        {
+          "event": "story-1-1-0",
+          "choice": "自主練で一種目ずつ試す"
+        },
+        {
+          "event": "story-1-3-0",
+          "choice": "昔の練習帳に自分の注釈を書く"
+        },
+        {
+          "event": "story-1-4-0",
+          "choice": "自主練で一種目ずつ試す"
+        },
+        {
+          "event": "story-1-5-0",
+          "choice": "今期の身体を地元で記録する"
+        },
+        {
+          "event": "story-7-1-0",
+          "choice": "自分用の手帳を続ける"
+        },
+        {
+          "event": "story-7-3-0",
+          "choice": "数字と体感を同じ日に記す"
+        },
+        {
+          "event": "story-7-4-0",
+          "choice": "自分用の手帳を続ける"
+        },
+        {
+          "event": "story-7-5-0",
+          "choice": "今期の身体を地元で記録する"
+        },
+        {
+          "event": "story-2-1-0",
+          "choice": "週末だけ一緒に鍛える"
+        },
+        {
+          "event": "story-2-3-0",
+          "choice": "週末の一種目だけを二人の約束にする"
+        },
+        {
+          "event": "story-2-4-0",
+          "choice": "週末だけ一緒に鍛える"
+        },
+        {
+          "event": "story-2-5-0",
+          "choice": "今期の身体を地元で記録する"
+        },
+        {
+          "event": "story-3-1-0",
+          "choice": "全身の配分を整える"
+        },
+        {
+          "event": "story-3-3-0",
+          "choice": "家で背中の写真に印を付ける"
+        },
+        {
+          "event": "story-3-4-0",
+          "choice": "全身の配分を整える"
+        },
+        {
+          "event": "story-3-5-0",
+          "choice": "今期の身体を地元で記録する"
+        },
+        {
+          "event": "story-5-1-0",
+          "choice": "自宅の器具で続ける"
+        },
+        {
+          "event": "story-5-3-0",
+          "choice": "家の器具で前期の種目を続ける"
+        },
+        {
+          "event": "story-5-4-0",
+          "choice": "自宅の器具で続ける"
+        },
+        {
+          "event": "story-5-5-0",
+          "choice": "今期の身体を地元で記録する"
+        }
+      ],
+      "best": null,
+      "muscle": 40.79870900658951,
+      "money": 3377333.87096776
+    },
+    {
+      "label": "指導",
+      "seed": 42,
+      "first": "勤務を減らし直接教わる",
+      "decisions": 20,
+      "history": [
+        {
+          "event": "story-1-1-1",
+          "choice": "勤務を減らし直接教わる"
+        },
+        {
+          "event": "story-1-2-1",
+          "choice": "恩師と動きの始点を確かめる"
+        },
+        {
+          "event": "story-1-4-1",
+          "choice": "恩師と動きの始点を確かめる"
+        },
+        {
+          "event": "story-1-5-2",
+          "choice": "リーフジム測定会へ出場する",
+          "stage": "gym",
+          "rank": 2
+        },
+        {
+          "event": "story-6-1-1",
+          "choice": "小野寺 亮の合同練習へ"
+        },
+        {
+          "event": "story-6-2-1",
+          "choice": "点差の出た背中を習い直す"
+        },
+        {
+          "event": "story-6-4-1",
+          "choice": "点差の出た背中を習い直す"
+        },
+        {
+          "event": "story-6-5-2",
+          "choice": "BULK地域新人戦へ出場する",
+          "stage": "region",
+          "rank": 4
+        },
+        {
+          "event": "story-0-1-1",
+          "choice": "早川 健の合同練習へ"
+        },
+        {
+          "event": "story-0-2-1",
+          "choice": "時間を空けて合同練習に通う"
+        },
+        {
+          "event": "story-0-4-1",
+          "choice": "時間を空けて合同練習に通う"
+        },
+        {
+          "event": "story-0-5-2",
+          "choice": "BULK地方オープンへ出場する",
+          "stage": "open",
+          "rank": 4
+        },
+        {
+          "event": "story-8-1-1",
+          "choice": "高槻 翔の合同練習へ"
+        },
+        {
+          "event": "story-8-2-1",
+          "choice": "動きが崩れる重量を相談する"
+        },
+        {
+          "event": "story-8-4-1",
+          "choice": "動きが崩れる重量を相談する"
+        },
+        {
+          "event": "story-8-5-2",
+          "choice": "BULK日本グランプリへ出場する",
+          "stage": "national",
+          "rank": 3
+        },
+        {
+          "event": "story-5-1-1",
+          "choice": "藤代 直哉の合同練習へ"
+        },
+        {
+          "event": "story-5-2-1",
+          "choice": "ジムの日を勤務表で先に押さえる"
+        },
+        {
+          "event": "story-5-4-1",
+          "choice": "ジムの日を勤務表で先に押さえる"
+        },
+        {
+          "event": "story-5-5-2",
+          "choice": "BULK日本グランプリへ出場する",
+          "stage": "national",
+          "rank": 2
+        }
+      ],
+      "best": {
+        "tier": "national",
+        "rank": 2
+      },
+      "muscle": 39.4895825735553,
+      "money": 1941527.838709691
+    },
+    {
+      "label": "技術",
+      "seed": 42,
+      "first": "動作を止めて動画に収める",
+      "decisions": 20,
+      "history": [
+        {
+          "event": "story-1-1-2",
+          "choice": "動作を止めて動画に収める"
+        },
+        {
+          "event": "story-1-3-2",
+          "choice": "助言を規定姿勢で試す"
+        },
+        {
+          "event": "story-1-4-2",
+          "choice": "助言を規定姿勢で試す"
+        },
+        {
+          "event": "story-1-5-2",
+          "choice": "リーフジム測定会へ出場する",
+          "stage": "gym",
+          "rank": 2
+        },
+        {
+          "event": "story-6-1-2",
+          "choice": "規定ポーズを通す"
+        },
+        {
+          "event": "story-6-3-2",
+          "choice": "比較審査の呼び出しに合わせて動く"
+        },
+        {
+          "event": "story-6-4-2",
+          "choice": "比較審査の呼び出しに合わせて動く"
+        },
+        {
+          "event": "story-6-5-2",
+          "choice": "BULK地域新人戦へ出場する",
+          "stage": "region",
+          "rank": 2
+        },
+        {
+          "event": "story-10-1-2",
+          "choice": "舞台の動きを送り合う"
+        },
+        {
+          "event": "story-10-3-2",
+          "choice": "遠くから見える姿勢を撮る"
+        },
+        {
+          "event": "story-10-4-2",
+          "choice": "遠くから見える姿勢を撮る"
+        },
+        {
+          "event": "story-10-5-2",
+          "choice": "BULK地方オープンへ出場する",
+          "stage": "open",
+          "rank": 4
+        },
+        {
+          "event": "story-5-1-2",
+          "choice": "会場の鏡で動きを通す"
+        },
+        {
+          "event": "story-5-3-2",
+          "choice": "広い場所で立ち位置を練習する"
+        },
+        {
+          "event": "story-5-4-2",
+          "choice": "広い場所で立ち位置を練習する"
+        },
+        {
+          "event": "story-5-5-2",
+          "choice": "BULK日本グランプリへ出場する",
+          "stage": "national",
+          "rank": 3
+        },
+        {
+          "event": "story-3-1-2",
+          "choice": "光の下で見せ方を探る"
+        },
+        {
+          "event": "story-3-3-2",
+          "choice": "同じ照明で背面ポーズを比べる"
+        },
+        {
+          "event": "story-3-4-2",
+          "choice": "同じ照明で背面ポーズを比べる"
+        },
+        {
+          "event": "story-3-5-2",
+          "choice": "BULK日本グランプリへ出場する",
+          "stage": "national",
+          "rank": 2
+        }
+      ],
+      "best": {
+        "tier": "national",
+        "rank": 2
+      },
+      "muscle": 38.88801540415819,
+      "money": 3344856.9677419015
+    },
+    {
+      "label": "地域",
+      "seed": 42,
+      "first": "自主練で一種目ずつ試す",
+      "decisions": 20,
+      "history": [
+        {
+          "event": "story-1-1-0",
+          "choice": "自主練で一種目ずつ試す"
+        },
+        {
+          "event": "story-1-3-0",
+          "choice": "昔の練習帳に自分の注釈を書く"
+        },
+        {
+          "event": "story-1-4-0",
+          "choice": "自主練で一種目ずつ試す"
+        },
+        {
+          "event": "story-1-5-2",
+          "choice": "リーフジム測定会へ出場する",
+          "stage": "gym",
+          "rank": 3
+        },
+        {
+          "event": "story-6-1-0",
+          "choice": "練習量を戻して土台を作る"
+        },
+        {
+          "event": "story-6-3-0",
+          "choice": "同じ種目を続けて変化を測る"
+        },
+        {
+          "event": "story-6-4-0",
+          "choice": "練習量を戻して土台を作る"
+        },
+        {
+          "event": "story-6-5-2",
+          "choice": "BULK地域新人戦へ出場する",
+          "stage": "region",
+          "rank": 5
+        },
+        {
+          "event": "story-3-1-0",
+          "choice": "全身の配分を整える"
+        },
+        {
+          "event": "story-3-3-0",
+          "choice": "家で背中の写真に印を付ける"
+        },
+        {
+          "event": "story-3-4-0",
+          "choice": "全身の配分を整える"
+        },
+        {
+          "event": "story-3-5-0",
+          "choice": "今期の身体を地元で記録する"
+        },
+        {
+          "event": "story-7-1-0",
+          "choice": "自分用の手帳を続ける"
+        },
+        {
+          "event": "story-7-3-0",
+          "choice": "数字と体感を同じ日に記す"
+        },
+        {
+          "event": "story-7-4-0",
+          "choice": "自分用の手帳を続ける"
+        },
+        {
+          "event": "story-7-5-0",
+          "choice": "今期の身体を地元で記録する"
+        },
+        {
+          "event": "story-0-1-0",
+          "choice": "交互に補助へ入る"
+        },
+        {
+          "event": "story-0-3-0",
+          "choice": "鏡の前で自主練を撮る"
+        },
+        {
+          "event": "story-0-4-0",
+          "choice": "交互に補助へ入る"
+        },
+        {
+          "event": "story-0-5-0",
+          "choice": "今期の身体を地元で記録する"
+        }
+      ],
+      "best": {
+        "tier": "region",
+        "rank": 5
+      },
+      "muscle": 40.583539888244715,
+      "money": 3383565.9677419025
+    },
+    {
+      "label": "複合",
+      "seed": 823,
+      "first": "指導と自主練を組み合わせる",
+      "decisions": 20,
+      "history": [
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる",
+          "stage": "gym",
+          "rank": 2
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる",
+          "stage": "region",
+          "rank": 1
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる",
+          "stage": "open",
+          "rank": 4
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる",
+          "stage": "national",
+          "rank": 1
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる"
+        },
+        {
+          "event": "custom",
+          "choice": "指導と自主練を組み合わせる",
+          "stage": "national",
+          "rank": 1
+        }
+      ],
+      "best": {
+        "tier": "national",
+        "rank": 1
+      },
+      "muscle": 42.22125797513743,
+      "money": 1157454.161290315
+    }
+  ]
+}

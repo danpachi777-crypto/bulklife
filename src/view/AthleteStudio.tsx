@@ -231,6 +231,7 @@ function Athlete({
   wear,
   presentation,
   competition = false,
+  bib = "01",
 }: {
   body: BodyState;
   baseline?: BodyState;
@@ -245,6 +246,7 @@ function Athlete({
   wear: boolean;
   presentation: string;
   competition?: boolean;
+  bib?: string;
 }) {
   const gltf = useLoader(
     GLTFLoader,
@@ -288,14 +290,14 @@ function Athlete({
       }
     });
     if (competition) {
-      const canvas=document.createElement('canvas');canvas.width=128;canvas.height=96;const ctx=canvas.getContext('2d')!;ctx.fillStyle='#f0efe2';ctx.fillRect(0,0,128,96);ctx.fillStyle='#173b2c';ctx.font='bold 68px sans-serif';ctx.textAlign='center';ctx.fillText('01',64,73);
+      const canvas=document.createElement('canvas');canvas.width=128;canvas.height=96;const ctx=canvas.getContext('2d')!;ctx.fillStyle='#f0efe2';ctx.fillRect(0,0,128,96);ctx.fillStyle='#173b2c';ctx.font='bold 68px sans-serif';ctx.textAlign='center';ctx.fillText(bib,64,73);
       const map=new CanvasTexture(canvas);map.colorSpace=SRGBColorSpace;
-      const badge=new Mesh(new PlaneGeometry(.055,.041),new MeshStandardMaterial({map,roughness:.9,side:DoubleSide}));badge.userData.athleteOwnsGeometry=true;badge.name='CompetitorNumber01';
+      const badge=new Mesh(new PlaneGeometry(.055,.041),new MeshStandardMaterial({map,roughness:.9,side:DoubleSide}));badge.userData.athleteOwnsGeometry=true;badge.name='CompetitorNumber'+bib;
       r.updateMatrixWorld(true);const pelvis=r.getObjectByName('pelvis');if(pelvis){const rotation=pelvis.getWorldQuaternion(new Quaternion()).invert();badge.position.copy(pelvis.worldToLocal(new Vector3(.11,.94,.125)));badge.quaternion.copy(rotation);pelvis.add(badge);}else r.add(badge);
       r.userData.numberTexture=map;
     }
     return r;
-  }, [gltf,competition]);
+  }, [gltf,competition,bib]);
   const equipment = useMemo(
     () => [dumbbell.scene.clone(true), dumbbell.scene.clone(true)],
     [dumbbell],
@@ -681,6 +683,8 @@ export function BodyView({
   preview = false,
   presentation = "inspection",
   comparison = false,
+  comparisonAngle = 0,
+  opponent,
 }: {
   body: BodyState;
   selected: Part;
@@ -694,6 +698,8 @@ export function BodyView({
   preview?: boolean;
   presentation?: "inspection" | "home" | "title" | "creation";
   comparison?: boolean;
+  comparisonAngle?: number;
+  opponent?: BodyState;
 }) {
   const studio = useRef<HTMLDivElement>(null);
   const debug=import.meta.env.DEV&&new URLSearchParams(location.search).has('render-stats');
@@ -736,7 +742,9 @@ export function BodyView({
     };
   }, []);
   const [loadedModel, setLoadedModel] = useState<string | null>(null);
-  const loaded = loadedModel === studioAsset(model,body.height);
+  const [loadedOpponent,setLoadedOpponent]=useState<BodyState>();
+  const opponentReady=useMemo(()=>()=>setLoadedOpponent(opponent),[opponent]);
+  const loaded = loadedModel === studioAsset(model,body.height) && (!opponent || loadedOpponent===opponent);
   const [view, setView] = useState({ angle: 0, revision: 0 }),
     [playing, setPlaying] = useState(() => !preview && !reduced && !(import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-still'))),
     [quality, setQuality] = useState(() => {
@@ -764,6 +772,7 @@ export function BodyView({
     window.addEventListener(PRESENTATION_EVENT, update);
     return () => window.removeEventListener(PRESENTATION_EVENT, update);
   }, []);
+  useEffect(() => {if(comparison)setView(v=>({angle:comparisonAngle,revision:v.revision+1}));},[comparison,comparisonAngle]);
   useEffect(() => setClip(defaultClip), [defaultClip]);
   const onReady = useMemo(() => () => setLoadedModel(studioAsset(model,body.height)), [stage, model,body.height]);
   const download = () => {
@@ -858,8 +867,7 @@ export function BodyView({
               ) : (
                 <GymRoom />
               )}
-              <ContactShade />
-              <Athlete
+              <group position-x={opponent ? -.54 : 0}><ContactShade/><Athlete
                 body={body}
                 baseline={baseline}
                 selected={selected}
@@ -875,7 +883,8 @@ export function BodyView({
                 wear={wear || opening}
                 presentation={presentation}
                 competition={competition}
-              />
+              /></group>
+              {opponent && <Suspense fallback={null}><group position-x={.54}><ContactShade/><Athlete body={opponent} selected={selected} hair={1} clip={clip} playing={playing && active} mode={mode} onReady={opponentReady} bib="02" model={model} wear={false} presentation={presentation} competition={competition}/></group></Suspense>}
             </Suspense>
             <Controls
               angle={view.angle}
