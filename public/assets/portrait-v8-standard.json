@@ -62,7 +62,8 @@
     "seatedSeatMidFat",
     "seatedSeatHigh",
     "seatedSeatHighMuscle",
-    "seatedSeatHighFat"
+    "seatedSeatHighFat",
+    "rivalJaw"
   ],
   "bones": 50,
   "garments": [
@@ -70,8 +71,8 @@
     "BL_V4_TrainingTank",
     "BL_V4_TrainingShorts"
   ],
-  "glbBytes": 15672856,
-  "sha256": "7ca64aa9cb7ef0c013f8cc02e252bf1dae9d089940e806223b132423b6d7e0af",
+  "glbBytes": 15926748,
+  "sha256": "8159624f4c70ac77ae6c7f33049aa8ddc46c03651effa842b34c2e6ae356c455",
   "triangles": 73424,
   "expressionMorphs": [
     "blink"
@@ -83,7 +84,9 @@
     "assets/sources/makehuman-system-v3/provenance.json",
     "assets/sources/makehuman-clothing-v4/provenance.json"
   ],
-  "exportMaterialCorrection": "licensed hair RGB multiply(.30,.235,.18) retained as standard glTF baseColorFactor; checked again after import",
+  "hairAlphaMode": "MASK",
+  "hairAlphaCutoff": 0.18,
+  "exportMaterialCorrection": "licensed hair RGB multiply(.30,.235,.18) retained as standard glTF baseColorFactor; MASK alpha.18 matches the game; checked again after import",
   "frame": "standard",
   "groomRevision": "145 short connected tapered fringe clusters; irregular tips extend1\u20133mm past the cropped base outline, not disconnected forehead specks",
   "authoring": "assets/blender/bulk-life-athlete-v8-standard-work.blend",
@@ -108,7 +111,5 @@
   ],
   "fatMapping": "positive bodyFat + independent leanDefinition; no negative obese extrapolation",
   "referencePack": "docs/qa/anatomy-v8/reference/02_IMAGE_INDEX.csv",
-  "simulationVersionChanged": false,
-  "hairAlphaMode": "MASK",
-  "hairAlphaCutoff": 0.18
+  "simulationVersionChanged": false
 }

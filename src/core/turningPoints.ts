@@ -1,3 +1,4 @@
+import {targetEdition} from "./seasonCircuit";
 import type {
   ChallengeRun,
   DecisionRecord,
@@ -104,8 +105,9 @@ function tag(r: ChallengeRun) {
     );
   for (const x of scheduled)
     add(x.fact!.next!.event, "決断" + x.number + "で始まった話の返事", true, x);
-  add("showReply", "直前の大会に実際に出場", !!last?.show, last);
-  add("entry", "当期の大会日程", n % 4 === 0, last);
+  if(r.season && n>=36 && n<=39)add(["measure","environment","posing","recover"][n-36],"最後の舞台から逆算する準備",true,last);
+  add("showReply", "直前の大会に実際に出場", !!last?.show && (!r.season||!facts.slice(-4).some(x=>x.fact!.event==="showReply")), last);
+  add("entry", "当期の大会日程", (r.season?targetEdition(r).date-r.career.athlete.day<=84:n % 4 === 0) && (!r.season||!facts.slice(-4).some(x=>x.fact!.event==="entry")), last);
   add(
     "reunion",
     "以前知り合った対戦相手と記録がある",
@@ -157,7 +159,7 @@ function tag(r: ChallengeRun) {
     add(
       event,
       "現在の時期・勤務・練習と直近の話題から選出",
-      !facts.slice(-2).some((x) => x.fact!.event === event),
+      !facts.slice(r.season?-4:-2).some((x) => x.fact!.event === event),
       last,
     );
   add("routine", "現在の練習から選べる予備の問い", true, last);
@@ -208,18 +210,18 @@ export function turningPoint(
   );
   const gain = (k: (typeof PARTS)[number]) =>
     (
-      r.career.athlete.body.muscle[k] - r.initial.athlete.body.muscle[k]
+      (r.career.athlete.body.muscle[k] / r.initial.athlete.body.muscle[k]-1)*100
     ).toFixed(2);
   const topic =
     "初日からの増加率は" +
     LABELS[strength[0]] +
     "が最も高く（" +
     gain(strength[0]) +
-    "kg）、" +
+    "%）、" +
     LABELS[strength.at(-1)!] +
     "が最も低い（" +
     gain(strength.at(-1)!) +
-    "kg）。";
+    "%）。";
   const technique = option(
     "pose",
     "規定ポーズを録画して見直す",
@@ -454,7 +456,7 @@ export function turningPoint(
           "travelPractice",
           "移動を含む一日練習を試す",
           "移動先で通し練習を行い、次の遠征の予定を組んだ。",
-          { minutes: 35, foodStyle: "quick" },
+          {},
           { visit: 5, fee: 4500 },
         ),
         enter(),
@@ -572,6 +574,18 @@ export function turningPoint(
           : c,
       ),
     };
+  if(r.season){
+    const goal=targetEdition(r),weeks=Math.ceil((goal.date-r.career.athlete.day)/7);
+    if(event==="entry")scene={...scene,title:"次の開催までの仕上げ方",text:goal.name+"まであと"+weeks+"週。"+(weeks<=4?"疲労を抜いて立ち姿を揃えたい。":"身体づくりと規定ポーズの練習に時間を振り分けられる。")};
+    if(event==="restart")scene={...scene,text:"国内編で積んだ成績から、次に目指せるのは"+goal.name+"。今季の生活に合わせて準備を始めたい。"};
+    if(event==="reunion"&&source?.fact?.personName){
+      const rival=r.rivals.find(x=>x.name===source.fact?.personName);
+      if(rival)scene={...scene,text:rival.name+"から練習の誘いが届いた。テーマは相手が得意な「"+rival.style+"」。現地で試すか、動画を交換するか。",choices:scene.choices.map(c=>c.key==="trainTogether"?{...c,name:rival.name+"と"+rival.style+"を練習",changes:{...c.changes,priority:rival.style.includes("脚")?"legs":rival.style.includes("背")?"back":"balanced",posing:rival.style.includes("ポー")?45:20},reply:rival.name+"と時間を合わせ、「"+rival.style+"」の準備を一緒に試した。"}:c)};
+    }
+    if(event==="work")scene={...scene,title:"大会に向けた勤務希望",text:goal.name+"まで"+weeks+"週。次の勤務表に合わせ、練習時間を取るか遠征費を積み立てるか考えたい。"};
+    if(n>=36 && n<=39)scene={...scene,title:["最終シーズンの身体測定","仕上げを続ける場所","最後に見せたいポーズ","本番前の休息"][n-36],text:(n===36?bio.wish+" ":n===37?track+"で積んだ練習がある。":n===38?"鏡の前で立ち姿を確かめた。":"今の疲労は"+Math.round(r.career.athlete.systemicFatigue*100)+"%。")+goal.name+"を見据え、残りの期間をどう使おう。"};
+    if(event==="showReply"&&source?.show?.edition)scene={...scene,title:source.show.rank<=3?"入賞を次の準備へつなぐ":"審査の差を受けとめる",text:source.show.rank+"位で舞台を降りた。次のシーズンに向けて、同じ列に並んだ選手に準備の工夫を聞く時間がある。"};
+  }
   const due =
     selected.source?.fact?.next?.event === event ? source!.number : null;
   const cause = source?.number ?? null;
@@ -579,8 +593,8 @@ export function turningPoint(
     event,
     title: scene.title,
     issue:
-      (due ? "決断" + due + "「" + source!.strategy.name + "」の続き。" : "") +
-      scene.text,
+      (due && !r.season ? "決断" + due + "「" + source!.strategy.name + "」の続き。" : "") +
+      (r.season?scene.text.replace(/決断\d+での(.+?)との記録も残っている。/g,"").replace(/決断\d+では/g,"前の期間には").replace(/最初に「[^」]+」を選んだ。/g,"").replace(/国内の実績で国際大会へ申し込める。/g,"次の国際大会の資格と受付時期を確認しよう。"):scene.text),
     choices: scene.choices,
     cause,
     source,
@@ -604,12 +618,14 @@ export function turningStrategies(
     const routine = c.routine ?? scene.previousRoutine;
     const p: Strategy = {
       ...base,
+      ...(r.season&&prev?{sleep:prev.sleep,workRatio:prev.workRatio,goal:prev.goal,minutes:prev.minutes,posing:prev.posing,cardio:prev.cardio,effort:prev.effort}:{}),
       budget: prev?.budget ?? base.budget,
       foodStyle: prev?.foodStyle ?? base.foodStyle,
       equipment: r.career.progress!.equipment,
       coach: prev?.coach ?? false,
       priority: c.key === "target" ? weak : (prev?.priority ?? base.priority),
       ...c.changes,
+      ...(r.season&&prev&&tier?{coach:prev.coach}:{}),
       id: "turn/" + scene.event + "/" + c.key,
       name:
         c.name +

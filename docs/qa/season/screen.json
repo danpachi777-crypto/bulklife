@@ -1,0 +1,31 @@
+{
+  "browser": "157.0.8103.51",
+  "msToFirstChoices": 3726,
+  "samples": [
+    {
+      "label": "first choices",
+      "heapBytes": 10204957,
+      "canvasCount": 1,
+      "viewport": 390,
+      "documentWidth": 390
+    },
+    {
+      "label": "calendar",
+      "heapBytes": 23059149,
+      "canvasCount": 0,
+      "viewport": 390,
+      "documentWidth": 390
+    },
+    {
+      "label": "back",
+      "heapBytes": 23208340,
+      "canvasCount": 1,
+      "viewport": 390,
+      "documentWidth": 390
+    }
+  ],
+  "returnScroll": [
+    39,
+    39
+  ]
+}

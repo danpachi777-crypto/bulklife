@@ -1,0 +1,14 @@
+{
+  "originalRetained": true,
+  "historyMatches": true,
+  "domestic": {
+    "tier": "national",
+    "rank": 1
+  },
+  "legacy": {
+    "regional": 2031,
+    "japan": 2031,
+    "asia": 2031
+  },
+  "turns": 20
+}

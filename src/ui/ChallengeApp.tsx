@@ -1,3 +1,5 @@
+import {adoptCalendar,findEdition,pendingEdition} from "../core/seasonCircuit";
+import {SeasonCalendar} from "./SeasonCalendar";
 import {relationshipBook} from "../core/turningPoints";
 import { profile, currentEpisode } from "../core/lifeStory";
 import { useEffect, useRef, useState, type ComponentType } from "react";
@@ -44,7 +46,7 @@ import {
   continueWorld,
   challengeIssue,
   decisionScene,
-  decisionDays,
+  decisionDays, periodDays,
   CHAPTERS,
   LEAGUE,
   TIERS,
@@ -104,7 +106,8 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     [part, setPart] = useState<Part>("chest"),
     [inspectBody,setInspectBody]=useState(false),
     [selectedRecord, setSelectedRecord] = useState<DecisionRecord | null>(null),
-    [guide, setGuide] = useState(false);
+    [guide, setGuide] = useState(false), [highFee,setHighFee]=useState(false);
+  const bookmark=useRef({top:0,decision:-1});
   const lock = useRef(false),
     file = useRef<HTMLInputElement>(null);
   const preview = useState(() =>
@@ -129,7 +132,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     })();
   }, []);
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo({ top:tab==="decision"&&bookmark.current.decision===run?.records.length?bookmark.current.top:0, behavior:"instant" });
   }, [screen, tab, run?.records.length, run?.status]);
   async function guarded(fn: () => Promise<void>) {
     if (lock.current) return;
@@ -161,7 +164,8 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     let disposed = false;
     const timer = setTimeout(() => {
       void guarded(async () => {
-        const next = runPeriodBatch(run).run;
+        let next = runPeriodBatch(run).run;
+        if(next.season && next.status==="result"&&!next.records.at(-1)?.show && ![20,40].includes(next.records.length))next=nextDecision(next);
         const saved = await persistChallenge(next, run.revision);
         setRun(current=>current?.id===saved.id&&current.revision===run.revision?saved:current);
         setRuns((old) => [saved,...old.filter((x) => x.id !== saved.id)]);
@@ -174,7 +178,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     };
   }, [run?.revision, run?.id, screen, error]);
   function begin(mode: ChallengeMode, seed = freshSeed()) {
-    setDraft(newChallenge(mode, seed, careerId()));
+    setDraft(adoptCalendar(newChallenge(mode, seed, careerId())));
     setScreen("create");
     setError("");
   }
@@ -199,6 +203,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
       setNotice("元の挑戦を残して別枠に読み込みました");
     });
   const choose = (p: Strategy) => {
+    setHighFee(false);
     setPlan(structuredClone(p));
     setEdit(null);
 
@@ -398,7 +403,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
               {challengeDate(r.career.athlete.day)} ·{" "}
               {r.career.athlete.profileTitle}
             </p>
-            <p>{r.world?.text ?? r.domestic?.text ?? "挑戦中"} </p>
+            <p>{r.status==="result"&&r.records.at(-1)?.show?.edition&&!r.season?.announced.includes(r.records.at(-1)!.show!.edition!)?"大会の順位発表を待っています":r.world?.text ?? r.domestic?.text ?? "挑戦中"} </p>
             {r.importedFrom && <p>読み込んだコピー（元の挑戦は保持）</p>}
             <small>
               同条件の識別：seed {r.seed} / {r.calculation} / 作成時の表示版 {r.modelVersion??"未記録（現行で表示）"}
@@ -435,11 +440,14 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     evaluation = plan ? inspectStrategy(run, plan) : null;
   const body = <AthleteSummary openInspection={inspectBody} narrative={!!run.origin} c={{...c,snapshots:run.records.map(v=>({day:v.to,body:v.after}))}} part={part} setPart={setPart} />;
   const nav = (key: string) => {
+    if(tab==="decision")bookmark.current={top:window.scrollY,decision:run.records.length};
     setInspectBody(false);
     setTab(key);
     setSelectedRecord(null);
-    setPlan(null);
   };
+  const last=run.records.at(-1);
+  const unrevealed=last?.show?.edition && !run.season?.announced.includes(last.show.edition) && run.status==="result";
+  const save=(v:ChallengeRun)=>void guarded(async()=>{await commit(v);});
   return (
     <main className="challenge-game">
       {hiddenFile}
@@ -452,7 +460,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
           <h1>
             {c.athlete.name}
             <small>
-              {chapter} · {challengeDate(c.athlete.day)}
+              {c.athlete.ageAtStart+Math.floor(c.athlete.day/365.25)}歳 · {challengeDate(c.athlete.day)}
             </small>
           </h1>
           <p>
@@ -494,11 +502,12 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
           </p>
         </section>
       )}
-      {tab === "body" ? (
+      {!run.season && !run.job && <button onClick={()=>void guarded(async()=>{const copy=adoptCalendar(structuredClone(run));copy.importedFrom=run.id;copy.id="bl-"+crypto.randomUUID();copy.initial.athlete.id=copy.career.athlete.id=copy.id;copy.createdAt=Date.now();await commit(copy,null);setPlan(null);})}>元のセーブを残して年次カレンダーへ移行</button>}
+      {run.status==="running"?null:unrevealed && last?.show?.edition ? <section className="award-gate"><h2>{findEdition(last.show.edition).name}</h2><p>{challengeDate(last.show.day)} · 入場と比較審査</p><ChallengeShowView show={last.show} model={c.versions.model} initial="entry" onReveal={()=>save({...run,season:{...run.season!,announced:[...run.season!.announced,last.show!.edition!]}})} /></section> : tab === "body" ? (
         <section className="challenge-body-page">{body}</section>
       ) : tab === "contests" ? (
         <section className="challenge-contests">
-          <h2>挑戦する舞台</h2>
+          {run.season?<SeasonCalendar run={run} save={save} busy={busy} full/>:<><h2>挑戦する舞台</h2>
           <p>
             架空のBULKサーキット。開催日は各決断の期間末で固定。出場は作戦に含めて確定し、見るだけでは決断を使いません。
           </p>
@@ -523,7 +532,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
               </p>
             </article>
           ))}
-          <h2>同じ時間を過ごすライバル</h2>
+          </>}<h2>同じ時間を過ごすライバル</h2>
           <p className="muted">ライバルは各会場の出場資格を既に持つ選手として登場します。ここでの対戦記録は今回の挑戦中のものです。出場する期間は参加・移動費と当日の時間を負担し、直前の練習を休みます。</p>
           {run.rivals.map((r) => (
             <details key={r.id}>
@@ -552,6 +561,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
         <section>
           <ChallengeGraph run={run} />
           {run.storyVersion===2 && <details><summary>人物・約束と練習場所の記録</summary>{relationshipBook(run.records).map(p=><section key={p.name+p.meet}><h4>{p.name} · {p.role}</h4><p>最初のやり取りは決断{p.meet}。これまでに{p.exchanges}回関わった。</p><p>{p.known.join(" ／ ")}</p></section>)}{run.records.filter(x=>x.fact).map(x=><p key={x.number}>決断{x.number} · {x.fact!.place} · {x.fact!.personName} {x.fact!.promise}　{x.response}</p>)}</details>}
+          {run.origin&&<details><summary>選手の経歴と願い</summary><OriginCard run={run}/></details>}
           <h2>選んだ作戦の記録</h2>
           {run.records.map((rec) => (
             <button
@@ -572,7 +582,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
               </span>
               <span>
                 {rec.show
-                  ? `${LEAGUE[rec.show.tier].name} ${rec.show.rank}位`
+                  ? `${rec.show.edition?findEdition(rec.show.edition).name:LEAGUE[rec.show.tier].name} ${rec.show.rank}位`
                   : "育成期間"}{" "}
                 →
               </span>
@@ -607,8 +617,8 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
               onBody={focus => {nav("body");if(focus){setPart(focus);setInspectBody(true);}}}
             />
           ) : (
-            run.status !== "running" && (
-              <div className="challenge-decision-grid">
+            (
+              <div className="challenge-decision-grid season-play">{run.season&&<SeasonCalendar run={run} save={save} busy={busy}/>}
                 <section className="challenge-athlete">
                   <BodyView
                     body={c.athlete.body}
@@ -633,128 +643,39 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
                     </span>
                   </div>
                   <button onClick={() => nav("body")}>
-                    身体の詳細・初日との比較
+                    身体を見る
                   </button>
                 </section>
                 <section className="challenge-workbench">
                   <div className="challenge-issue">
                     <span className="eyebrow">
-                      今回の課題 · {decisionDays(n) / 7}週間
+                      今回の決断 · {periodDays(run)}日
                     </span>
-                    <h2>{run.origin ? (run.storyVersion===2?decisionScene(run).title:currentEpisode(run).title) : chapter} · {n===20||n===40?"最後の準備":"今回の転機"}</h2>
+                    <h2>{run.origin ? (run.storyVersion===2?decisionScene(run).title:currentEpisode(run).title) : chapter}</h2>
                     <p>{challengeIssue(run)}</p>
                     {import.meta.env.DEV && run.origin && run.storyVersion===2 && new URLSearchParams(location.search).has("story-debug") && <details><summary>開発用・出来事の選出理由</summary>{decisionScene(run).entries.map((x,i)=><p key={i}>{x.event} · {x.eligible?"候補":"対象外"} · {x.reason} {x.source?"決断"+x.source.number:""}</p>)}</details>}
-                    {run.origin && <details><summary>選手の経歴と願い</summary><OriginCard run={run}/></details>}
+
                     <small>
                       期間：{challengeDate(c.athlete.day)}〜
-                      {challengeDate(c.athlete.day + decisionDays(n) - 1)}
+                      {challengeDate(c.athlete.day + periodDays(run) - 1)}
                     </small>
-                    <button
-                      className="challenge-options-jump"
-                      onClick={() =>
-                        document
-                          .getElementById("challenge-options")
-                          ?.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          })
-                      }
-                    >
-                      作戦を比較する ↓
-                    </button>
                   </div>
-                  {!run.tutorialHidden && n <= 4 && (
-                    <aside className="challenge-guide">
-                      <p>
-                        {
-                          [
-                            "候補を比べて選び、必要なら調整します。確定した育成期間だけが1回に数えられます。",
-                            "練習の刺激、食事、回復がそろって成長につながります。資金と生活にも目を向けましょう。",
-                            "前回の記録から実施量と回復を確認できます。同じ作戦でも現在の状態で結果が変わります。",
-                            "大会への挑戦は作戦の一部です。出場を見送り育成に使う選択もできます。",
-                          ][n - 1]
-                        }
-                      </p>
-                      <button
-                        onClick={() =>
-                          void guarded(async () => {
-                            await commit({ ...run, tutorialHidden: true });
-                          })
-                        }
-                      >
-                        案内を終了
-                      </button>
-                    </aside>
-                  )}
                   <div className="challenge-strategies" id="challenge-options">
                     {candidates.map((p) => {
                       const v = inspectStrategy(run, p);
                       return (
-                        <article
-                          key={p.id}
-                          className={plan?.id === p.id ? "is-selected" : ""}
-                        >
-                          <span>
-                            {decisionDays(n) / 7}週間 ·{" "}
-                            {p.contest ? entryReason(run,p.contest) : "育成に集中"}
-                          </span>
-                          <h3>{p.name}</h3>
-                          <p>{p.aim}</p>
-                          <details><summary>練習・食事・家計の見込み</summary><dl>
-                            <div>
-                              <dt>練習</dt>
-                              <dd>{p.routine==="joint"?"火・木・土":p.routine==="weekend"?"火・金・土":p.routine==="home"?"月・木・日":"月・水・金"}／上限{p.minutes}分</dd>
-                            </div>
-                            <div>
-                              <dt>食事</dt>
-                              <dd>上限{money(p.budget)}/日</dd>
-                            </div>
-                            <div>
-                              <dt>収支見込み</dt>
-                              <dd>{money(v.net)}</dd>
-                            </div>
-                          </dl></details>
-                          <p className="strategy-tradeoff">
-                            この期間の条件：{p.tradeoff}
-                          </p>
-                          {v.warnings.length > 0 && (
-                            <p className="warning">
-                              栄養目標に不足。詳細で予算・準備方法を比較してください。
-                            </p>
-                          )}
-                          {v.errors.length > 0 && (
-                            <p className="error">{v.errors[0]}</p>
-                          )}
-                          <button
-                            className={plan?.id === p.id ? "primary" : ""}
-                            aria-pressed={plan?.id === p.id}
-                            onClick={() => choose(p)}
-                          >
-                            {plan?.id === p.id
-                              ? "選択中 · 内容を見る"
-                              : "この作戦を詳しく見る"}
-                          </button>
-                        </article>
+                        <button key={p.id} className="choice-card" aria-pressed={plan?.id===p.id} onClick={()=>choose(p)}>
+                          <strong>{p.name}</strong>{p.aim!==p.name&&p.aim.length<40&&<span>{p.aim}</span>}<span>{p.minutes}分の練習 · 勤務{Math.round(p.workRatio*100)}% · {v.food.insufficient?"食事に不足あり":"食事目標内"}</span>
+                          <span>{p.contest?"出場を含む":pendingEdition(run)?"申込済みの大会あり":"育成"}{v.upfront>0?" · 初期費用"+money(v.upfront):""}{p.visitHours?" · 予定"+p.visitHours+"時間":""}</span>
+                          {plan?.id===p.id&&<b>✓ 選択中</b>}
+                        </button>
                       );
                     })}
                   </div>
-                  <div className="button-row">
-                    <button
-                      onClick={() => {
-                        choose({
-                          ...candidates[0],
-                          id: "custom",bookingFee:0,visitHours:0,
-                          name: "自分で組む作戦",reason:"人物との予定を外して、この期間の条件を自分で決めます。",aim:"練習・食事・生活を調整する",tradeoff:"選んだ勤務・設備・登録費を確定前に確認できます。",
-                        });
-                        setEdit("basic");
-                      }}
-                    >
-                      自分で作戦を組む
-                    </button>
-                    <button onClick={() => setGuide(true)}>
-                      遊び方を再表示
-                    </button>
-                  </div>
+                  {plan&&evaluation&&<details><summary>選んだ方針の詳細</summary><p>目的 {GOALS[plan.goal]} · 睡眠{plan.sleep}時間 · 食費上限{money(plan.budget)}/日。{plan.coach?"継続指導あり。":"自主練習。"} {plan.tradeoff} 期間収支の見込み {money(evaluation.net)}。</p><button onClick={()=>setEdit("basic")}>生活・練習を調整する</button>{evaluation.food.insufficient&&<button onClick={()=>choose({...plan,foodStyle:"budget",budget:Math.max(1500,plan.budget)})}>自炊中心・日額1,500円以上で再計算</button>}</details>}
+                  {last&&<aside className="last-decision"><h3>前の期間</h3><p>{last.response}</p><button onClick={()=>setSelectedRecord(last)}>身体と収支の記録</button></aside>}
+                  {plan&&evaluation?.errors.map(msg=><p role="alert" key={msg}>{msg}</p>)}
+                  <div className="advance-bar"><button className="primary" disabled={busy||!plan||!!evaluation?.errors.length} onClick={()=>{if(!plan)return;if(!highFee&&evaluation&&evaluation.upfront>=50000){setHighFee(true);return;}void guarded(async()=>{await commit(confirmStrategy(run,plan));setHighFee(false);setPlan(null);});}}>{highFee&&evaluation?"初期費用"+money(evaluation.upfront)+"を支払い進める":plan?"この方針で"+Math.floor(periodDays(run)/7)+"週"+(periodDays(run)%7?periodDays(run)%7+"日":"")+"進める":"方針を選んでください"}</button></div>
                 </section>
               </div>
             )
@@ -771,13 +692,14 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
           <button
             key={key}
             aria-current={tab === key ? "page" : undefined}
+            disabled={run.status==="running" || !!unrevealed}
             onClick={() => nav(key)}
           >
             {label}
           </button>
         ))}
       </nav>
-      {plan && evaluation && (
+      {edit && plan && evaluation && (
         <ModalSheet
           title={edit
                 ? "作戦を調整する"
@@ -788,30 +710,12 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
             else setPlan(null);
           }}
           busy={busy}
-          actions={
-            <>
-              <p>確定前の変更・取消では回数を使いません。</p>
-              <button
-                className="primary"
-                disabled={busy || !!evaluation.errors.length}
-                onClick={() => {
-                  void guarded(async () => {
-                      await commit(confirmStrategy(run, plan));
-                      setPlan(null);
-
-                      setTab("decision");
-                    });
-                }}
-              >
-                {`決断${n}を確定して${evaluation.days / 7}週間進む`}
-              </button>
-            </>
-          }
+          actions={<button onClick={()=>setEdit(null)}>調整を終えて戻る</button>}
         >
           <StrategyEditor
             run={run}
             plan={plan}
-            setPlan={value => setPlan({...value,bookingFee:0,visitHours:0,id:"custom",name:"自分で調整した方針",reason:"人物との予定を外して、表示中の練習・生活・出場条件を確定します。",aim:PRIORITIES[value.priority]+"・"+GOALS[value.goal],tradeoff:`勤務は基準の${Math.round(value.workRatio*100)}%。${value.contest?LEAGUE[value.contest].name+"へ出場。":"今期は育成に集中。"}`})}
+            setPlan={setPlan}
             editing={edit}
             setEdit={setEdit}
           />
@@ -840,7 +744,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
             選手の状態を見て、作戦を比較し、期間を確定します。身体や説明を調べる操作では決断は減りません。
           </p>
           <p>
-            期間は決断番号で固定です。筋量・脂肪・技術・生活・大会を日ごとに計算します。疲労時の休養と、予算内の食事量を調整します。目的、大会、勤務、設備購入は勝手に変えません。
+            年次カレンダーでは、季節ごとの区切りまで進みます。筋量・脂肪・技術・生活・大会を日ごとに計算します。疲労時の休養と、予算内の食事量を調整します。目的、大会、勤務、設備購入は勝手に変えません。
           </p>
           <p>
             世界40回の前半は日本20回と共通。20回の記録は世界へ続けても書き換えません。優勝せずに挑戦を終えることもあります。
@@ -1053,7 +957,7 @@ function StrategyEditor({
               <option value="yes">依頼する 月10000円</option>
             </select>
           </label>
-          <label>
+          {!run.season&&<label>
             期間末の大会
             <select
               value={p.contest ?? ""}
@@ -1069,7 +973,7 @@ function StrategyEditor({
                 </option>
               ))}
             </select>
-          </label>
+          </label>}
         </div>
       )}
       <section>

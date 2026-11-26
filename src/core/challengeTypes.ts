@@ -38,6 +38,7 @@ export interface Challenger {
   history: { decision: number; rank: number; tier: StageTier }[];
 }
 export interface ChallengeShow {
+  edition?: string;
   judging?: "life-1";
   preparation?: string;
   decision: number;
@@ -122,6 +123,7 @@ export interface PeriodJob {
   paid: number;
 }
 export interface ChallengeRun {
+  season?: import("./seasonCircuit").SeasonBook;
   format: "BULK_CHALLENGE";
   version: 1;
   calculation: "decisions-1";

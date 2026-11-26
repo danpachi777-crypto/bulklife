@@ -1,3 +1,4 @@
+import {findEdition} from "../core/seasonCircuit";
 import {BodyComparison} from "./BodyComparison";
 import {profile} from "../core/lifeStory";
 import { useEffect, useState } from "react";
@@ -26,7 +27,7 @@ const yen = (n: number) => Math.round(n).toLocaleString("ja-JP") + "円";
 function downloadShowCard(s:ChallengeShow){
  const escape=(v:string)=>v.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]!));
  const name=s.standings.find(p=>p.id==='player')?.name??'選手';
- const lines=[LEAGUE[s.tier].name,`${name} · ${challengeDate(s.day)}`,`${s.count}人中${s.rank}位 / ${s.score.total.toFixed(2)}点`,`体重 ${weight(s.body).toFixed(1)}kg / 筋質量 ${muscleMass(s.body).toFixed(2)}kg`,`筋量 ${s.score.mass.toFixed(1)} · 技術 ${s.score.posing.toFixed(1)}`,`決断${s.decision}で挑んだ舞台`];
+ const lines=[(s.edition?findEdition(s.edition).name:LEAGUE[s.tier].name),`${name} · ${challengeDate(s.day)}`,`${s.count}人中${s.rank}位 / ${s.score.total.toFixed(2)}点`,`体重 ${weight(s.body).toFixed(1)}kg / 筋質量 ${muscleMass(s.body).toFixed(2)}kg`,`筋量 ${s.score.mass.toFixed(1)} · 技術 ${s.score.posing.toFixed(1)}`,`決断${s.decision}で挑んだ舞台`];
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680"><rect width="1000" height="680" fill="#173b2c"/><rect x="24" y="24" width="952" height="632" rx="12" fill="none" stroke="#d8ef83" stroke-width="3"/><text x="64" y="105" fill="#d8ef83" font-size="42" font-family="sans-serif">BULK LIFE</text>${lines.map((line,i)=>`<text x="64" y="${185+i*72}" fill="#f0f6e8" font-size="${i===2?48:30}" font-family="sans-serif">${escape(line)}</text>`).join('')}</svg>`;
  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=`BULK-LIFE-decision-${s.decision}-result.svg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
 }
@@ -117,7 +118,7 @@ export function ChallengePeriod({
         />
       )}
       {r.show && (
-        <ChallengeShowView show={r.show} model={career.versions.model} initial={archived?'card':'entry'} />
+        <ChallengeShowView show={r.show} model={career.versions.model} initial={r.show.edition?'result':archived?'card':'entry'} />
       )}
       <details>
         <summary>収支と期間中の詳しい実績</summary>
@@ -166,11 +167,11 @@ export function ChallengePeriod({
 export function ChallengeShowView({
   show: s,
   model,
-  initial='card',
+  initial='card', onReveal,
 }: {
   show: ChallengeShow;
   model: string;
-  initial?:'card'|'entry';
+  initial?:'card'|'entry'|'result'; onReveal?:()=>void;
 }) {
   const [phase, setPhase] = useState<"card" | "entry" | "stage" | "result">(
       initial,
@@ -183,7 +184,7 @@ export function ChallengeShowView({
     const t=setTimeout(()=>{
       if(pose==='StageEntry')setPose('FrontDoubleBiceps');
       else if(pose==='FrontDoubleBiceps')setPose('BackDoubleBiceps');
-      else {setPhase('result');setPlaying(false);}
+      else {setPhase('result');setPlaying(false);onReveal?.();}
     },pose==='StageEntry'?2600:3800);
     return()=>clearTimeout(t);
   },[phase,pose,playing]);
@@ -204,7 +205,8 @@ export function ChallengeShowView({
   return (
     <section className="challenge-show">
       <span className="eyebrow">決断{s.decision}の舞台</span>
-      <h3>{LEAGUE[s.tier].name}</h3>
+      {onReveal && <button onClick={onReveal}>演出を短縮して順位発表へ</button>}
+      <h3>{(s.edition?findEdition(s.edition).name:LEAGUE[s.tier].name)}</h3>
       {s.preparation && <p>{s.preparation}</p>}
       <p>
         {challengeDate(s.day)} · 出場{s.count}人 · 支払済み{yen(s.fee)}
@@ -228,7 +230,7 @@ export function ChallengeShowView({
             <button onClick={() => setPhase("entry")}>
               受付から舞台を見る
             </button>
-            <button onClick={() => setPhase("result")}>評価を確認する</button>
+            <button onClick={() => {setPhase("result");onReveal?.();}}>評価を確認する</button>
             <button onClick={()=>downloadShowCard(s)}>記念の結果カードを保存</button>
           </div>
         </>
@@ -281,7 +283,7 @@ export function ChallengeShowView({
             <button onClick={() => {setPlaying(false);setPose("BackDoubleBiceps");}}>
               背面ポーズ
             </button>
-            <button className="primary" onClick={() => setPhase("result")}>
+            <button className="primary" onClick={() => {setPhase("result");onReveal?.();}}>
               順位発表へ／演出を省略
             </button>
             <button onClick={()=>setPlaying(!playing)}>{playing?'演出を止めて身体を見る':'短い演出を再生する'}</button>
@@ -355,6 +357,7 @@ export function ChallengeEndingView({
   onBody: () => void;
   onTitle: () => void;
 }) {
+  const [compareDomestic,setCompareDomestic]=useState(false);
   const e = r.status === "worldEnd" ? r.world! : r.domestic!,
     records = r.records.slice(0, e.at),
     first = records.flatMap((x) => (x.show ? [x.show] : []))[0],
@@ -369,11 +372,12 @@ export function ChallengeEndingView({
       <h2>{e.title ?? "自分の身体で、ここまで来た。"}</h2>
       <p>{e.text}</p>
       {r.origin && <section><h3>{profile(r.origin).title}</h3><p>{r.origin.birthplace}から始まった挑戦。{r.storyVersion===2 ? records.find(x=>x.fact?.action==="letter")?.response : profile(r.origin).ending}</p><blockquote>{profile(r.origin).wish}</blockquote></section>}
+      {e.at===40 && r.domestic && <button aria-pressed={compareDomestic} onClick={()=>setCompareDomestic(!compareDomestic)}>{compareDomestic?"初日と比較する":"国内20回の身体と比較する"}</button>}
       <BodyComparison
-        before={r.initial.athlete.body}
+        before={compareDomestic&&r.domestic?r.domestic.body:r.initial.athlete.body}
         after={e.body}
         model={r.career.versions.model}
-        labels={["初日",e.at===20?"国内20回の最後":"世界40回の最後"]}
+        labels={[compareDomestic?"国内20回の最後":"初日",e.at===20?"国内20回の最後":"世界40回の最後"]}
       />
       <div className="challenge-memory">
         <h3>{r.career.athlete.name}の挑戦記録</h3>
@@ -398,14 +402,14 @@ export function ChallengeEndingView({
         </p>
         <p>
           最初の大会：
-          {first ? `${LEAGUE[first.tier].name} ${first.rank}位` : "出場なし"}
+          {first ? `${(first.edition?findEdition(first.edition).name:LEAGUE[first.tier].name)} ${first.rank}位` : "出場なし"}
           。最後の大会：
-          {last ? `${LEAGUE[last.tier].name} ${last.rank}位` : "出場なし"}。
+          {last ? `${(last.edition?findEdition(last.edition).name:LEAGUE[last.tier].name)} ${last.rank}位` : "出場なし"}。
         </p>
         <p>
           {records.filter((x) => x.strategy.workRatio < 1).length}
           回は仕事を減らして育成へ、
-          {records.filter((x) => x.strategy.contest).length}
+          {records.filter((x) => x.show).length}
           回は舞台への挑戦を選びました。
         </p>
       </div>
@@ -414,7 +418,7 @@ export function ChallengeEndingView({
         {records.filter((x,i)=>i===0 || i===records.findIndex(v=>!!v.show) || i===records.findIndex(v=>v.show && v.show.rank<=3) || i===records.length-1)
           .map((x) => (
             <p key={x.number}>
-              決断{x.number}：{x.strategy.name}。{x.show ? LEAGUE[x.show.tier].name+" "+x.show.rank+"位" : x.strategy.aim}
+              決断{x.number}：{x.strategy.name}。{x.show ? (x.show.edition?findEdition(x.show.edition).name:LEAGUE[x.show.tier].name)+" "+x.show.rank+"位" : x.strategy.aim}
             </p>
           ))}
         {r.rivals

@@ -1,3 +1,4 @@
+import {SERIES,availableShow, editions, findEdition, pendingEdition, periodLength, qualifier, registerEdition, targetEdition} from "./seasonCircuit";
 import {validateTurningFact,makeFact,turningEnding,turningPoint,turningStrategies} from "./turningPoints";
 import { currentEpisode, lifeCandidates, originFor, validOrigin } from "./lifeStory";
 import {
@@ -169,7 +170,9 @@ export function newChallenge(
     createdAt: Date.now(),
   };
 }
+export function periodDays(r:ChallengeRun,n=r.records.length+1,day=r.career.athlete.day){return periodLength(r,n,day,decisionDays(n));}
 export function eligibilityChallenge(r: ChallengeRun, tier: StageTier) {
+  if(r.season){const matches=editions(r).filter(e=>e.tier===tier&&e.deadline>=r.career.athlete.day);return matches.some(e=>!qualifier(r,e))?[]:[matches.length?qualifier(r,matches[0]):"今季の受付は終了"];}
   const shows = r.records.flatMap((x) => (x.show ? [x.show] : [])),
     has = (t: StageTier, rank: number) =>
       shows.some((s) => s.tier === t && s.rank <= rank);
@@ -191,6 +194,7 @@ export function eligibilityChallenge(r: ChallengeRun, tier: StageTier) {
       : ["日本グランプリ3位以内"];
 }
 export function entryReason(r:ChallengeRun,tier:StageTier) {
+  if(r.season)return eligibilityChallenge(r,tier)[0]??"今季の資格あり";
   const missing=eligibilityChallenge(r,tier);
   if(missing.length) return missing.join("、");
   const shows=r.records.flatMap(v=>v.show?[v.show]:[]);
@@ -202,7 +206,7 @@ export function entryReason(r:ChallengeRun,tier:StageTier) {
   return open[0]?.rank<=4 ? "地方オープン"+open[0].rank+"位による推薦" : "地方オープン6位以内を2回達成";
 }
 function bestStage(r:ChallengeRun){return [...TIERS].reverse().find(t=>!eligibilityChallenge(r,t).length)!;}
-export function decisionScene(r:ChallengeRun){const best=bestStage(r);return turningPoint(r,best,LEAGUE[best].name);}
+export function decisionScene(r:ChallengeRun){const best=bestStage(r);return turningPoint(r,best,r.season?targetEdition(r).name:LEAGUE[best].name);}
 export function challengeIssue(r: ChallengeRun) {
   if(r.origin && r.storyVersion===2)return decisionScene(r).issue;
   if (r.origin) return currentEpisode(r).issue;
@@ -331,7 +335,16 @@ export function strategyCandidates(r: ChallengeRun): Strategy[] {
     reason: `現状のポージング${((c.progress?.posing ?? 0) * 100).toFixed(0)}。筋量だけでなく技術と当日の状態も審査されます。`,
     tradeoff: "筋量を増やす練習量を抑え、指導と大会には費用が必要。",
   };
-  if(r.origin && r.storyVersion===2)return turningStrategies(r,base,priority,best,LEAGUE[best].name);
+  if(r.origin && r.storyVersion===2){
+    const options=turningStrategies(r,base,priority,best,r.season?targetEdition(r).name:LEAGUE[best].name);
+    if(!r.season)return options;
+    const end=c.athlete.day+periodDays(r);
+    return options.flatMap(p=>{
+      if(!p.contest)return [p];
+      const e=availableShow(r,p.contest,end);
+      return e?[{...p,name:p.name.replace(/（[^）]*）$/, "（"+e.name+"）")}]:[];
+    });
+  }
   if (r.origin) return lifeCandidates(r,base,specialist,stage,LEAGUE[best].name);
   const candidates=[base,specialist,stage];
   // A contextual fourth option uses the same costs and daily engine. It is a
@@ -405,16 +418,17 @@ export function inspectStrategy(r: ChallengeRun, p: Strategy) {
       errors: [String(e)],
       warnings: [],
       food: assessFood(r.career, resolvedGoal(r.career)),
-      days: decisionDays(r.records.length + 1),
+      days: periodDays(r),
       upfront: 0,
       net: 0,
       minutes: 0,
     };
   }
-  const days = decisionDays(r.records.length + 1),
+  const days = periodDays(r),
     n = nutritionPlan(c),
     def = p.contest ? LEAGUE[p.contest] : null,
-    fees = (def ? def.fee + def.travel : 0)+(p.bookingFee??0),
+    edition = r.season && p.contest ? availableShow(r,p.contest,r.career.athlete.day+days) : undefined,
+    fees = (r.season ? (edition && !pendingEdition(r) ? edition.fee+edition.travel : 0) : def ? def.fee + def.travel : 0)+(p.bookingFee??0),
     equipment = r.career.athlete.life.money - c.athlete.life.money;
   const net =
     ((c.athlete.life.income -
@@ -427,6 +441,7 @@ export function inspectStrategy(r: ChallengeRun, p: Strategy) {
     fees -
     equipment;
   const errors = p.contest ? eligibilityChallenge(r, p.contest) : [];
+  if(r.season && p.contest && !edition)errors.push("この期間に申し込める開催回がありません");
   if (c.athlete.life.money < fees)
     errors.push("参加費・移動費を今の所持金で支払えません");
   if (r.career.athlete.life.money + Math.min(0, net) < 0)
@@ -488,18 +503,21 @@ export function confirmStrategy(
     const offered=strategyCandidates(input).find(x=>x.id===p.id);
     if(!offered)throw Error("この選択肢の期限または前提が変わりました");
     if((["contest","equipment","coach","visitHours","bookingFee","routine"] as const).some(k=>p[k]!==offered[k])){
+      if(input.season)throw Error("この調整では選んだ予定に参加できません。設備・指導を元に戻すか、自主練習の方針を選んでください。");
       p={...p,id:"custom",name:"自分で調整した方針",reason:"変更した練習・生活・出場条件を採用した。",aim:"選んだ条件で育成する",tradeoff:"勤務は基準の"+Math.round(p.workRatio*100)+"%。",visitHours:0,bookingFee:0};
     }
   }
   const preview = inspectStrategy(input, p);
   if (preview.errors.length) throw Error(preview.errors.join("。"));
-  const r = structuredClone(input),
+  const edition=input.season && p.contest ? availableShow(input,p.contest,input.career.athlete.day+preview.days):undefined;
+  const paidEdition=edition&&!pendingEdition(input)?edition:undefined;
+  const r = paidEdition?registerEdition(input,paidEdition.key):structuredClone(input),
     c = preview.career,
     number = r.records.length + 1;
-  const fee = p.contest ? LEAGUE[p.contest].fee + LEAGUE[p.contest].travel : 0;
+  const fee = input.season ? (paidEdition ? paidEdition.fee+paidEdition.travel : 0) : p.contest ? LEAGUE[p.contest].fee + LEAGUE[p.contest].travel : 0;
   c.athlete.life.money -= fee+(p.bookingFee??0);
   const best=bestStage(input);
-  const fact=input.origin && input.storyVersion===2?makeFact(input,p,best,LEAGUE[best].name):undefined;
+  const fact=input.origin && input.storyVersion===2?makeFact(input,p,best,input.season?targetEdition(input).name:LEAGUE[best].name):undefined;
   if(fact?.action==="friend"){
     const peer=r.rivals[0];peer.storyPerson=fact.person;peer.name=fact.personName!;peer.career.athlete.name=peer.name;
   }
@@ -631,7 +649,10 @@ function contestField(r: ChallengeRun, tier: StageTier) {
   const offset = { gym: 0, region: 1, open: 2, national: 3, world: 4 }[tier];
   const count = { gym: 4, region: 6, open: 8, national: 10, world: 8 }[tier],
     start = tier === "national" ? 0 : offset;
-  const pool=r.rivals.slice(start,start+count);
+  const meet=r.season?pendingEdition(r):undefined;
+  const international=meet?.tier==="world"?["asia","international","qualifier","final"].indexOf(meet.id):-1;
+  const pool=international<0?r.rivals.slice(start,start+count):r.rivals.slice(2+international,2+international+5+((meet!.year+international)%3));
+
   const peer=r.rivals.find(x=>x.storyPerson);
   if(!peer)return pool;
   if(r.job?.record.fact?.jointRegistration)return [peer,...pool.filter(x=>x!==peer)].slice(0,count);
@@ -685,14 +706,18 @@ export function ending(r: ChallengeRun, at: 20 | 40): ChallengeEnding {
   const records = r.records.slice(0, at),
     shows = records.flatMap((x) => (x.show ? [x.show] : [])),
     won = shows.filter((x) => x.rank === 1),
-    title = won.some((s) => s.tier === "world")
+    title = won.some((s) => s.tier === "world" && (!s.edition || findEdition(s.edition).id==="final"))
       ? LEAGUE.world.name
       : won.some((s) => s.tier === "national")
         ? LEAGUE.national.name
         : null;
+  const level=(s:ChallengeShow)=>s.edition?SERIES.findIndex(e=>e.id===findEdition(s.edition!).id):s.tier==="world"?7:TIERS.indexOf(s.tier);
   const best = [...shows].sort(
-    (a, b) => TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || a.rank - b.rank,
+    (a, b) => level(b) - level(a) || a.rank - b.rank,
   )[0];
+  const first=records[0], supporter=records.find(x=>x.fact?.action==="help")?.fact?.personName;
+  const lastMeet=shows.at(-1),growth=muscleMass(r.career.athlete.body)-muscleMass(r.initial.athlete.body);
+  const life=r.season&&r.origin?[r.origin.residence+"で「"+first.strategy.name+"」と決めた頃から、筋質量は"+growth.toFixed(1)+"kg変わった。",supporter?supporter+"の出番を支えた日も、その練習の日々の一部だ。":"",lastMeet?(lastMeet.edition?findEdition(lastMeet.edition).name:LEAGUE[lastMeet.tier].name)+"の"+lastMeet.rank+"位が、この章の最後の舞台になった。":"舞台へ立つ日を急がず、自分の身体と向き合う時間を選んだ。",records.some(x=>x.fact?.action==="letter")?"練習帳には、あの手紙に添えた記録の続きがある。":"次に練習帳を開くとき、初日の記録が今の身体につながっている。"].join(""):null;
   return {
     at,
     day: r.career.athlete.day,
@@ -702,11 +727,11 @@ export function ending(r: ChallengeRun, at: 20 | 40): ChallengeEnding {
     posing: r.career.progress!.posing,
     title,
     best: best ? { tier: best.tier, rank: best.rank } : null,
-    text: r.storyVersion===2 && r.origin ? (best?LEAGUE[best.tier].name+" "+best.rank+"位。":"")+turningEnding(records) : title
+    text: life ?? (r.storyVersion===2 && r.origin ? (best?LEAGUE[best.tier].name+" "+best.rank+"位。":"")+turningEnding(records) : title
       ? `${title}を制した${at}の決断。`
       : best
         ? `${LEAGUE[best.tier].name}で${best.rank}位。選んだ生活と身体が、この到達点を作りました。`
-        : "舞台への出場より、生活と身体づくりを選んだキャリア。",
+        : "舞台への出場より、生活と身体づくりを選んだキャリア。"),
     recordCount: records.length,
   };
 }
@@ -720,14 +745,18 @@ export function runPeriodBatch(
     j = r.job!,
     logs: DailySummary[] = [];
   for (let i = 0; i < Math.min(7, days) && r.career.athlete.day < j.end; i++) {
-    const remaining = j.end - r.career.athlete.day,
-      c = prepareStrategyDay(r.career, j.plan, remaining),
+    const today=r.career.athlete.day, meet=r.season?pendingEdition(r):undefined;
+    const remaining = j.end - today;
+    const untilMeet=meet?meet.date-today+1:remaining;
+    const oneDayTrip=r.season && j.record.fact?.action==="travelPractice" && remaining===1;
+    const plan=r.season?{...j.plan,...(oneDayTrip?{foodStyle:"quick" as const}:{}),contest:meet?.tier??null,visitHours:remaining===1?j.plan.visitHours:0}:j.plan;
+    const c = prepareStrategyDay(r.career, plan, meet?untilMeet:remaining),
       changed =
         c.plan.days[c.athlete.day % 7].focus === "rest" &&
         r.career.plan.days[c.athlete.day % 7].focus !== "rest";
     const result = simulateDay(c, {
       contestHours:
-        remaining === 1 ? (j.plan.contest?LEAGUE[j.plan.contest].hours:0)+(j.plan.visitHours??0) : 0,
+        (untilMeet===1 && plan.contest ? LEAGUE[plan.contest].hours : 0)+(remaining===1?(j.plan.visitHours??0):0)+(meet && today<meet.date && today>=meet.date-meet.days?4:0),
     });
     if (!result)
       throw Error("期間を進められません。保存した時点から再開してください");
@@ -738,8 +767,8 @@ export function runPeriodBatch(
     for (const rival of r.rivals) {
       // The established rival field has entry qualifications before this run.
       // Once entered, it pays and rests under the same rules as the player.
-      const entered = rival.storyPerson && j.record.fact?.action==="help" ? "gym" : j.plan.contest && contestField(r,j.plan.contest).some(x=>x.id===rival.id) ? j.plan.contest : null;
-      if(entered && remaining===j.end-j.start)
+      const entered = rival.storyPerson && j.record.fact?.action==="help" ? "gym" : plan.contest && contestField(r,plan.contest).some(x=>x.id===rival.id) ? plan.contest : null;
+      if(entered && (r.season?untilMeet===1:remaining===j.end-j.start))
         rival.career.athlete.life.money-=LEAGUE[entered].fee+LEAGUE[entered].travel;
       const p: Strategy = {
         ...j.plan,
@@ -759,12 +788,16 @@ export function runPeriodBatch(
         autoFood: true,
         autoRecovery: true,
       };
-      const rc = prepareStrategyDay(rival.career, p, remaining),
-        rr = simulateDay(rc,{contestHours:entered&&remaining===1?LEAGUE[entered].hours:0});
+      const rc = prepareStrategyDay(rival.career, p, untilMeet),
+        rr = simulateDay(rc,{contestHours:entered&&untilMeet===1?LEAGUE[entered].hours:0});
       if (!rr) throw Error("対戦相手の計算を再開できません");
       rival.career = rr.career;
       rival.career.pendingEvent = null;
       rival.career.snapshots = [];
+    }
+    if(meet && today===meet.date){
+      j.record.show={...contest(r,meet.tier),edition:meet.key,fee:meet.fee+meet.travel};
+      r.season!.entries.find(x=>x.key===meet.key)!.state="finished";
     }
   }
   if (r.career.athlete.day === j.end) {
@@ -772,7 +805,7 @@ export function runPeriodBatch(
     // the player's consultation intent for the next decision rather than
     // accidentally turning "ask" into a permanent cut/build instruction.
     if(r.career.coachingGuide)r.career.coachingGuide.goal=j.record.strategy.goal;
-    if (j.plan.contest) j.record.show = contest(r, j.plan.contest);
+    if (!r.season && j.plan.contest) j.record.show = contest(r, j.plan.contest);
     Object.assign(j.record, {
       after: structuredClone(r.career.athlete.body),
       afterMoney: r.career.athlete.life.money,
@@ -785,8 +818,8 @@ export function runPeriodBatch(
       if(f.action==="help")f.partnerStart={day:j.end-1,tier:"gym"};
       const shared=f.jointRegistration && j.record.show?.standings.find(x=>r.rivals.some(v=>v.storyPerson && v.id===x.id));
       if(shared)f.sharedStart=true;
-      const closed=f.closed.filter(num=>num!==f.cause).map(num=>"決断"+num+"の予定は今回は見送った。").join("");
-      j.record.response=f.reply+(shared?" "+shared.name+"も同じ大会に出場し、"+shared.rank+"位だった。":"")+closed+(j.record.show?" 結果は"+LEAGUE[j.record.show.tier].name+"で"+j.record.show.rank+"位。":"");
+      const closed=f.closed.filter(num=>num!==f.cause).map(num=>r.season?"「"+r.records[num-1].strategy.name+"」の後に待っていた予定は、今回は見送った。":"決断"+num+"の予定は今回は見送った。").join("");
+      j.record.response=f.reply+(shared?" "+shared.name+"も同じ大会に出場し、"+shared.rank+"位だった。":"")+closed+(j.record.show?" 結果は"+(j.record.show.edition?findEdition(j.record.show.edition).name:LEAGUE[j.record.show.tier].name)+"で"+j.record.show.rank+"位。":"");
     }else if(r.origin){
       const friend=r.origin.contact, plan=j.record.strategy;
       j.record.response=j.record.show ? friend+"に"+LEAGUE[j.record.show.tier].name+"の"+j.record.show.rank+"位を知らせた。「次に見たい動きがある」と返事がきた。" :
@@ -855,6 +888,13 @@ export function validateChallenge(x: unknown): asserts x is ChallengeRun {
     r.id.length > 100
   )
     throw Error("挑戦セーブの形式が不正です");
+  if(r.season){
+    const s=r.season;
+    if(s.version!==1||!Number.isInteger(s.since)||s.since<0||s.since>r.records.length||!s.legacy||!Array.isArray(s.entries)||!Array.isArray(s.announced)||s.entries.filter(e=>e.state==="entered").length>1||new Set(s.entries.map(e=>e.key)).size!==s.entries.length)throw Error("大会台帳が不正です");
+    if(s.target)findEdition(s.target);
+    if(Object.keys(s.legacy).some(k=>!["regional","japan","asia"].includes(k))||Object.values(s.legacy).some(y=>!Number.isInteger(y)||y!<2027||y!>2100)||s.announced.some(key=>typeof key!=="string"||!s.entries.some(e=>e.key===key&&e.state==="finished")))throw Error("資格または発表履歴が不正です");
+    for(const e of s.entries){const spec=findEdition(e.key);if(!["entered","finished","cancelled"].includes(e.state)||e.paid!==spec.fee+spec.travel||e.day<spec.opens||e.day>spec.deadline)throw Error("申込記録が不正です");}
+  }
   validateCareer(r.career);
   validateCareer(r.initial);
   if(r.initial.athlete.day!==0||r.initial.athlete.id!==r.career.athlete.id||r.id!==r.career.athlete.id||(r.mode==='japan')!==(r.limit===20)||typeof r.tutorialHidden!=='boolean')throw Error('挑戦の初期条件が一致しません');
@@ -870,8 +910,8 @@ export function validateChallenge(x: unknown): asserts x is ChallengeRun {
     if (
       v.number !== i + 1 ||
       v.from !== day ||
-      v.to !== day + decisionDays(i + 1) ||
-      v.stats.days !== decisionDays(i + 1)
+      v.to !== day + periodDays(r,i+1,day) ||
+      v.stats.days !== periodDays(r,i+1,day)
     )
       throw Error("決断履歴が連続していません");
     day = v.to;
@@ -881,7 +921,7 @@ export function validateChallenge(x: unknown): asserts x is ChallengeRun {
       !r.job ||
       r.job.number !== r.records.length + 1 ||
       r.job.start !== day ||
-      r.job.end !== day + decisionDays(r.job.number) ||
+      r.job.end !== day + periodDays(r,r.job.number,day) ||
       r.job.record.stats.days !== r.career.athlete.day - day ||
       r.career.athlete.day >= r.job.end
     )

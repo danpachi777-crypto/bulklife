@@ -385,12 +385,17 @@ function Athlete({
     root.traverse((o) => {
       // A multi-material garment has a parent group as well as skinned primitives.
       if(['BL_V3_TrainingTank','BL_V3_Trainers','BL_V4_TrainingTank','BL_V4_TrainingShorts'].includes(o.name))o.visible=wear;
+      if(o.name==="BL_V4_Hair" && bib==="02"){
+        const variant=Math.round(body.height*10)%3;
+        o.rotation.y=(variant-1)*.013;
+        o.scale.x=1+(variant-1)*.018;
+      }
       if (o.name === "BL_V3_Trainers") o.visible = wear;
       if (!(o instanceof Mesh)) return;
       if (o.morphTargetDictionary && o.morphTargetInfluences)
         for (const [name, index] of Object.entries(o.morphTargetDictionary))
           o.morphTargetInfluences[index] =
-            values[name as keyof typeof values] ?? 0;
+            name==="rivalJaw"&&bib==="02"? .25+((Math.round(body.height*10)%7)/10):values[name as keyof typeof values] ?? 0;
       if (o.name.startsWith("HairSide")) o.visible = hair === 0;
       if (o.name === "Hair") o.scale.y = hair === 1 ? 0.6 : 1;
       if (o.name === "BL_V2_Hair" || o.name === "BL_V3_HairFlow")
