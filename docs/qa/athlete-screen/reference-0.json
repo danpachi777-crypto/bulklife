@@ -1,0 +1,114 @@
+{
+  "url": "https://1in8b.life/ja/",
+  "choice": true,
+  "detail": true,
+  "detailClosed": true,
+  "resultChanged": true,
+  "actions": [
+    "生まれる",
+    "人生を始める",
+    "次の決断まで次へ »",
+    "1土や小石をじっと見つめる",
+    "母 Jennifer 28歳›",
+    "母 Jennifer 28歳›"
+  ],
+  "sources": [
+    {
+      "url": "https://1in8b.life/ja/",
+      "type": "document",
+      "matches": [
+        "canvas",
+        "p-scene",
+        "safe-area-inset-bottom"
+      ]
+    },
+    {
+      "url": "https://1in8b.life/a/s.d4aad29474.css",
+      "type": "stylesheet",
+      "matches": [
+        "canvas",
+        "p-scene",
+        "pixelated",
+        "safe-area-inset-bottom",
+        "prefers-reduced-motion"
+      ]
+    },
+    {
+      "url": "https://1in8b.life/a/ja.62267d490c.js",
+      "type": "script",
+      "matches": [
+        "getContext",
+        "canvas",
+        "addEventListener",
+        "safe-area-inset-bottom",
+        "prefers-reduced-motion",
+        "localStorage"
+      ]
+    },
+    {
+      "url": "https://1in8b.life/a/ja.v.3137c28891.js",
+      "type": "script",
+      "matches": [
+        "getContext",
+        "canvas",
+        "addEventListener",
+        "prefers-reduced-motion",
+        "localStorage"
+      ]
+    }
+  ],
+  "layout": [
+    {
+      "width": 390,
+      "sceneCanvas": true,
+      "items": [
+        {
+          "tag": "DIV",
+          "classes": "panel p-scene",
+          "w": 358,
+          "h": 182,
+          "font": "15px",
+          "line": "24px",
+          "overflow": "hidden",
+          "position": "static"
+        },
+        {
+          "tag": "DIV",
+          "classes": "scene",
+          "w": 356,
+          "h": 111,
+          "font": "15px",
+          "line": "24px",
+          "overflow": "visible",
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "sceneCanvas": true,
+      "items": [
+        {
+          "tag": "DIV",
+          "classes": "panel p-scene",
+          "w": 540,
+          "h": 215,
+          "font": "15px",
+          "line": "24px",
+          "overflow": "hidden",
+          "position": "static"
+        },
+        {
+          "tag": "DIV",
+          "classes": "scene",
+          "w": 538,
+          "h": 168,
+          "font": "15px",
+          "line": "24px",
+          "overflow": "visible",
+          "position": "static"
+        }
+      ]
+    }
+  ]
+}

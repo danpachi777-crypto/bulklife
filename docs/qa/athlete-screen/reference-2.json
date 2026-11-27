@@ -1,0 +1,230 @@
+{
+  "url": "https://parallel-life-phi.vercel.app/",
+  "choice": true,
+  "detail": true,
+  "detailClosed": false,
+  "resultChanged": true,
+  "actions": [
+    "だれかの人生を生きる名前も、生まれる年も場所も、くじ引きで。0歳から、知らない誰かの一生をたどる。→",
+    "生まれる",
+    "結果まで飛ばす",
+    "この人生を生きる",
+    "8×",
+    "スポーツ(水泳・サッカーなど)小学生の習い事で最も多いのは水泳などスポーツ系(概算)",
+    "自分の貯金(タップで内訳)500円"
+  ],
+  "sources": [
+    {
+      "url": "https://parallel-life-phi.vercel.app/assets/index-tkbMQvd1.css",
+      "type": "stylesheet",
+      "matches": [
+        "canvas",
+        "pixelated",
+        "choice-label",
+        "choice-hint",
+        "safe-area-inset-bottom",
+        "prefers-reduced-motion"
+      ]
+    },
+    {
+      "url": "https://parallel-life-phi.vercel.app/assets/index-Rmero1ne.js",
+      "type": "script",
+      "matches": [
+        "getContext",
+        "canvas",
+        "addEventListener",
+        "pixelated",
+        "choice-label",
+        "choice-hint",
+        "prefers-reduced-motion",
+        "localStorage"
+      ]
+    }
+  ],
+  "layout": [
+    {
+      "width": 390,
+      "sceneCanvas": false,
+      "items": [
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 320,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 320,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 320,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 320,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 320,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 320,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 320,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 320,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "sceneCanvas": false,
+      "items": [
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 570,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 570,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 570,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 570,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 570,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 570,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-label",
+          "w": 570,
+          "h": 30,
+          "font": "16px",
+          "line": "29.6px",
+          "overflow": "visible",
+          "position": "static"
+        },
+        {
+          "tag": "SPAN",
+          "classes": "choice-hint",
+          "w": 570,
+          "h": 21,
+          "font": "14px",
+          "line": "21px",
+          "overflow": "visible",
+          "position": "static"
+        }
+      ]
+    }
+  ],
+  "separateDetailRun": {
+    "actions": [
+      "だれかの人生を生きる名前も、生まれる年も場所も、くじ引きで。0歳から、知らない誰かの一生をたどる。→",
+      "生まれる",
+      "結果まで飛ばす",
+      "この人生を生きる",
+      "資金内訳の開閉",
+      "8×"
+    ],
+    "detail": true,
+    "detailClosed": true
+  }
+}

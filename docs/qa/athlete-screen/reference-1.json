@@ -1,0 +1,106 @@
+{
+  "url": "https://nakata-ataru.com/konotochi/play/",
+  "choice": true,
+  "detail": true,
+  "detailClosed": true,
+  "resultChanged": true,
+  "actions": [
+    "はじめる",
+    "子育てを始める",
+    "早送り ≫",
+    "育休をとって、1年後に職場に戻るこの年、育休をとった女性は約81%",
+    "東毛・共働き・あなた（母）34歳凛",
+    "とじる"
+  ],
+  "sources": [
+    {
+      "url": "https://nakata-ataru.com/konotochi/play/",
+      "type": "document",
+      "matches": [
+        "getContext",
+        "canvas",
+        "pagebody",
+        "addEventListener",
+        "choicearea",
+        "pagebody",
+        "safe-area-inset-bottom",
+        "prefers-reduced-motion",
+        "localStorage"
+      ]
+    }
+  ],
+  "layout": [
+    {
+      "width": 390,
+      "sceneCanvas": false,
+      "items": [
+        {
+          "tag": "SECTION",
+          "classes": "sheet page",
+          "w": 358,
+          "h": 647,
+          "font": "15px",
+          "line": "25.5px",
+          "overflow": "hidden",
+          "position": "relative"
+        },
+        {
+          "tag": "DIV",
+          "classes": "pagebody",
+          "w": 356,
+          "h": 594,
+          "font": "15px",
+          "line": "25.5px",
+          "overflow": "auto",
+          "position": "static"
+        },
+        {
+          "tag": "DIV",
+          "classes": "choice",
+          "w": 324,
+          "h": 370,
+          "font": "15px",
+          "line": "25.5px",
+          "overflow": "visible",
+          "position": "relative"
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "sceneCanvas": false,
+      "items": [
+        {
+          "tag": "SECTION",
+          "classes": "sheet page",
+          "w": 620,
+          "h": 647,
+          "font": "15px",
+          "line": "25.5px",
+          "overflow": "hidden",
+          "position": "relative"
+        },
+        {
+          "tag": "DIV",
+          "classes": "pagebody",
+          "w": 618,
+          "h": 594,
+          "font": "15px",
+          "line": "25.5px",
+          "overflow": "auto",
+          "position": "static"
+        },
+        {
+          "tag": "DIV",
+          "classes": "choice",
+          "w": 586,
+          "h": 343,
+          "font": "15px",
+          "line": "25.5px",
+          "overflow": "visible",
+          "position": "relative"
+        }
+      ]
+    }
+  ]
+}

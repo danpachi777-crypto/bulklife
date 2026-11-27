@@ -159,7 +159,7 @@ function Controls({
       framing === "face"
         ? 0.82
         : framing === "upper"
-          ? 1.45
+          ? 1.56
           : Math.max(
               competition || raised ? 3.6 : seated ? 2.65 : 2.85,
               (competition ? 1.25 : 1.05) / (size.width / size.height),
@@ -168,7 +168,7 @@ function Controls({
       framing === "face"
         ? 1.63
         : framing === "upper"
-          ? 1.25
+          ? 1.34
           : competition || raised
             ? 1.1
             : seated
@@ -221,6 +221,7 @@ function Athlete({
   body,
   baseline,
   selected,
+  focusParts,
   hair,
   clip,
   playing,
@@ -236,6 +237,7 @@ function Athlete({
   body: BodyState;
   baseline?: BodyState;
   selected: Part;
+  focusParts?: readonly Part[];
   hair: number;
   clip: string;
   playing: boolean;
@@ -431,7 +433,8 @@ function Athlete({
           const w = influence(bind, region, model);
           let amount = 0;
           if (mode === "normal") {
-            if (
+            if (focusParts?.includes(region)) color.setRGB(1, .97, .89);
+            else if (
               region === selected &&
               onSelect &&
               presentation === "inspection"
@@ -483,6 +486,7 @@ function Athlete({
     body,
     baseline,
     selected,
+    focusParts,
     mode,
     root,
     hair,
@@ -689,10 +693,13 @@ export function BodyView({
   presentation = "inspection",
   comparison = false,
   comparisonAngle = 0,
+  careerFrame,
+  focusParts: portraitFocus,
   opponent,
 }: {
   body: BodyState;
   selected: Part;
+  focusParts?: readonly Part[];
   hair?: number;
   baseline?: BodyState;
   onSelectPart?: (p: Part) => void;
@@ -704,6 +711,7 @@ export function BodyView({
   presentation?: "inspection" | "home" | "title" | "creation";
   comparison?: boolean;
   comparisonAngle?: number;
+  careerFrame?: "upper" | "full";
   opponent?: BodyState;
 }) {
   const studio = useRef<HTMLDivElement>(null);
@@ -722,7 +730,7 @@ export function BodyView({
   const competition = !!stage;
   const immersive = presentation !== "inspection" || competition;
   const interactive =
-    !preview && !opening && !competition && (!mobile || touchRotation);
+    !careerFrame && !preview && !opening && !competition && (!mobile || touchRotation);
   useEffect(() => {
     const observer = new IntersectionObserver((entries) =>
       setVisible(entries[0]?.isIntersecting ?? false),
@@ -763,7 +771,7 @@ export function BodyView({
     [clip, setClip] = useState(defaultClip),
     [mode, setMode] = useState<Mode>("normal"),
     [framing, setFraming] = useState<"full" | "face" | "upper">(() => import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-face')?'face':'full'),
-    [wear, setWear] = useState(immersive && !competition);
+    [wear, setWear] = useState(immersive && !competition && !careerFrame);
   const capture = useRef<(() => string) | null>(null);
   useEffect(() => setPlaying(!preview && !reduced && !(import.meta.env.DEV&&new URLSearchParams(location.search).has('portrait-still'))), [reduced, preview]);
   useEffect(() => {
@@ -885,6 +893,7 @@ export function BodyView({
                 }
                 onReady={onReady}
                 model={model}
+                focusParts={portraitFocus}
                 wear={wear || opening}
                 presentation={presentation}
                 competition={competition}
@@ -897,7 +906,7 @@ export function BodyView({
               capture={capture}
               interactive={interactive}
               presentation={presentation}
-              framing={framing}
+              framing={careerFrame ?? framing}
               competition={competition}
               raised={/FrontDoubleBiceps|BackDoubleBiceps|TrainingPress/.test(clip)}
               height={body.height}

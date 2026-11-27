@@ -10,10 +10,10 @@ export function SeasonCalendar({run,full=false,save,busy}:{run:ChallengeRun;full
  return <section className="season-calendar" aria-label={full?"年間大会カレンダー":"次の目標大会"}>
  {full&&<h2>年間大会カレンダー</h2>}
  {rows.map(e=>{const booked=pending?.key===e.key,reason=entryProblem(run,e),weeks=Math.ceil((e.date-today)/7);
- return <article key={e.key}><small>{full?"架空のBULK男子サーキット":"目標大会"} · {e.city}</small>
+ return <article key={e.key}><small>{full?"架空のBULK男子サーキット":"次の目標大会"} · {{gym:"測定会",region:"県",open:"地方",national:"全国",world:"国際"}[e.tier]} · {e.city}</small>
  <h3>{e.name} <small>あと{weeks}週</small></h3>
  <p><time>{isoDay(e.date)}</time> 開催 · {booked?"申込済み":qualifier(run,e)||"出場資格あり"}</p>
- <p>{advancement(e)}</p>
+ <p>{advancement(e)}</p><small>締切 {isoDay(e.deadline)} · {booked?"申込済み":today<e.opens?"受付前":today>e.deadline?"受付終了":"受付中"}</small>
  {(full||!reason||confirm===e.key)&&<details open={confirm===e.key||undefined}><summary>申込日程・費用</summary>
  <p>受付 {isoDay(e.opens)}〜{isoDay(e.deadline)}。参加費{e.fee.toLocaleString()}円、交通費{e.travel.toLocaleString()}円。移動{e.days}日、受付・計量は{isoDay(e.checkIn)}。辞退時の返金はありません。</p></details>}
  {full&&!booked&&e.key!==current.key&&!pending&&run.status==="planning"&&<button onClick={()=>target(e)}>この大会を目指す</button>}

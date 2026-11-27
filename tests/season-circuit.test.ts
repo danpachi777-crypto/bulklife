@@ -25,6 +25,23 @@ test("old saves retain history and can be copied into the new seasons",()=>{
  registered.season!.entries[0].state="cancelled";assert.throws(()=>registerEdition(registered,e.key));
 });
 
+test("training proposals use the date of the targeted edition",()=>{
+ let run=adoptCalendar(newChallenge("japan",231,"calendar-countdown"));
+ run=confirmStrategy(run,strategyCandidates(run)[0]);
+ while(run.job) run=runPeriodBatch(run,7).run;
+ run=nextDecision(run);
+ // Isolate calendar proposals from the pending personal invitation.
+ delete run.records[0].fact!.next;
+ const target=edition(SERIES[1],2027);
+ run.season!.target=target.key;
+ for(const [weeks,action,minutes] of [[12,"target",55],[8,"rehearse",40],[4,"taper",30]] as const){
+   run.career.athlete.day=target.date-weeks*7;
+   const proposal=strategyCandidates(run).find(p=>p.id==="turn/entry/"+action);
+   assert.ok(proposal,"expected "+action+" at "+weeks+" weeks");
+   assert.equal(proposal.minutes,minutes);
+ }
+});
+
 test("quarterly measurements and the world final keep distinct occurrence IDs",async()=>{
  const {editions,findEdition}=await import("../src/core/seasonCircuit");
  const r=adoptCalendar(newChallenge("world",823,"rounds"));

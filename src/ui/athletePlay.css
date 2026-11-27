@@ -1,0 +1,52 @@
+
+.challenge-game:has(.athlete-play){background:#faf8f2;color:#20382c;}
+.challenge-game:has(.athlete-play) .challenge-header{margin-bottom:.65rem;padding-bottom:.45rem;align-items:center}
+.challenge-game:has(.athlete-play) .challenge-header h1{font-size:1.2rem;margin:.2rem 0}
+.challenge-game:has(.athlete-play) .challenge-header h1 small{display:inline-block;margin:0 .6em;font-weight:400}
+.athlete-play{max-width:1100px;margin:auto;display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);grid-template-rows:auto auto 1fr;gap:.5rem 2rem;align-items:start}
+.career-portrait{grid-column:1;grid-row:1;position:relative;overflow:hidden;border-radius:.8rem;background:#deded3;isolation:isolate}
+.career-portrait .body-view,.career-portrait .body-studio{height:clamp(280px,44vh,420px)!important;min-height:0!important}
+.portrait-actions{position:absolute;right:.55rem;bottom:.5rem;display:flex;gap:.25rem;flex-wrap:wrap;justify-content:flex-end;max-width:100%}
+.portrait-actions button{background:#faf8f2f0;color:#1d3729;border:1px solid #9aa99c;border-radius:.45rem;padding:.4rem .65rem;font-size:.875rem}
+.focus-note{position:absolute;top:.4rem;left:.5rem;background:#faf8f2e8;padding:.28em .6em;border-radius:.3em;color:#244c36}
+.career-vitals{grid-column:1;grid-row:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding:.4rem 0;border-bottom:1px solid #bec7bc}
+.career-vitals div{padding:.2em .55em;border-inline-end:1px solid #c8cec0}.career-vitals div:last-child{border:0}
+.career-vitals dt{font-size:.8rem}.career-vitals dd{margin:.15em 0;font-variant-numeric:tabular-nums;font-size:1rem;font-weight:650}
+.athlete-play .season-calendar{grid-column:1;grid-row:3;padding:.65rem 1rem;border:1px solid #ccd1c0;border-left:4px solid #708457;border-radius:.3rem}
+.athlete-play .challenge-workbench{grid-column:2;grid-row:1/4;min-width:0}
+.athlete-play .choice-card{position:relative;gap:.25em;padding:.75em 1em;line-height:1.5}
+.athlete-play .choice-hint{color:#435547;font-weight:400;font-size:1rem}
+.athlete-play .choice-card strong{font-size:1.06rem}.athlete-play .choice-card[aria-pressed=true]{border-left:5px solid #386048}
+.athlete-play button:focus-visible,.athlete-play summary:focus-visible{outline:3px solid #935f1d;outline-offset:2px}
+@media(max-width:800px){
+ .athlete-play{display:flex;flex-direction:column;gap:.4rem}.athlete-play>*{width:100%;box-sizing:border-box}
+ .career-portrait .body-studio,.career-portrait .body-view{height:clamp(154px,22svh,214px)!important}
+ .career-vitals{padding:.1rem 0}.career-vitals dd{white-space:normal}.portrait-actions{flex-direction:column;right:.35rem}
+ .athlete-play .season-calendar{padding:.35rem .65rem}.athlete-play .challenge-issue{padding:.4rem .1rem}
+ .athlete-play .challenge-issue p{font-size:1rem;line-height:1.55}
+ .athlete-play .challenge-strategies{margin:.45rem 0}
+}
+@media(max-height:590px) and (max-width:800px){.career-portrait .body-studio,.career-portrait .body-view{height:145px!important}}
+
+@media(max-width:800px){
+ .challenge-game:has(.athlete-play) .challenge-header{display:grid;grid-template-columns:1fr auto;margin-bottom:.35rem;min-height:0}
+ .challenge-game:has(.athlete-play) .challenge-header>div:last-child{grid-template-columns:auto auto;align-items:center;gap:.1rem .45rem}
+ .challenge-game:has(.athlete-play) .challenge-header>div:last-child>b{grid-column:1;grid-row:1}
+ .challenge-game:has(.athlete-play) .challenge-header>div:last-child>small{grid-column:1;grid-row:2}
+ .challenge-game:has(.athlete-play) .challenge-header>div:last-child>button{grid-column:2;grid-row:1/3;padding:.2rem .45rem}
+ .focus-note{top:auto;bottom:.4rem;max-width:46%;font-size:.82rem}
+}
+@media(max-width:390px){.challenge-game:has(.athlete-play) .challenge-header h1 small{display:block;margin:.1rem 0}}
+
+.athlete-play .challenge-issue h2{margin:.12rem 0;font-size:1.35rem;line-height:1.35}
+.athlete-play .challenge-issue small{display:block;padding:0;margin:0}
+@media(max-width:800px){
+ .athlete-play .season-calendar article{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .55rem}
+ .athlete-play .season-calendar h3{font-size:1.05rem;order:0}
+ .athlete-play .season-calendar article>small:first-child{font-size:.8rem;order:-1;width:100%}
+ .athlete-play .season-calendar p{font-size:1rem}
+ .athlete-play .season-calendar article>small:last-of-type{font-size:.8rem}
+ .athlete-play .season-calendar article>details{flex-basis:100%}
+ .athlete-play .challenge-workbench{padding:0}
+ .athlete-play .challenge-issue,.athlete-play .challenge-strategies{margin:.15rem 0}
+}

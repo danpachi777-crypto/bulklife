@@ -576,7 +576,15 @@ export function turningPoint(
     };
   if(r.season){
     const goal=targetEdition(r),weeks=Math.ceil((goal.date-r.career.athlete.day)/7);
-    if(event==="entry")scene={...scene,title:"次の開催までの仕上げ方",text:goal.name+"まであと"+weeks+"週。"+(weeks<=4?"疲労を抜いて立ち姿を揃えたい。":"身体づくりと規定ポーズの練習に時間を振り分けられる。")};
+    if(event==="entry"){
+      const preparation=weeks<=4
+        ? option("taper","負荷を落として立ち姿を整える","練習の負荷を落とし、規定ポーズと睡眠に時間を回した。",{effort:"light",minutes:30,posing:40,sleep:8.5})
+        : weeks<=8
+          ? option("rehearse","本番の順番でポーズを通す","規定ポーズを続けて練習し、動きの切り替えを確かめた。",{minutes:40,posing:45})
+          : focus;
+      scene={...scene,title:"次の開催までの仕上げ方",text:goal.name+"まであと"+weeks+"週。"+(weeks<=4?"疲労を抜きながら立ち姿を確かめたい。":weeks<=8?"審査の流れを想定して、ポーズを通す時間を取れる。":"まだ練習を重ねる時間がある。弱点に配分するか、次の開催へ回すか。"),
+        choices:scene.choices.map(choice=>choice.key==="pose"?preparation:choice)};
+    }
     if(event==="restart")scene={...scene,text:"国内編で積んだ成績から、次に目指せるのは"+goal.name+"。今季の生活に合わせて準備を始めたい。"};
     if(event==="reunion"&&source?.fact?.personName){
       const rival=r.rivals.find(x=>x.name===source.fact?.personName);

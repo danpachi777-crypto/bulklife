@@ -48,7 +48,7 @@ export const EFFORT = {
   standard: "標準",
   hard: "しっかり",
 } as const;
-const priorityParts: Record<CoachPriority, Part[]> = {
+export const priorityParts: Record<CoachPriority, Part[]> = {
   balanced: [...PARTS],
   chest: ["chest", "upperChest"],
   back: ["lats", "upperBack"],

@@ -1,0 +1,157 @@
+{
+  "metrics": [
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "portrait": {
+        "top": 113.578125,
+        "height": 185.671875,
+        "bottom": 299.25
+      },
+      "firstCard": {
+        "top": 684.546875,
+        "height": 103.421875,
+        "bottom": 787.96875
+      },
+      "advance": {
+        "top": 726.4375,
+        "height": 49.96875,
+        "bottom": 776.40625
+      },
+      "nav": {
+        "top": 797.90625,
+        "height": 46.09375,
+        "bottom": 844
+      }
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 360,
+      "portrait": {
+        "top": 113.578125,
+        "height": 154,
+        "bottom": 267.578125
+      },
+      "firstCard": {
+        "top": 652.875,
+        "height": 103.421875,
+        "bottom": 756.296875
+      },
+      "advance": {
+        "top": 522.4375,
+        "height": 49.96875,
+        "bottom": 572.40625
+      },
+      "nav": {
+        "top": 593.90625,
+        "height": 46.09375,
+        "bottom": 640
+      }
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "scrollWidth": 375,
+      "portrait": {
+        "top": 113.578125,
+        "height": 154,
+        "bottom": 267.578125
+      },
+      "firstCard": {
+        "top": 652.875,
+        "height": 103.421875,
+        "bottom": 756.296875
+      },
+      "advance": {
+        "top": 549.4375,
+        "height": 49.96875,
+        "bottom": 599.40625
+      },
+      "nav": {
+        "top": 620.90625,
+        "height": 46.09375,
+        "bottom": 667
+      }
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "scrollWidth": 430,
+      "portrait": {
+        "top": 93.984375,
+        "height": 205.03125,
+        "bottom": 299.015625
+      },
+      "firstCard": {
+        "top": 684.3125,
+        "height": 79.421875,
+        "bottom": 763.734375
+      },
+      "advance": {
+        "top": 814.4375,
+        "height": 49.96875,
+        "bottom": 864.40625
+      },
+      "nav": {
+        "top": 885.90625,
+        "height": 46.09375,
+        "bottom": 932
+      }
+    },
+    {
+      "width": 360,
+      "height": 540,
+      "scrollWidth": 360,
+      "portrait": {
+        "top": 113.578125,
+        "height": 145,
+        "bottom": 258.578125
+      },
+      "firstCard": {
+        "top": 643.875,
+        "height": 103.421875,
+        "bottom": 747.296875
+      },
+      "advance": {
+        "top": 422.4375,
+        "height": 49.96875,
+        "bottom": 472.40625
+      },
+      "nav": {
+        "top": 493.90625,
+        "height": 46.09375,
+        "bottom": 540
+      }
+    },
+    {
+      "width": 1280,
+      "height": 850,
+      "scrollWidth": 1280,
+      "portrait": {
+        "top": 154.125,
+        "height": 374,
+        "bottom": 528.125
+      },
+      "firstCard": {
+        "top": 323.359375,
+        "height": 79.421875,
+        "bottom": 402.78125
+      },
+      "advance": {
+        "top": 732.40625,
+        "height": 50,
+        "bottom": 782.40625
+      },
+      "nav": {
+        "top": 788,
+        "height": 62,
+        "bottom": 850
+      }
+    }
+  ],
+  "result": "前の期間\n\nジムで元選手の桐谷に会い、測定会の案内を手渡された。\n\n筋質量 +0.49kg · 資金 +51238円\n\n身体と収支の記録",
+  "keptCanvasAcrossSelectionAndFraming": true,
+  "selectionSurvivedInspection": true
+}

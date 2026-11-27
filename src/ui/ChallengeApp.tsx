@@ -1,4 +1,5 @@
-import {adoptCalendar,findEdition,pendingEdition} from "../core/seasonCircuit";
+import {choiceHint} from "./careerChoices";
+import {adoptCalendar,findEdition} from "../core/seasonCircuit";
 import {SeasonCalendar} from "./SeasonCalendar";
 import {relationshipBook} from "../core/turningPoints";
 import { profile, currentEpisode } from "../core/lifeStory";
@@ -27,7 +28,7 @@ import { PROFILES, FOCUS_LABELS } from "../core/content";
 import { gameDate } from "../core/calendar";
 import {
   GOALS,
-  PRIORITIES,
+  PRIORITIES, priorityParts,
   FOOD_STYLES,
   EFFORT,
   guideFor,
@@ -73,6 +74,7 @@ import {
   ChallengeShowView,
 } from "./ChallengeResults";
 import "./challenge.css";
+import "./athletePlay.css";
 const money = (n: number) => Math.round(n).toLocaleString("ja-JP") + "円";
 export const challengeDate = (day: number) =>
   gameDate(day).toLocaleDateString("ja-JP", { timeZone: "UTC" });
@@ -108,6 +110,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
     [selectedRecord, setSelectedRecord] = useState<DecisionRecord | null>(null),
     [guide, setGuide] = useState(false), [highFee,setHighFee]=useState(false);
   const bookmark=useRef({top:0,decision:-1});
+  const [careerFrame,setCareerFrame]=useState<"upper"|"full">("upper");
   const lock = useRef(false),
     file = useRef<HTMLInputElement>(null);
   const preview = useState(() =>
@@ -503,7 +506,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
         </section>
       )}
       {!run.season && !run.job && <button onClick={()=>void guarded(async()=>{const copy=adoptCalendar(structuredClone(run));copy.importedFrom=run.id;copy.id="bl-"+crypto.randomUUID();copy.initial.athlete.id=copy.career.athlete.id=copy.id;copy.createdAt=Date.now();await commit(copy,null);setPlan(null);})}>元のセーブを残して年次カレンダーへ移行</button>}
-      {run.status==="running"?null:unrevealed && last?.show?.edition ? <section className="award-gate"><h2>{findEdition(last.show.edition).name}</h2><p>{challengeDate(last.show.day)} · 入場と比較審査</p><ChallengeShowView show={last.show} model={c.versions.model} initial="entry" onReveal={()=>save({...run,season:{...run.season!,announced:[...run.season!.announced,last.show!.edition!]}})} /></section> : tab === "body" ? (
+      {unrevealed && last?.show?.edition ? <section className="award-gate"><h2>{findEdition(last.show.edition).name}</h2><p>{challengeDate(last.show.day)} · 入場と比較審査</p><ChallengeShowView show={last.show} model={c.versions.model} initial="entry" onReveal={()=>save({...run,season:{...run.season!,announced:[...run.season!.announced,last.show!.edition!]}})} /></section> : tab === "body" ? (
         <section className="challenge-body-page">{body}</section>
       ) : tab === "contests" ? (
         <section className="challenge-contests">
@@ -618,65 +621,46 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
             />
           ) : (
             (
-              <div className="challenge-decision-grid season-play">{run.season&&<SeasonCalendar run={run} save={save} busy={busy}/>}
-                <section className="challenge-athlete">
-                  <BodyView
-                    body={c.athlete.body}
-                    selected={part}
-                    model={c.versions.model}
-                    hair={c.athlete.appearance.hair}
-                    presentation="home"
-                    defaultClip="GymIdle"
-                  />
-                  <div className="challenge-vitals">
-                    <span>
-                      体重 <b>{weight(c.athlete.body).toFixed(1)}kg</b>
-                    </span>
-                    <span>
-                      筋質量 <b>{muscleMass(c.athlete.body).toFixed(1)}kg</b>
-                    </span>
-                    <span>
-                      回復{" "}
-                      <b>
-                        {Math.round((1 - c.athlete.systemicFatigue) * 100)}/100
-                      </b>
-                    </span>
+              <div className="challenge-decision-grid season-play athlete-play">
+                <section className="career-portrait" aria-label="現在の身体">
+                  <BodyView body={c.athlete.body} selected={part} model={c.versions.model}
+                    hair={c.athlete.appearance.hair} presentation="home" defaultClip="GymIdle" careerFrame={careerFrame} focusParts={plan&&plan.priority!=="balanced"?priorityParts[plan.priority]:undefined} preview />
+                  <div className="portrait-actions">
+                    <button onClick={()=>setCareerFrame(careerFrame==="upper"?"full":"upper")}>{careerFrame==="upper"?"全身を見る":"上半身を見る"}</button>
+                    <button onClick={()=>setInspectBody(true)}>身体を詳しく見る</button>
                   </div>
-                  <button onClick={() => nav("body")}>
-                    身体を見る
-                  </button>
+                  {plan && plan.priority!=="balanced" && <span className="focus-note">今回の重点 · {PRIORITIES[plan.priority]}</span>}
                 </section>
-                <section className="challenge-workbench">
+                <dl className="career-vitals">{[
+                  ["筋質量",muscleMass(c.athlete.body).toFixed(1)+" kg"],["体脂肪率",fatPercent(c.athlete.body).toFixed(1)+" %"],
+                  ["回復",Math.round((1-c.athlete.systemicFatigue)*100)+"/100"],["ポージング",Math.round((c.progress?.posing??0)*100)+"/100"]
+                ].map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+                {run.season&&<SeasonCalendar run={run} save={save} busy={busy}/>}
+                {run.status==="planning" && <section className="challenge-workbench">
                   <div className="challenge-issue">
-                    <span className="eyebrow">
-                      今回の決断 · {periodDays(run)}日
-                    </span>
                     <h2>{run.origin ? (run.storyVersion===2?decisionScene(run).title:currentEpisode(run).title) : chapter}</h2>
                     <p>{challengeIssue(run)}</p>
                     {import.meta.env.DEV && run.origin && run.storyVersion===2 && new URLSearchParams(location.search).has("story-debug") && <details><summary>開発用・出来事の選出理由</summary>{decisionScene(run).entries.map((x,i)=><p key={i}>{x.event} · {x.eligible?"候補":"対象外"} · {x.reason} {x.source?"決断"+x.source.number:""}</p>)}</details>}
 
-                    <small>
-                      期間：{challengeDate(c.athlete.day)}〜
-                      {challengeDate(c.athlete.day + periodDays(run) - 1)}
-                    </small>
+                    <small>今回の期間 · {periodDays(run)}日</small>
                   </div>
                   <div className="challenge-strategies" id="challenge-options">
                     {candidates.map((p) => {
                       const v = inspectStrategy(run, p);
                       return (
                         <button key={p.id} className="choice-card" aria-pressed={plan?.id===p.id} onClick={()=>choose(p)}>
-                          <strong>{p.name}</strong>{p.aim!==p.name&&p.aim.length<40&&<span>{p.aim}</span>}<span>{p.minutes}分の練習 · 勤務{Math.round(p.workRatio*100)}% · {v.food.insufficient?"食事に不足あり":"食事目標内"}</span>
-                          <span>{p.contest?"出場を含む":pendingEdition(run)?"申込済みの大会あり":"育成"}{v.upfront>0?" · 初期費用"+money(v.upfront):""}{p.visitHours?" · 予定"+p.visitHours+"時間":""}</span>
+                          <strong>{p.name}</strong><span className="choice-hint">{choiceHint(p)}</span>
+                          {(v.upfront>0||p.bookingFee||v.food.insufficient||p.contest) && <small>{[v.upfront>0?"初期費用 "+money(v.upfront):"",v.food.insufficient?"食事に不足あり":"",p.contest?"出場予定":""].filter(Boolean).join(" · ")}</small>}
                           {plan?.id===p.id&&<b>✓ 選択中</b>}
                         </button>
                       );
                     })}
                   </div>
                   {plan&&evaluation&&<details><summary>選んだ方針の詳細</summary><p>目的 {GOALS[plan.goal]} · 睡眠{plan.sleep}時間 · 食費上限{money(plan.budget)}/日。{plan.coach?"継続指導あり。":"自主練習。"} {plan.tradeoff} 期間収支の見込み {money(evaluation.net)}。</p><button onClick={()=>setEdit("basic")}>生活・練習を調整する</button>{evaluation.food.insufficient&&<button onClick={()=>choose({...plan,foodStyle:"budget",budget:Math.max(1500,plan.budget)})}>自炊中心・日額1,500円以上で再計算</button>}</details>}
-                  {last&&<aside className="last-decision"><h3>前の期間</h3><p>{last.response}</p><button onClick={()=>setSelectedRecord(last)}>身体と収支の記録</button></aside>}
+                  {last&&<aside className="last-decision"><h3>前の期間</h3><p>{last.response}</p><p>筋質量 {formatDelta(muscleMass(last.after)-muscleMass(last.before),2,"kg")} · 資金 {formatDelta(last.afterMoney-last.beforeMoney,0,"円")}</p><button onClick={()=>setSelectedRecord(last)}>身体と収支の記録</button></aside>}
                   {plan&&evaluation?.errors.map(msg=><p role="alert" key={msg}>{msg}</p>)}
                   <div className="advance-bar"><button className="primary" disabled={busy||!plan||!!evaluation?.errors.length} onClick={()=>{if(!plan)return;if(!highFee&&evaluation&&evaluation.upfront>=50000){setHighFee(true);return;}void guarded(async()=>{await commit(confirmStrategy(run,plan));setHighFee(false);setPlan(null);});}}>{highFee&&evaluation?"初期費用"+money(evaluation.upfront)+"を支払い進める":plan?"この方針で"+Math.floor(periodDays(run)/7)+"週"+(periodDays(run)%7?periodDays(run)%7+"日":"")+"進める":"方針を選んでください"}</button></div>
-                </section>
+                </section>}
               </div>
             )
           )}
@@ -721,6 +705,7 @@ export function ChallengeApp({ Legacy }: { Legacy: ComponentType }) {
           />
         </ModalSheet>
       )}
+      {inspectBody && tab==="decision" && <ModalSheet title="現在の身体を詳しく見る" onClose={()=>setInspectBody(false)}><BodyView body={c.athlete.body} baseline={run.initial.athlete.body} selected={part} onSelectPart={setPart} model={c.versions.model} hair={c.athlete.appearance.hair} defaultClip="GymIdle" /><button onClick={()=>setInspectBody(false)}>今回の出来事に戻る</button></ModalSheet>}
       {selectedRecord && (
         <ModalSheet
           title={`決断${selectedRecord.number}の記録`}
